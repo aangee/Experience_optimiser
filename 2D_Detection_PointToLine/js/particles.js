@@ -5,28 +5,14 @@ window.onload = function () {
 		width = canvas.width = window.innerWidth,
 		height = canvas.height = window.innerHeight;
 
-	var particle = {
-		x: width / 2,
-		y: height / 2,
-		vx: Math.random() * 8 - 2,
-		vy: Math.random() * 8 - 2
-	},
 
-		lines = [];
+	var particle = new Particle(width / 2, height / 2);
+	let lines = [];
 	let ID_Animation = 0;
 
 	//Creation de line avec des points random
 	for (var i = 0; i < 10; i++) {
-		lines[i] = {
-			p0: {
-				x: Math.random() * width,
-				y: Math.random() * height
-			},
-			p1: {
-				x: Math.random() * width,
-				y: Math.random() * height
-			}
-		}
+		lines[i] = new Line({ x: 0, y: 0 }, { x: 0, y: 0 }).RandomPoints(width, height);
 	}
 
 	document.body.addEventListener("click", onClick);
@@ -53,7 +39,7 @@ window.onload = function () {
 		particle.x += particle.vx;
 		particle.y += particle.vy;
 		context.fillStyle = 'cyan';
-		context.fillRect(particle.x - 2, particle.y - 2, 4, 4);
+		context.fillRect(particle.x, particle.y, 4, 4);
 		context.fill();
 
 		var p1 = {

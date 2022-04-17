@@ -11,19 +11,13 @@ window.onload = function () {
 	let ID_Animation = 0;
 
 	//Creation de line avec des points random
-	for (var i = 0; i < 10; i++) {
+	for (var i = 0; i < 7; i++) {
 		lines[i] = new Line({ x: 0, y: 0 }, { x: 0, y: 0 }).RandomPoints(width, height);
 	}
 
 	document.body.addEventListener("click", onClick);
 	function onClick(event) {
-		particle = {
-			x: width / 2,
-			y: height / 2,
-			vx: Math.random() * 8 - 2,
-			vy: Math.random() * 8 - 2
-		};
-		update();
+		particle = new Particle(width / 2, height / 2);
 	}
 	update();
 
@@ -32,20 +26,15 @@ window.onload = function () {
 		context.clearRect(0, 0, width, height);
 		drawLines();
 
-		var p0 = {
-			x: particle.x,
-			y: particle.y
-		};
+		var p0 = new Particle(particle.x, particle.y);
+
 		particle.x += particle.vx;
 		particle.y += particle.vy;
 		context.fillStyle = 'cyan';
 		context.fillRect(particle.x, particle.y, 4, 4);
 		context.fill();
 
-		var p1 = {
-			x: particle.x,
-			y: particle.y
-		};
+		var p1 = new Particle(particle.x + (particle.vx), particle.y + (particle.vy));
 
 
 		for (var i = 0; i < lines.length; i++) {
@@ -55,11 +44,17 @@ window.onload = function () {
 			var intersect = segmentIntersect(p0, p1, p2, p3);
 			if (intersect) {
 				context.beginPath();
-				context.strokeStyle = "red";
+				context.strokeStyle = "rgb(255,0,0)";
 				context.arc(intersect.x, intersect.y, 20, 0, Math.PI * 2, false);
 				context.stroke();
-				//return;
 				cancelAnimationFrame(ID_Animation);
+
+				let d = setTimeout(() => {
+
+					particle = new Particle(width / 2, height / 2);
+					ID_Animation = requestAnimationFrame(update);
+					clearTimeout(d);
+				}, 200);
 			}
 		}
 

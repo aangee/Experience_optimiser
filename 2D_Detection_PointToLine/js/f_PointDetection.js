@@ -1,38 +1,35 @@
 
-window.onload = function () {
-	var canvas = document.getElementById("canvas"),
-		context = canvas.getContext("2d"),
-		width = canvas.width = window.innerWidth,
-		height = canvas.height = window.innerHeight;
+function Run_PointToLine_Detection() {
 
+	let setup = new SetupCanvas();
 
-	var particle = new Particle(width / 2, height / 2);
+	var particle = new Particle(setup.width / 2, setup.height / 2);
 	let lines = [];
 	let ID_Animation = 0;
 
 	//Creation de line avec des points random
 	for (var i = 0; i < 7; i++) {
-		lines[i] = new Line({ x: 0, y: 0 }, { x: 0, y: 0 }).RandomPoints(width, height);
+		lines[i] = new Line().Random(setup.width, setup.height);
 	}
 
 	document.body.addEventListener("click", onClick);
 	function onClick(event) {
-		particle = new Particle(width / 2, height / 2);
+		particle = new Particle(setup.width / 2, setup.height / 2);
 	}
 	update();
 
 	function update() {
 		ID_Animation = requestAnimationFrame(update);
-		context.clearRect(0, 0, width, height);
+		setup.ctx.clearRect(0, 0, setup.width, setup.height);
 		drawLines();
 
 		var p0 = new Particle(particle.x, particle.y);
 
 		particle.x += particle.vx;
 		particle.y += particle.vy;
-		context.fillStyle = 'cyan';
-		context.fillRect(particle.x, particle.y, 4, 4);
-		context.fill();
+		setup.ctx.fillStyle = 'cyan';
+		setup.ctx.fillRect(particle.x, particle.y, 4, 4);
+		setup.ctx.fill();
 
 		var p1 = new Particle(particle.x + (particle.vx), particle.y + (particle.vy));
 
@@ -43,15 +40,16 @@ window.onload = function () {
 
 			var intersect = segmentIntersect(p0, p1, p2, p3);
 			if (intersect) {
-				context.beginPath();
-				context.strokeStyle = "rgb(255,0,0)";
-				context.arc(intersect.x, intersect.y, 20, 0, Math.PI * 2, false);
-				context.stroke();
+				setup.ctx.beginPath();
+				setup.ctx.strokeStyle = "rgb(255,0,0)";
+				setup.ctx.arc(intersect.x, intersect.y, 20, 0, Math.PI * 2, false);
+				setup.ctx.stroke();
 				cancelAnimationFrame(ID_Animation);
 
+				//Pour voir ou l'on detecte sinon sa relance direct et a pas le temps voir
 				let d = setTimeout(() => {
 
-					particle = new Particle(width / 2, height / 2);
+					particle = new Particle(setup.width / 2, setup.height / 2);
 					ID_Animation = requestAnimationFrame(update);
 					clearTimeout(d);
 				}, 200);
@@ -61,13 +59,13 @@ window.onload = function () {
 	}
 
 	function drawLines() {
-		context.beginPath();
-		context.strokeStyle = "green";
+		setup.ctx.beginPath();
+		setup.ctx.strokeStyle = "green";
 		for (var i = 0; i < lines.length; i++) {
-			context.moveTo(lines[i].p0.x, lines[i].p0.y);
-			context.lineTo(lines[i].p1.x, lines[i].p1.y);
+			setup.ctx.moveTo(lines[i].p0.x, lines[i].p0.y);
+			setup.ctx.lineTo(lines[i].p1.x, lines[i].p1.y);
 		}
-		context.stroke();
+		setup.ctx.stroke();
 	}
 
 	function segmentIntersect(p0, p1, p2, p3) {

@@ -1,8 +1,8 @@
-function Run_LineInteractive() {
+function Run_LineToLine_Detection() {
 
-	let setup = new Setup();
+	let setup = new SetupCanvas();
 
-	setup.points = [
+	let points = [
 		// Line 00
 		{ x: setup.width * .1, y: setup.height * .1 },
 		{ x: setup.width * .8, y: setup.height * .8 },
@@ -13,8 +13,10 @@ function Run_LineInteractive() {
 		{ x: setup.width * .1, y: setup.height * .4 },
 		{ x: setup.width * .4, y: setup.height * .3 }
 	];
+	let clickPoint;
 
-	setup.colorSettings = {
+
+	let colorSettings = {
 		colorControl: "orange",
 		colorLine: "gold",
 		colorPointInterct: "red"
@@ -24,16 +26,16 @@ function Run_LineInteractive() {
 	document.body.addEventListener("mousedown", onMouseDown);
 
 	function onMouseDown(event) {
-		setup.clickPoint = getClickPoint(event.clientX, event.clientY);
-		if (setup.clickPoint) {
+		clickPoint = getClickPoint(event.clientX, event.clientY);
+		if (clickPoint) {
 			document.body.addEventListener("mousemove", onMouseMove);
 			document.body.addEventListener("mouseup", onMouseUp);
 		}
 	}
 
 	function onMouseMove(event) {
-		setup.clickPoint.x = event.clientX;
-		setup.clickPoint.y = event.clientY;
+		clickPoint.x = event.clientX;
+		clickPoint.y = event.clientY;
 		render();
 	}
 
@@ -43,7 +45,7 @@ function Run_LineInteractive() {
 	}
 
 	function getClickPoint(x, y) {
-		var points = setup.points;
+		//var points = points;
 		for (var i = 0; i < points.length; i++) {
 			var p = points[i],
 				dx = p.x - x,
@@ -62,9 +64,9 @@ function Run_LineInteractive() {
 	function render() {
 		setup.ctx.clearRect(0, 0, setup.width, setup.height);
 
-		let line0 = drawLine(setup.points[0], setup.points[1]);
-		let line1 = drawLine(setup.points[2], setup.points[3]);
-		let line2 = drawLine(setup.points[4], setup.points[5]);
+		let line0 = drawLine(points[0], points[1]);
+		let line1 = drawLine(points[2], points[3]);
+		let line2 = drawLine(points[4], points[5]);
 
 		drawControlLine(line0);
 		drawControlLine(line1);
@@ -81,20 +83,20 @@ function Run_LineInteractive() {
 		var intersect2 = segmentIntersect(line2, line0);
 
 		if (intersect0) {
-			drawPoint(intersect0,'lightgreen');
+			drawPoint(intersect0, 'lightgreen');
 		}
 		if (intersect1) {
-			drawPoint(intersect1,'cyan');
+			drawPoint(intersect1, 'cyan');
 		}
 		if (intersect2) {
-			drawPoint(intersect2,'red');
+			drawPoint(intersect2, 'red');
 		}
 	}
 
 	function drawLine(p0, p1) {
 		setup.ctx.beginPath();
 		setup.ctx.lineWidth = .5;
-		setup.ctx.strokeStyle = setup.colorSettings.colorLine;
+		setup.ctx.strokeStyle = colorSettings.colorLine;
 		setup.ctx.moveTo(p0.x, p0.y);
 		setup.ctx.lineTo(p1.x, p1.y);
 		setup.ctx.stroke();
@@ -108,9 +110,9 @@ function Run_LineInteractive() {
 
 	}
 
-	function drawPoint(p,col) {
+	function drawPoint(p, col) {
 		setup.ctx.beginPath();
-		setup.ctx.fillStyle = col || setup.colorSettings.colorControl;
+		setup.ctx.fillStyle = col || colorSettings.colorControl;
 		setup.ctx.arc(p.x, p.y, 7, 0, Math.PI * 2, false);
 		setup.ctx.fill();
 	}
@@ -118,7 +120,7 @@ function Run_LineInteractive() {
 	function drawHit(p) {
 
 		setup.ctx.beginPath();
-		setup.ctx.strokeStyle = setup.colorSettings.colorPointInterct;
+		setup.ctx.strokeStyle = colorSettings.colorPointInterct;
 		setup.ctx.arc(p.x, p.y, 5, 0, Math.PI * 2, false);
 		setup.ctx.stroke();
 	}

@@ -1,4 +1,4 @@
-//#region Vector
+/* //#region Vector
 class Vec2D {
     constructor(x, y) {
         this.x = x;
@@ -62,4 +62,4 @@ class SetupCanvas {
 
     }
 }
-//#endregion
+//#endregion */

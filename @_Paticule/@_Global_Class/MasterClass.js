@@ -142,7 +142,7 @@ class Particle {
     constructor(x, y, speed, direction, grav) {
         //var obj = Object.create(this);
 
-    /** @property {Number} x Position en X */
+        /** @property {Number} x Position en X */
         this.x = x;
         /** @property {Number} y Position en Y */
         this.y = y;
@@ -326,7 +326,7 @@ class Particle {
 
 //#region Setup
 class SetupCanvas {
-    constructor(params) {
+    constructor() {
         this.canvas = document.getElementById("canvas");
         this.ctx = canvas.getContext("2d");
         this.width = canvas.width = window.innerWidth;

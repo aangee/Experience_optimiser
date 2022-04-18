@@ -1,4 +1,3 @@
-
 function Run_PointToLine_Detection() {
 
 	let setup = new SetupCanvas();

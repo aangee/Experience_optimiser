@@ -1,5 +1,6 @@
 window.onload = function () {
-    var canvas = document.getElementById('canvas');
+    const M_PI = Math.PI;
+    let canvas = document.getElementById('canvas');
     /**@type {CanvasRenderingContext2D} */
     let context = canvas.getContext("2d"),
         width = canvas.width = window.innerWidth,

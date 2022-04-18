@@ -1,16 +1,13 @@
 function f_Tree() {
-    let canvas = document.getElementById("canvas");
-    /**@type {CanvasRenderingContext2D} */
-    let context = canvas.getContext("2d");
-    let width = canvas.width = window.innerWidth;
-    let height = canvas.height = window.innerHeight;
+
+    let setup = new SetupCanvas();
 
     let p0 = {
-        x: width / 2,
-        y: height - 50
+        x: setup.width / 2,
+        y: setup.height - 50
     };
     let p1 = {
-        x: width / 2,
+        x: setup.width / 2,
         y: 50
     };
     let branchAngleA = randomRange(-Math.PI / 2, Math.PI / 2);
@@ -18,10 +15,20 @@ function f_Tree() {
     let trunkRatio = randomRange(0.25, 0.75);
     let debugListPoint = [];
 
+    let interationMax = 8;
 
-    tree(p0, p1, 3);
-    drawCircle();
+    /* tree(p0, p1, 3);
+    drawCircle(); */
 
+    function draw() {
+        debugListPoint = [];
+        setup.ctx.clearRect(0, 0, setup.width, setup.height);
+
+        tree(p0, p1, interationMax);
+        drawCircle();
+        requestAnimationFrame(draw);
+    }
+    draw();
     function tree(p0, p1, limit) {
         var dx = p1.x - p0.x,
             dy = p1.y - p0.y,
@@ -44,11 +51,11 @@ function f_Tree() {
 
 
 
-        context.strokeStyle = 'green';
-        context.beginPath();
-        context.moveTo(p0.x, p0.y);
-        context.lineTo(pA.x, pA.y);
-        context.stroke();
+        setup.ctx.strokeStyle = 'green';
+        setup.ctx.beginPath();
+        setup.ctx.moveTo(p0.x, p0.y);
+        setup.ctx.lineTo(pA.x, pA.y);
+        setup.ctx.stroke();
 
         if (limit > 0) {
             tree(pA, pC, limit - 1);
@@ -56,19 +63,21 @@ function f_Tree() {
         }
         else {
 
-            context.strokeStyle = 'cyan';
-            context.beginPath();
-            context.moveTo(pB.x, pB.y);
-            context.lineTo(pA.x, pA.y);
-            context.lineTo(pC.x, pC.y);
-            context.stroke();
+            setup.ctx.strokeStyle = 'cyan';
+            setup.ctx.beginPath();
+            setup.ctx.moveTo(pB.x, pB.y);
+            setup.ctx.lineTo(pA.x, pA.y);
+            setup.ctx.lineTo(pC.x, pC.y);
+            setup.ctx.stroke();
         }
-        branchAngleA += randomRange(-0.02, 0.02);
+
+
+        /* branchAngleA += randomRange(-0.02, 0.02);
         branchAngleB += randomRange(-0.02, 0.02);
         trunkRatio += randomRange(-0.02, 0.02);
         if (trunkRatio >= 0.9 || trunkRatio <= 0.01) {
             trunkRatio = randomRange(0.25, 0.35);
-        }
+        } */
 
 
         debugListPoint.push([pA, pB, pC]);
@@ -81,10 +90,10 @@ function f_Tree() {
             for (let i = 0; i < br.length; i++) {
                 const point = br[i];
 
-                context.strokeStyle = 'red';
-                context.beginPath();
-                context.arc(point.x, point.y, 5, 0, Math.PI * 2, false);
-                context.stroke();
+                setup.ctx.strokeStyle = 'red';
+                setup.ctx.beginPath();
+                setup.ctx.arc(point.x, point.y, 5, 0, Math.PI, false);
+                setup.ctx.stroke();
             }
         }
     }
@@ -93,16 +102,16 @@ function f_Tree() {
     }
 
 
-    document.body.addEventListener("click", function () {
+    document.body.addEventListener("click", (event) => {
         debugListPoint = [];
-        context.clearRect(0, 0, width, height);
+        setup.ctx.clearRect(0, 0, setup.width, setup.height);
 
         p0 = {
-            x: width / 2,
-            y: height - 50
+            x: setup.width / 2,
+            y: setup.height - 50
         };
         p1 = {
-            x: width / 2,
+            x: setup.width / 2,
             y: 50
         };
         random = randomRange(-Math.PI / 2, Math.PI / 2)
@@ -110,7 +119,7 @@ function f_Tree() {
         branchAngleB = -random;//randomRange(-Math.PI / 2, Math.PI / 2);
         trunkRatio = randomRange(0.25, 0.35);
 
-        tree(p0, p1, 3);
+        tree(p0, p1, interationMax);
         drawCircle();
     });
 

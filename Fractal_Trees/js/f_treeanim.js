@@ -1,15 +1,14 @@
 function f_Tree_Anim() {
-	let canvas = document.getElementById("canvas");
-	let context = canvas.getContext("2d");
-	let width = canvas.width = window.innerWidth;
-	let height = canvas.height = window.innerHeight;
+
+	let setup = new SetupCanvas();
+
 
 	let p0 = {
-		x: width / 2,
-		y: height - 50
+		x: setup.width / 2,
+		y: setup.height - 50
 	};
 	let p1 = {
-		x: width / 2,
+		x: setup.width / 2,
 		y: 50
 	};
 	let branchAngleA;
@@ -23,16 +22,16 @@ function f_Tree_Anim() {
 
 
 	function draw() {
-		context.clearRect(0, 0, width, height);
+		setup.ctx.clearRect(0, 0, setup.width, setup.height);
 		branchAngleA = Math.cos(tA += tAS) * Math.PI / 2;
 		branchAngleB = Math.cos(tB += tBS) * Math.PI / 2;
 
-		tree(p0, p1, 8);
+		treeAnimation(p0, p1, 8);
 		requestAnimationFrame(draw);
 	}
 	draw();
 
-	function tree(p0, p1, limit) {
+	function treeAnimation(p0, p1, limit) {
 		var dx = p1.x - p0.x,
 			dy = p1.y - p0.y,
 			dist = Math.sqrt(dx * dx + dy * dy),
@@ -51,21 +50,21 @@ function f_Tree_Anim() {
 				y: pA.y + Math.sin(angle + branchAngleB) * branchLength,
 			};
 
-		context.beginPath();
-		context.moveTo(p0.x, p0.y);
-		context.lineTo(pA.x, pA.y);
-		context.stroke();
+		setup.ctx.beginPath();
+		setup.ctx.moveTo(p0.x, p0.y);
+		setup.ctx.lineTo(pA.x, pA.y);
+		setup.ctx.stroke();
 
 		if (limit > 0) {
-			tree(pA, pC, limit - 1);
-			tree(pA, pB, limit - 1);
+			treeAnimation(pA, pC, limit - 1);
+			treeAnimation(pA, pB, limit - 1);
 		}
 		else {
-			context.beginPath();
-			context.moveTo(pB.x, pB.y);
-			context.lineTo(pA.x, pA.y);
-			context.lineTo(pC.x, pC.y);
-			context.stroke();
+			setup.ctx.beginPath();
+			setup.ctx.moveTo(pB.x, pB.y);
+			setup.ctx.lineTo(pA.x, pA.y);
+			setup.ctx.lineTo(pC.x, pC.y);
+			setup.ctx.stroke();
 		}
 	}
 };

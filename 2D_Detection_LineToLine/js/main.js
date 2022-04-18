@@ -54,7 +54,7 @@ class Particle {
 
 //#region Setup
 class SetupCanvas {
-    constructor(params) {
+    constructor() {
         this.canvas = document.getElementById("canvas");
         this.ctx = canvas.getContext("2d");
         this.width = canvas.width = window.innerWidth;

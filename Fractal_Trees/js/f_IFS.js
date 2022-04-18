@@ -1,10 +1,6 @@
 function f_Ifs() {
-    var canvas = document.getElementById("canvas"),
-        context = canvas.getContext("2d"),
-        width = canvas.width = window.innerWidth,
-        height = canvas.height = window.innerHeight;
-
-    /*  var rules = [{
+    let setup = new SetupCanvas();
+    /*  let rules = [{
          a: 0.85,
          b: 0.04,
          c: -0.04,
@@ -46,7 +42,7 @@ function f_Ifs() {
      }]; */
 
 
-    var colorMarronL = 'rgb(133, 38, 0, 1)',
+    let colorMarronL = 'rgb(133, 38, 0, 1)',
         colorMarron = 'rgb(104, 30, 1, 1)',
         colorMarronD = 'rgb(54, 15, 0, 1)',
 
@@ -56,7 +52,7 @@ function f_Ifs() {
 
         colorGold = 'rgb(255, 187, 0, 1)';
 
-    var rules = [{
+    let rules = [{
         a: 0.05,
         b: 0,
         c: 0,
@@ -119,15 +115,19 @@ function f_Ifs() {
 
 
 
-    var x = Math.random(),
-        y = Math.random();
+    let x = Math.random();
+    let y = Math.random();
 
-    context.translate(width / 2, height);
+    setup.ctx.translate(setup.width / 2, setup.height + 50);
     iterate();
 
+
+
+
     function iterate() {
-        for (var i = 0; i < 100; i++) {
-            var rule = getRule(),
+        setup.ctx.clearRect(0, 0, setup.width, setup.height);
+        for (let i = 0; i < 100; i++) {
+            let rule = getRule(),
                 x1 = x * rule.a + y * rule.b + rule.tx,
                 y1 = x * rule.c + y * rule.d + rule.ty;
             x = x1;
@@ -138,9 +138,9 @@ function f_Ifs() {
     }
 
     function getRule() {
-        var rand = Math.random();
-        for (var i = 0; i < rules.length; i++) {
-            var rule = rules[i];
+        let rand = Math.random();
+        for (let i = 0; i < rules.length; i++) {
+            let rule = rules[i];
             if (rand < rule.weight) {
                 return rule;
             }
@@ -149,7 +149,7 @@ function f_Ifs() {
     }
 
     function plot(x, y, color) {
-        context.fillStyle = color;
-        context.fillRect(x * 350, -y * 350, 0.5, 0.5);
+        setup.ctx.fillStyle = color;
+        setup.ctx.fillRect(x * 350, -y * 350, 0.5, 0.5);
     }
 };

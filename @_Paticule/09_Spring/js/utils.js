@@ -1,4 +1,14 @@
-var utils = {
+
+const M_PI = Math.PI;
+
+//#region Debug
+//Div pour le debug pos sourie
+let DEBUG_DIV = document.getElementById('js-debug');
+let DEBUG_COLOR = 'rgba(150, 25, 75, 0)';
+//#endregion
+
+
+let utils = {
 	norm: function(value, min, max) {
 		return (value - min) / (max - min);
 	},

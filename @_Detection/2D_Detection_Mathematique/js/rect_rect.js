@@ -28,12 +28,12 @@ window.onload = function () {
     draw();
     document.body.addEventListener('mousemove', function (event) {
 
+        context.clearRect(0, 0, width, height);
+
+
         rect1.x = event.clientX - (rect1.width * .5);
         rect1.y = event.clientY - (rect1.height * .5);
 
-        context.fillStyle = 'rgba(0,0,0,.98)';
-        context.rect(0, 0, width, height);
-        context.fill();
 
 
         if (utils.rectIntersect(rect0, rect1)) {

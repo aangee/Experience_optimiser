@@ -29,9 +29,7 @@ window.onload = function () {
         circle1.x = event.clientX;
         circle1.y = event.clientY;
 
-        context.fillStyle = 'rgba(0,0,0,.98)';
-        context.rect(0, 0, width, height);
-        context.fill();
+        context.clearRect(0, 0, width, height);
 
 
         if (utils.circleCollision(circle0, circle1)) {

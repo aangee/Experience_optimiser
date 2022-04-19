@@ -17,7 +17,7 @@ window.onload = function () {
 
     let DEBUG_DIV = document.getElementById('js-debug');
     let para = document.createElement('p');
-    para.textContent = 'Rectangle to circle'
+    para.textContent = 'Point to rectangle'
     DEBUG_DIV.before(para);
 
     context.fillStyle = '#999';
@@ -25,9 +25,7 @@ window.onload = function () {
     document.body.addEventListener('mousemove', function (event) {
 
 
-        context.fillStyle = 'rgba(0,0,0,.98)';
-        context.rect(0, 0, width, height);
-        context.fill();
+        context.clearRect(0, 0, width, height);
 
 
         if (utils.pointInRect(event.clientX, event.clientY, rect)) {

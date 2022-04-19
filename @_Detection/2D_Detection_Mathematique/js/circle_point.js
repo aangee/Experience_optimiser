@@ -22,9 +22,7 @@ window.onload = function () {
     document.body.addEventListener('mousemove', function (event) {
 
 
-        context.fillStyle = 'rgba(0,0,0,.98)';
-        context.rect(0, 0, width, height);
-        context.fill();
+        context.clearRect(0, 0, width, height);
 
 
         if (utils.circlePointCollision(event.clientX, event.clientY, circle)) {

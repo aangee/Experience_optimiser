@@ -6,59 +6,25 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Particle simple</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='../@_Global_Css/MasterCss.css'>
+    <script type="text/javascript" src='../@_Global_Class/MasterClass.js' defer></script>
+
+</head>
+
+<body>
+
+    <canvas id="canvas"></canvas>
+
+    <div class="titreProject">
+        <p>Bounding ball</p>
+        <p id="js-debug">LOADING ...</p>
+    </div>
+
     <script type="text/javascript" src='js/vector.js'></script>
     <script type="text/javascript" src='js/particle.js'></script>
 
 
     <script type="text/javascript" src='js/bounce.js'></script>
-    <script>
-        let M_PI = Math.PI;
-
-        //#region Debug
-        //Div pour le debug pos sourie
-
-        let DEBUG_COLOR = 'rgba(150, 25, 75, 0)';
-        //#endregion
-    </script>
-
-    <style type="text/css">
-        html,
-        body {
-            margin: 0;
-            background: black;
-            overflow: hidden;
-        }
-
-        canvas {
-            display: block;
-            position: absolute;
-        }
-
-        .loaderWrapper {
-            position: absolute;
-            top: 0;
-            left: 48%;
-            color: aliceblue;
-            z-index: 9999;
-        }
-    </style>
-</head>
-
-<body>
-
-
-
-    <canvas id="canvas"></canvas>
-
-
-    <div class="loaderWrapper">
-        <!-- <div class="loader">
-            <div class="inner one"></div>
-            <div class="inner two"></div>
-            <div class="inner three"></div>
-        </div> -->
-        <p id="debug_div">LOADING ...</p>
-    </div>
 </body>
 
 </html>

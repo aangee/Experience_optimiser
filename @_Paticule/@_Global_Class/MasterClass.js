@@ -332,6 +332,20 @@ class SetupCanvas {
         this.width = canvas.width = window.innerWidth;
         this.height = canvas.height = window.innerHeight;
 
+        /**
+         * @type {Number[]}Position centre du setup dans un tableau
+         * @param {Number} centerWorld [0]  => x
+         * @param {Number} centerWorld [1] => y */
+        this.centerWorld = [this.width * .5, this.height * .5];
+    }
+
+    clear(color) {
+        if (color === undefined) this.ctx.clearRect(0, 0, this.width, this.height);
+
+        if (color === undefined) return
+        this.ctx.fillStyle = color;
+        this.ctx.rect(0, 0, this.width, this.height);
+        this.ctx.fill();
     }
 }
 //#endregion

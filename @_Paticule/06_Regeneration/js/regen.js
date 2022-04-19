@@ -1,4 +1,13 @@
 
+//#region Constante
+const M_PI = Math.PI;
+const DEBUG_COLOR = 'rgba(150, 25, 75, 0)';
+
+//Paragraphe pour le debug nbs particule
+let DEBUG_Element = document.getElementById('js-debug');
+
+//#endregion
+
 
 window.onload = function () {
     var canvas = document.getElementById('canvas'),
@@ -7,20 +16,21 @@ window.onload = function () {
         height = canvas.height = window.innerHeight,
         particles = [];
 
-    for (let i = 0; i < 100; i++) {
+    let maxParticle = 100;
+    let currentNbsParticle = 0;
+    for (let i = 0; i < maxParticle; i++) {
         var p = particle.create(width / 2, height, Math.random() * 8 + 5, -M_PI / 2 + (Math.random() * .2 - .1), 0.1);
         p.radius = (Math.random() * 5 + 2);
         particles.push(p);
     }
 
-    let DEBUG_DIV = document.querySelector('#debug_div');
     console.log(context);
     update();
 
 
     function update() {
         //context.clearRect(0, 0, width, height);
-        DEBUG_DIV.innerHTML = 'Number particles: ' + particles.length;
+        DEBUG_Element.innerHTML = 'Particles regen: ' + currentNbsParticle;
 
         context.fillStyle = 'rgba(0,0,0,.98)';
         context.rect(0, 0, width, height);
@@ -28,7 +38,7 @@ window.onload = function () {
 
 
         for (let i = 0; i < particles.length; i++) {
-            var p = particles[i];
+            let p = particles[i];
             p.update();
 
             context.beginPath();
@@ -39,31 +49,42 @@ window.onload = function () {
             context.fill();
 
 
-            if (p.position.getY() - p.radius > height) {
-                p.position.setX(width /2);
-                p.position.setY(height + p.radius);
-                p.velocity.setLength(Math.random() * 8 + 5);
-                p.velocity.setAngle(-M_PI / 2 + (Math.random() * .2 - .1));
-            }
         }
 
-        //removeDeadParticles();
+        regenParticles();
 
         requestAnimationFrame(update);
     }
 
-    function removeDeadParticles() {
-        for (var i = particles.length - 1; i >= 0; i -= 1) {
+    function regenParticles() {
+        //for (var i = particles.length - 1; i >= 0; i -= 1) {
+        for (let i = 0; i < particles.length; i++) {
+            let p = particles[i];
 
-            var p = particles[i];
+            if (p.position.getY() - p.radius > (height)) {
 
-            if (p.position.getX() - p.radius > width ||
-                p.position.getX() + p.radius < 0 ||
-                p.position.getY() - p.radius > height ||
-                p.position.getY() + p.radius < 0
-            ) {
-                particles.splice(i, 1);
+                // currentNbsParticle++;
+                p.isRegen = false;
             }
+
+            if (p.position.getY() - p.radius > height + (Math.random() * 5000)) {
+                p.position.setX(width / 2);
+                p.position.setY(height + p.radius);
+                p.velocity.setLength(Math.random() * 8 + 5);
+                p.velocity.setAngle(-M_PI / 2 + (Math.random() * .2 - .1));
+
+                // currentNbsParticle--;
+                p.isRegen = true;
+                //(currentNbsParticle <= 0) ? currentNbsParticle = 0 : currentNbsParticle--;
+            }
+
+        }
+
+        for (let i = 0; i < particles.length; i++) {
+            let p = particles[i];
+
+            if (p.isRegen) (currentNbsParticle >= maxParticle) ? currentNbsParticle = maxParticle : currentNbsParticle++;
+            if (!p.isRegen) (currentNbsParticle <= 0) ? currentNbsParticle = 0 : currentNbsParticle--;
         }
     }
 }

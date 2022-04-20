@@ -322,6 +322,54 @@ class Particle {
             this.vy += dy / distance * springForce;
     }
 }
+
+class ParticleVec2D {
+    constructor(x, y, speed, direction, grav) {
+
+        this.position = new Vec2D(x, y);
+        this.velocity = new Vec2D(0, 0);
+        this.velocity.setLength(speed);
+        this.velocity.setAngle(direction);
+        this.gravity = new Vec2D(0, grav || 0);
+
+        this.mass = 1;
+        this.radius = 0;
+        this.bounce = -1;
+        this.friction = 1;
+
+
+    }
+
+    accelerate(accel) {
+        this.velocity.addTo(accel);
+    }
+
+    update() {
+        this.velocity.multiplyBy(this.friction);
+        this.velocity.addTo(this.gravity);
+        this.position.addTo(this.velocity);
+    }
+
+    angleTo(p2) {
+        return Math.atan2(p2.position.getY() - this.position.getY(), p2.position.getX() - this.position.getX());
+    }
+
+    distanceTo(p2) {
+        var dx = p2.position.getX() - this.position.getX(),
+            dy = p2.position.getY() - this.position.getY();
+
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    gravitateTo(p2) {
+        var grav = new Vec2D(0, 0),
+            dist = this.distanceTo(p2);
+
+        grav.setLength(p2.mass / (dist * dist));
+        grav.setAngle(this.angleTo(p2));
+        this.velocity.addTo(grav);
+    }
+}
 //#endregion
 
 //#region Setup

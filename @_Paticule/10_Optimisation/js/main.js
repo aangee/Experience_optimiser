@@ -9,7 +9,8 @@ let DEBUG_COLOR = 'rgba(150, 25, 75, 0)';
 const setup = new SetupCanvas();
 const container = document.getElementById('js-selector');
 let ID_Animation = 0;
-let nbsFonctionScript = ['f_spring1', 'f_spring2', 'f_multigravity', 'f_orbit'];
+let nbsFonctionScript = ['f_spring1', 'f_spring2', 'f_multigravity', 'f_orbit', 'f_game_cannon', 5, 'bdhgs', '', () => { }];
+console.info('Nbs de function a charger ->', nbsFonctionScript.length);
 
 const listFunc = [];
 let GeneratorFunction2 = Object.getPrototypeOf(function* () { }).constructor;
@@ -18,20 +19,45 @@ for (let i = 0; i < nbsFonctionScript.length; i++) {
 	let nameFunc = nbsFonctionScript[i];
 	let btn = document.createElement('button');
 	let sp = document.createElement('span');
-	sp.innerHTML = ` `;
-	btn.addEventListener('click', () => { clickSwitch(i) });
-	btn.textContent = nameFunc;
-	container.appendChild(btn);
-	container.appendChild(sp);
+	let funcTMP;
 
 
-	let funcTMP = new GeneratorFunction2("", `${nameFunc}();`);
-	listFunc.push(funcTMP);
+	if ((typeof nameFunc) === 'string') {
+		if (nameFunc !== '' && nameFunc !== ' ') {
+			funcTMP = new GeneratorFunction2("", `${nameFunc}();`);
+		}
+	}
 
 
+	//console.debug(funcTMP);
 
-	console.debug(funcTMP);
+
+	try {
+		funcTMP().next();
+
+		//! attention
+		sp.innerHTML = ` `;
+		btn.addEventListener('click', () => { clickSwitch(i) });
+		btn.textContent = nameFunc;
+		container.appendChild(btn);
+		container.appendChild(sp);
+
+
+		listFunc.push(funcTMP);
+	} catch (err) {
+		if (err instanceof ReferenceError) {
+			console.log("La fonction n'existe pas");
+
+		}
+	}
 }
+
+console.debug('Function charger ->', listFunc.length);
+
+console.debug('List charger ->');
+console.debug(listFunc[0], listFunc[1], listFunc[2]);
+
+
 function clickSwitch(i) {
 	setup.clear();
 	cancelAnimationFrame(ID_Animation);
@@ -61,7 +87,9 @@ function clickSwitch(i) {
 
 
 
-window.onload = function() {
+//window.onload = f_game_cannon();
+
+function f_game_cannon() {
 	let canvas = document.getElementById("canvas"),
 		context = canvas.getContext("2d"),
 		width = canvas.width = window.innerWidth,

@@ -1,5 +1,68 @@
+const M_PI = Math.PI;
+
+//#region Debug
+//Div pour le debug pos sourie
+let DEBUG_DIV = document.querySelector('js-debug');
+let DEBUG_COLOR = 'rgba(150, 25, 75, 0)';
+//#endregion
+
+const setup = new SetupCanvas();
+const container = document.getElementById('js-selector');
+let ID_Animation = 0;
+let nbsFonctionScript = ['f_spring1', 'f_spring2', 'f_multigravity', 'f_orbit'];
+
+const listFunc = [];
+let GeneratorFunction2 = Object.getPrototypeOf(function* () { }).constructor;
+
+for (let i = 0; i < nbsFonctionScript.length; i++) {
+	let nameFunc = nbsFonctionScript[i];
+	let btn = document.createElement('button');
+	let sp = document.createElement('span');
+	sp.innerHTML = ` `;
+	btn.addEventListener('click', () => { clickSwitch(i) });
+	btn.textContent = nameFunc;
+	container.appendChild(btn);
+	container.appendChild(sp);
+
+
+	let funcTMP = new GeneratorFunction2("", `${nameFunc}();`);
+	listFunc.push(funcTMP);
+
+
+
+	console.debug(funcTMP);
+}
+function clickSwitch(i) {
+	setup.clear();
+	cancelAnimationFrame(ID_Animation);
+	let t = setTimeout(() => {
+		listFunc[i]().next();
+		//console.debug('List func:', listFunc);
+		clearTimeout(t);
+	}, 500);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 window.onload = function() {
-	var canvas = document.getElementById("canvas"),
+	let canvas = document.getElementById("canvas"),
 		context = canvas.getContext("2d"),
 		width = canvas.width = window.innerWidth,
 		height = canvas.height = window.innerHeight,
@@ -8,7 +71,7 @@ window.onload = function() {
 			y: height,
 			angle: -Math.PI / 4
 		},
-		cannonball = particle.create(gun.x, gun.y, 15, gun.angle, 0.2),
+		cannonball = new Particle(gun.x, gun.y, 15, gun.angle, 0.2),
 		isShooting = false,
 		forceAngle = 0,
 		forceSpeed = 0.1,
@@ -42,7 +105,7 @@ window.onload = function() {
 	});
 
 	function shoot() {
-		var force = utils.map(rawForce, -1, 1, 2, 20);
+		let force = utils.map(rawForce, -1, 1, 2, 20);
 		cannonball.x = gun.x + Math.cos(gun.angle) * 40;
 		cannonball.y = gun.y + Math.sin(gun.angle) * 40;
 		cannonball.setSpeed(force);

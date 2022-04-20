@@ -1,25 +1,20 @@
-console.log('init');
-window.onload = function () {
-    var canvas = document.getElementById('canvas'),
-        context = canvas.getContext("2d"),
-        width = canvas.width = window.innerWidth,
-        height = canvas.height = window.innerHeight,
+function f_spring2() {
 
-        particleA = particle.create(
-            utils.randomRange(0, width),
-            utils.randomRange(0, height),
+    let particleA = new Particle(
+        utils.randomRange(0, setup.width),
+        utils.randomRange(0, setup.height),
+        utils.randomRange(0, 50),
+        utils.randomRange(0, M_PI * 2), .5),
+
+        particleB = new Particle(
+            utils.randomRange(0, setup.width),
+            utils.randomRange(0, setup.height),
             utils.randomRange(0, 50),
             utils.randomRange(0, M_PI * 2), .5),
 
-        particleB = particle.create(
-            utils.randomRange(0, width),
-            utils.randomRange(0, height),
-            utils.randomRange(0, 50),
-            utils.randomRange(0, M_PI * 2), .5),
-
-        particleC = particle.create(
-            utils.randomRange(0, width),
-            utils.randomRange(0, height),
+        particleC = new Particle(
+            utils.randomRange(0, setup.width),
+            utils.randomRange(0, setup.height),
             utils.randomRange(0, 50),
             utils.randomRange(0, M_PI * 2), .5),
 
@@ -55,7 +50,7 @@ window.onload = function () {
     update();
 
     function update() {
-        context.clearRect(0, 0, width, height);
+        setup.ctx.clearRect(0, 0, setup.width, setup.height);
 
         /* spring(particleA, particleB, separation);
         spring(particleB, particleC, separation);
@@ -69,33 +64,33 @@ window.onload = function () {
         particleB.update();
         particleC.update();
 
-        context.beginPath();
-        context.strokeStyle = 'green';
-        context.moveTo(particleA.x, particleA.y);
-        context.lineTo(particleB.x, particleB.y);
-        context.lineTo(particleC.x, particleC.y);
-        context.lineTo(particleA.x, particleA.y);
-        context.stroke();
+        setup.ctx.beginPath();
+        setup.ctx.strokeStyle = 'green';
+        setup.ctx.moveTo(particleA.x, particleA.y);
+        setup.ctx.lineTo(particleB.x, particleB.y);
+        setup.ctx.lineTo(particleC.x, particleC.y);
+        setup.ctx.lineTo(particleA.x, particleA.y);
+        setup.ctx.stroke();
 
 
-        context.strokeStyle = 'gold';
-        context.beginPath();
-        context.fillStyle = 'blue';
-        context.arc(particleA.x, particleA.y, particleA.radius, 0, M_PI * 2, false);
-        context.fill();
-        context.stroke();
+        setup.ctx.strokeStyle = 'gold';
+        setup.ctx.beginPath();
+        setup.ctx.fillStyle = 'blue';
+        setup.ctx.arc(particleA.x, particleA.y, particleA.radius, 0, M_PI * 2, false);
+        setup.ctx.fill();
+        setup.ctx.stroke();
 
-        context.beginPath();
-        context.fillStyle = 'white';
-        context.arc(particleB.x, particleB.y, particleB.radius, 0, M_PI * 2, false);
-        context.fill();
-        context.stroke();
+        setup.ctx.beginPath();
+        setup.ctx.fillStyle = 'white';
+        setup.ctx.arc(particleB.x, particleB.y, particleB.radius, 0, M_PI * 2, false);
+        setup.ctx.fill();
+        setup.ctx.stroke();
 
-        context.beginPath();
-        context.fillStyle = 'red';
-        context.arc(particleC.x, particleC.y, particleC.radius, 0, M_PI * 2, false);
-        context.fill();
-        context.stroke();
+        setup.ctx.beginPath();
+        setup.ctx.fillStyle = 'red';
+        setup.ctx.arc(particleC.x, particleC.y, particleC.radius, 0, M_PI * 2, false);
+        setup.ctx.fill();
+        setup.ctx.stroke();
 
         detectionEdges(particleA);
         detectionEdges(particleB);
@@ -106,16 +101,16 @@ window.onload = function () {
         requestAnimationFrame(update);
     }
     function detectionEdges(p) {
-        if (p.x + p.radius > width) {
-            p.x = (width - p.radius);
+        if (p.x + p.radius > setup.width) {
+            p.x = (setup.width - p.radius);
             p.vx = (p.vx * p.bounce);
         }
         if (p.x - p.radius < 0) {
             p.x = (p.radius);
             p.vx = (p.vx * p.bounce);
         }
-        if (p.y + p.radius > height) {
-            p.y = (height - p.radius);
+        if (p.y + p.radius > setup.height) {
+            p.y = (setup.height - p.radius);
             p.vy = (p.vy * p.bounce);
         }
         if (p.y - p.radius < 0) {

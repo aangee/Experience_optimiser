@@ -23,13 +23,6 @@
             "runtimeExecutable": "C:/Program Files/BraveSoftware/Brave-Browser-Nightly/Application/brave.exe",
             "userDataDir": true,
             "url": "http://localhost:5500",
-            "webRoot": "${workspaceFolder}/2D_Detection_PointToLine"
-        },
-        {
-            "type": "chrome",
-            "request": "launch",
-            "name": "Launch Chrome against localhost",
-            "url": "http://localhost:4200",
             "webRoot": "${workspaceFolder}"
         },
         {

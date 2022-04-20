@@ -28,10 +28,10 @@ for (let i = 0; i < nbsFonctionScript.length; i++) {
 		}
 	}
 
-
-	//console.debug(funcTMP);
-
-
+//?
+	//& console.debug(funcTMP);
+//*
+//^ 
 	try {
 		funcTMP().next();
 

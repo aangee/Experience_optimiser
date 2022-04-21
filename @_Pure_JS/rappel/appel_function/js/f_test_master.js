@@ -40,7 +40,6 @@ function f_test_master() {
         elm.style.color = `${color}`;
         elm.style.width = `${w}px`;
         elm.style.height = `${h}px`;
-
         console.debug('changeStyle', elm, params, this);
 
         //return elm;

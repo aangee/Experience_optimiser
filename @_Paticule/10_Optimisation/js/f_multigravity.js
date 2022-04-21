@@ -2,7 +2,7 @@ function f_multigravity() {
 
 
 	let sun1 = new Particle(300, 100, 0, 0),
-		sun2 = new Particle(700, 500, 0, 0),
+		sun2 = new Particle(500, 700, 0, 0),
 		emitter = {
 			x: 100,
 			y: 0

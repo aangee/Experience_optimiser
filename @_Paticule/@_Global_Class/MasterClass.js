@@ -155,7 +155,7 @@ class Particle {
         this.position = new Vec2D(x, y);
 
         /** @property {Number} radius Radius de la particule */
-        this.radius = 0;
+        this.radius = 2;
         this.bounce = -1;
         /** @property {Number} friction Friction a ajoute a la particule */
         this.friction = 1;

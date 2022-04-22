@@ -1,3 +1,5 @@
+/*	SOURCE	-->	*/ //	?	https://www.youtube.com/user/codingmath/playlists
+
 let M_PI = Math.PI;
 
 //#region Debug
@@ -24,13 +26,13 @@ let utils = {
 	},
 
 	distance: function (p0, p1) {
-		var dx = p1.x - p0.x,
+		let dx = p1.x - p0.x,
 			dy = p1.y - p0.y;
 		return Math.sqrt(dx * dx + dy * dy);
 	},
 
 	distanceXY: function (x0, y0, x1, y1) {
-		var dx = x1 - x0,
+		let dx = x1 - x0,
 			dy = y1 - y0;
 		return Math.sqrt(dx * dx + dy * dy);
 	},

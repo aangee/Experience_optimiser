@@ -14,7 +14,22 @@ canvas {
   top: 0px;
   left: 0px;
 }
+button{
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  width: 130px;
+  height: 30px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 20px;
+  font-weight: 540;
+  font-variant: small-caps;
+  padding-bottom: 28px;
+  
+  color: teal;
+  background-color: blanchedalmond;
 
+}
 .titreProject {
   position: absolute;
   top: 10px;
@@ -35,7 +50,7 @@ canvas {
   top: 10px;
   left: 10px;
   width: 175px;
-  height: 100px;
+  /* height: 100px; */
   justify-content: space-between;
 
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;

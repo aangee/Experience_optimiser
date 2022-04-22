@@ -1,4 +1,14 @@
-var utils = {
+const M_PI = Math.PI;
+
+//#region Debug
+//Div pour le debug
+let DEBUG_ELEMENT = document.getElementById('js-debug');
+let DEBUG_COLOR = 'rgba(150, 25, 75, 0)';
+//#endregion
+
+
+/*	SOURCE	-->	*/ //	?	https://www.youtube.com/user/codingmath/playlists
+let utils = {
 	norm: function(value, min, max) {
 		return (value - min) / (max - min);
 	},
@@ -16,13 +26,13 @@ var utils = {
 	},
 
 	distance: function(p0, p1) {
-		var dx = p1.x - p0.x,
+		let dx = p1.x - p0.x,
 			dy = p1.y - p0.y;
 		return Math.sqrt(dx * dx + dy * dy);
 	},
 
 	distanceXY: function(x0, y0, x1, y1) {
-		var dx = x1 - x0,
+		let dx = x1 - x0,
 			dy = y1 - y0;
 		return Math.sqrt(dx * dx + dy * dy);
 	},
@@ -71,7 +81,7 @@ var utils = {
 	},
 
 	roundToPlaces: function(value, places) {
-		var mult = Math.pow(10, places);
+		let mult = Math.pow(10, places);
 		return Math.round(value * mult) / mult;
 	},
 

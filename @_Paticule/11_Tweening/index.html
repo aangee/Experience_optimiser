@@ -15,17 +15,32 @@
 
 
     <canvas id="canvas"></canvas>
-    <canvas id="target"></canvas>
 
     <div class="titreProject">
         <p>Tweening</p>
         <p id="js-debug"></p>
-        <div id="js-selector"></div>
-    </div>
+        <div id="js-selector">
+        </div>
+        </div>
+        <div id="js-info-input" class="contentInfoInput">
+            <h4 class="labelInfoInput">Info inputs</h4>
+            <span>- - - ------------ - - -</span>
+            <span class="spanInfoInput">Click</span>
+            <div> to move</div>
+        
+            <span class="spanInfoInput">Shift and move</span>
+            <div> to follow</div>
+        
+            <span class="spanInfoInput">Echap</span>
+            <div> to close info</div>
+            <span>- - - ------------ - - -</span>
+            </div>
+            
+            <script>
+                /* Pour cacher le panel info*/
+                document.addEventListener('keydown', (event) => { if (event.keyCode === 27 || 'Escape' === event.key) document.getElementById('js-info-input').classList.toggle('hidden') });
+            </script>
 
-
-
-    <script type="text/javascript" src='js/vector.js'></script>
     <script type="text/javascript" src='js/particle.js'></script>
     <script type="text/javascript" src='js/utils.js'></script>
     <script type="text/javascript" src='easing.js'></script>

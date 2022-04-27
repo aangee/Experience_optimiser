@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Particle simple</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='../@_Global_Css/MasterCss.css'>
+    <script type="text/javascript" src='../@_Global_Class/MasterClass.js'></script>
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+    <div class="titreProject">
+        <p>Ship Part 2<br>
+            Friction</p>
+        <p id="js-debug"></p>
+        <div id="js-selector"></div>
+    </div>
+
+    <div id="js-info-input" class="contentInfoInput">
+        <h4 class="labelInfoInput">Info inputs</h4>
+        <span>- - - ------------ - - -</span>
+        <span class="spanInfoInput">Z Q S D</span>
+        <div> to move</div>
+
+        <!-- <span class="spanInfoInput">Shift and click</span>
+                <div> to move</div>
+         -->
+        <span class="spanInfoInput">Echap</span>
+        <div> to close info</div>
+        <span>- - - ------------ - - -</span>
+    </div>
+    <script>
+        /* Pour cacher le panel info*/
+        document.addEventListener('keydown', (event) => { if (event.keyCode === 27 || 'Escape' === event.key) document.getElementById('js-info-input').classList.toggle('hidden') });
+    </script>
+    <script type="text/javascript" src='js/vector.js'></script>
+    <script type="text/javascript" src='js/particle.js'></script>
+
+
+    <script type="text/javascript" src='js/ship.js'></script>
+</body>
+
+</html>

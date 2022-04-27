@@ -1,20 +1,18 @@
 
 window.onload = function () {
-	var canvas = document.getElementById("canvas"),
-		context = canvas.getContext("2d"),
-		width = canvas.width = window.innerWidth,
-		height = canvas.height = window.innerHeight,
-		ball = {
+
+	let setup = new SetupCanvas();
+	let ball = {
 			x: 100,
 			y: 100,
 			alpha: 1
-		},
-		mouse = {
+	};
+	let mouse = {
 			x: 100,
 			y: 100
 		};
 
-	tween(ball, { x: width, y: 700, alpha: 0 }, 1000, easeInOutQuad, render, tweenBack);
+	tween(ball, { x: setup.width - 50, y: setup.height - 50, alpha: .1 }, 1000, easeInOutQuad, render, tweenBack);
 
 	document.body.addEventListener('click', (event) => {
 		console.log(event.button);
@@ -73,12 +71,12 @@ window.onload = function () {
 
 
 	function render() {
-		context.clearRect(0, 0, width, height);
-		context.beginPath();
-		context.globalAlpha = ball.alpha;
-		context.fillStyle = 'red';
-		context.arc(ball.x, ball.y, 20, 0, Math.PI * 2, false);
-		context.fill();
+		setup.ctx.clearRect(0, 0, setup.width, setup.height);
+		setup.ctx.beginPath();
+		setup.ctx.globalAlpha = ball.alpha;
+		setup.ctx.fillStyle = 'red';
+		setup.ctx.arc(ball.x, ball.y, 20, 0, Math.PI * 2, false);
+		setup.ctx.fill();
 	}
 
 

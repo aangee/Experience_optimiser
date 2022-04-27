@@ -1,61 +1,47 @@
 window.onload = function () {
-	var canvas = document.getElementById("canvas"),
-		context = canvas.getContext("2d"),
-		width = canvas.width = window.innerWidth,
-		height = canvas.height = window.innerHeight,
-		start = {
-			x: 100,
-			y: 100
-		},
-		target = {},
-		change = {},
-		startTime,
-		duration = 1000;
+
+	let setup = new SetupCanvas();
+
+
+	let start = { x: 100, y: 100 };
+	let target = { x: 0, y: 0 };
+	let change = { x: 0, y: 0 };
+	let startTime;
+	let duration = 1000;
+	let isFinish = true;
 
 	drawCircle(start.x, start.y, 5, 'red');
 
 
 	document.body.addEventListener("click", function (event) {
-		target.x = event.clientX;
-		target.y = event.clientY;
-		change.x = target.x - start.x;
-		change.y = target.y - start.y;
-		startTime = new Date();
-		update();
-	});
-	document.body.addEventListener('mousemove', (event) => {
-		console.log(event.button);
-		if (event.shiftKey) {
-
+		if (isFinish) {
 			target.x = event.clientX;
 			target.y = event.clientY;
-
-			change.x = (target.x - start.x);
-			change.y = (target.y - start.y);
-
+			change.x = target.x - start.x;
+			change.y = target.y - start.y;
 			startTime = new Date();
-			/* if (!easing) {
-				easing = true;
-				update();
-			} */
 			update();
+
 		}
 	});
 
-	function update() {
-		context.clearRect(0, 0, width, height);
 
-		var time = new Date() - startTime;
+	function update() {
+		setup.ctx.clearRect(0, 0, setup.width, setup.height);
+
+		let time = new Date() - startTime;
 		if (time < duration) {
-			var x = easeInOutQuad(time, start.x, change.x, duration),
+			let x = easeInOutQuad(time, start.x, change.x, duration),
 				y = easeInOutQuad(time, start.y, change.y, duration);
 			drawCircle(x, y, 5, 'red');
 			requestAnimationFrame(update);
+			isFinish = false;
 		}
 		else {
 			drawCircle(target.x, target.y, 5, 'red');
 			start.x = target.x;
 			start.y = target.y;
+			isFinish = true;
 		}
 
 	}
@@ -90,10 +76,10 @@ window.onload = function () {
 
 	function drawCircle(x, y, radius = 5, color = 'red') {
 
-		context.beginPath();
-		context.fillStyle = color;
-		context.arc(x, y, radius, 0, Math.PI * 2, false);
-		context.fill();
+		setup.ctx.beginPath();
+		setup.ctx.fillStyle = color;
+		setup.ctx.arc(x, y, radius, 0, Math.PI * 2, false);
+		setup.ctx.fill();
 	}
 
 };

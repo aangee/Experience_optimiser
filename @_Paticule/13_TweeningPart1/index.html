@@ -6,61 +6,40 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Particle Easing</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-
-
-    
-    <script type="text/javascript" src='js/vector.js'></script>
-    <script type="text/javascript" src='js/particle.js'></script>
-    <script type="text/javascript" src='js/utils.js'></script>
-    <script type="text/javascript" src='tweeningP1.js'></script>
-    <!-- <script type="text/javascript" src='autres/gameCannonBall.js'></script> -->
-
-    <script>
-        const M_PI = Math.PI;
-
-        //#region Debug
-        //Div pour le debug pos sourie
-        let DEBUG_DIV = document.querySelector('#debug_div');
-        let DEBUG_COLOR = 'rgba(150, 25, 75, 0)';
-        //#endregion
-    </script>
-
-    <style type="text/css">
-        html,
-        body {
-            margin: 0;
-            background: black;
-            /*overflow: hidden;*/
-        }
-
-        canvas {
-            display: block;
-            position: absolute;
-            top:0px;
-            left: 0px;
-        }
-
-        .loaderWrapper {
-            position: absolute;
-            top: 0;
-            left: 48%;
-            color: aliceblue;
-            z-index: 9999;
-        }
-    </style>
+    <link rel='stylesheet' type='text/css' media='screen' href='../@_Global_Css/MasterCss.css'>
+    <script type="text/javascript" src='../@_Global_Class/MasterClass.js'></script>
 </head>
 
 <body>
 
-
-
     <canvas id="canvas"></canvas>
-    <canvas id="target"></canvas>
+<div class="titreProject">
+    <p>Tweening<br>Part 1</p>
+    <p id="js-debug"></p>
+    <div id="js-selector"></div>
+</div>
 
+    <div id="js-info-input" class="contentInfoInput">
+        <h4 class="labelInfoInput">Info inputs</h4>
+        <span>- - - ------------ - - -</span>
+        <span class="spanInfoInput">Click</span>
+        <div> to move</div>
 
-    <div class="loaderWrapper">
-        <p id="debug_div">LOADING ...</p>
+    <!--     <span class="spanInfoInput">Shift and move</span>
+            <div> to follow</div>
+     -->
+    <span class="spanInfoInput">Echap</span>
+    <div> to close info</div>
+    <span>- - - ------------ - - -</span>
     </div>
+    <script>
+        /* Pour cacher le panel info*/
+        document.addEventListener('keydown', (event) => { if (event.keyCode === 27 || 'Escape' === event.key) document.getElementById('js-info-input').classList.toggle('hidden') });
+    </script>
+    <script type="text/javascript" src='js/vector.js'></script>
+    <script type="text/javascript" src='js/particle.js'></script>
+    <script type="text/javascript" src='js/utils.js'></script>
+    <script type="text/javascript" src='tweeningP1.js'></script>
 </body>
 
 </html>

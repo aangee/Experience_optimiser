@@ -1,10 +1,8 @@
 window.onload = function () {
     var canvas = document.getElementById("canvas"),
         context = canvas.getContext("2d"),
-        targetCanvas = document.getElementById("target"),
-        targetContext = targetCanvas.getContext("2d"),
-        width = canvas.width = targetCanvas.width = window.innerWidth,
-        height = canvas.height = targetCanvas.height = window.innerHeight,
+        width = canvas.width = window.innerWidth,
+        height = canvas.height = window.innerHeight,
         target = {
             x: width - 21,
             y: utils.randomRange(height * .3, height)
@@ -12,8 +10,7 @@ window.onload = function () {
         points = [],
         numPoints = 30,
         baseRadius = 5,
-        ease = 0.1,
-        easing = true;
+        ease = 0.1;
 
     for (let i = 0; i < numPoints; i++) {
         points.push({
@@ -28,30 +25,14 @@ window.onload = function () {
 
         target.x = event.clientX;
         target.y = event.clientY;
-        if (!easing) {
-            easing = true;
-            update();
-        }
     });
     document.body.addEventListener('mousemove', (event) => {
-        if (event.shiftKey) {
 
+        if (event.shiftKey) {
             target.x = event.clientX;
             target.y = event.clientY;
-
-            if (!easing) {
-                easing = true;
-                update();
-            }
         }
     });
-
-    /* targetContext.beginPath();
-    targetContext.fillStyle = "red";
-    targetContext.strokeStyle = 'gold';
-    targetContext.arc(width * .5 + 1000, height / 2, 1000, 0, Math.PI * 2, false);
-    targetContext.fill();
-    targetContext.stroke(); */
 
 
     update();
@@ -80,27 +61,7 @@ window.onload = function () {
         }
 
 
-        //easing = easeTo(position, target, ease);
-
-        //if (easing) requestAnimationFrame(update);
         requestAnimationFrame(update);
     }
 
-    function easeTo(position, target, ease) {
-
-        var dx = target.x - position.x,
-            dy = target.y - position.y;
-        position.x += dx * ease;
-        position.y += dy * ease;
-
-        if (Math.abs(dx) < .1 && Math.abs(dy) < .1) {
-            position.x = target.x;
-            position.y = target.y;
-            return false;
-        }
-        return true;
-
-        /*  position.x += (target.x - position.x)*ease;
-         position.y += (target.y - position.y)*ease; */
-    }
 }

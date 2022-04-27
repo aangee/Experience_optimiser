@@ -1,13 +1,14 @@
 window.onload = function() {
-	var canvas = document.getElementById("canvas"),
-		context = canvas.getContext("2d"),
-		width = canvas.width = window.innerWidth,
-		height = canvas.height = window.innerHeight,
-		angle = 0,
-		targetAngle = 0,
-		limitAngle = .35,
-		ease = 0.05,
-		wheel;
+	let canvas = document.getElementById("canvas");
+	/**@type {CanvasRenderingContext2D} */
+	let context = canvas.getContext("2d");
+	let width = canvas.width = window.innerWidth;
+	let height = canvas.height = window.innerHeight;
+	let angle = 0;
+	let targetAngle = 0;
+	let limitAngle = .35;
+	let ease = 0.05;
+	let wheel;
 
 	wheel = document.createElement("img");
 	wheel.addEventListener("load", function() {
@@ -17,6 +18,7 @@ window.onload = function() {
 
 
 	function render() {
+		requestAnimationFrame(render);
 		context.clearRect(0, 0, width, height);
 
 		angle += (targetAngle - angle) * ease;
@@ -26,9 +28,8 @@ window.onload = function() {
 		context.rotate(angle);
 
 		context.drawImage(wheel, -wheel.width / 2, -wheel.height / 2);
-	
+
 		context.restore();
-		requestAnimationFrame(render);
 	}
 
 	document.body.addEventListener("mousemove", function(event) {

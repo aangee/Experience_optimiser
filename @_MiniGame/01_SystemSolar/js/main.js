@@ -1,9 +1,7 @@
-
 let mouse = {
     x: 100,
     y: 100
 };
-
 let playerCanvas;// Pour le rendu de base
 let playerCtx;// context du rendu de base
 let worldCanvas;// Pour gere les collision Bitmap
@@ -14,8 +12,7 @@ let width;// Pour un appel plus simple dans notre programe ont defini widht glob
 let height;// Pour un appel plus simple dans notre programe ont defini height global
 let animationID = 0;
 
-
-let world = new World();// Stockage de notre future world HIHI!!!
+//let world = new World();// Stockage de notre future world HIHI!!!
 let player;// Notre fake player
 let debug;// Notre panel de debug
 
@@ -25,8 +22,8 @@ let move = {
 }
 
 //TEST World v1
+/**@type {SystemSolar} */
 let systemSolarSimple = new SystemSolar();
-let systemSolarSimpleV2 = new SystemSolarV2();
 
 
 window.onload = function () {
@@ -40,14 +37,9 @@ window.onload = function () {
     width = playerCanvas.width = window.innerWidth;
     height = playerCanvas.height = window.innerHeight;
 
-    world = new World({
-        x: 0, y: 0,
-        size: { x: 1000, y: 1000 },
-        canvas: worldCanvas,
-        ctx: worldCtx
-    });
-    world.isActiveMoonForPlanet = false;
 
+    worldCanvas.width = width * 2;
+    worldCanvas.height = height * 2;
 
     player = new Player({
         x: width * .5, y: height * .5,
@@ -55,11 +47,6 @@ window.onload = function () {
         canvas: worldCanvas,
         ctx: worldCtx
     });
-
-
-
-
-
 
     //Init du debug panel
     initDebug();
@@ -74,19 +61,15 @@ let angleTrouNoir = 0;
 let angleMoon = 0;
 let scaleXY = 1;
 function gameLoop() {
+    animationID = requestAnimationFrame(gameLoop);
 
-
-    //context.clearRect(0, 0, width, height);
     updateDebug();
 
     clearCanvas(playerCtx, { x: 0, y: 0, w: width, h: height, isAlpha: false });
-    clearCanvas(worldCtx, { x: world.x, y: world.y, w: world.size.x, h: world.size.y, isAlpha: true });
+    clearCanvas(worldCtx, { x: 0, y: 0, w: worldCanvas.width, h: worldCanvas.height, isAlpha: true });
 
 
 
-    /* worldCtx.fillStyle = 'rgba(0,0,0,.9)';
-      worldCtx.rect(0, 0, width, height);
-      worldCtx.fill(); */
     angleTrouNoir += .001;
     angleMoon += .005;
 
@@ -94,11 +77,6 @@ function gameLoop() {
 
     worldCtx.save();
 
-    // On centre l'axe 0|0 sur le centre de notre monde
-    //worldCtx.translate(0 - world.size.x * 0.5, 0 - world.size.y * 0.5);
-    // On bouge le tous au centre du canvas qui nous sert de player & view ou camera
-    //worldCtx.translate(width * 0.5, height * 0.5);
-    // Ensuit on bouge notre monde en fonction des input (z,q,s,d)
     worldCtx.transform(
         scaleXY, // Scale X
 
@@ -106,28 +84,16 @@ function gameLoop() {
 
         scaleXY, // Scale Y
         //Position
-        -move.x, // X
-        -move.y // Y
+        -move.x - player.x, // X
+        -move.y - player.y// Y
     );
 
-
-
-
-
     //TEST System solar simple
-    //systemSolarSimple.draw(worldCtx);
-    //systemSolarSimpleV2.draw(worldCtx);
-
-
-    //Loop de notre monde
-    world.loop();
+    systemSolarSimple.draw(worldCtx);
 
     worldCtx.restore();
 
-
     player.loop();
-
-    animationID = requestAnimationFrame(gameLoop);
 }
 function clearCanvas(ctx, params) {
 
@@ -148,7 +114,7 @@ function initDebug() {
     DBG_Canvas.width = width;
     DBG_Canvas.height = height;
 
-    debug = DebugInfo.create(DBG_Ctx, 10, 10, 180, 135, true);
+    debug = DebugInfo.create(DBG_Ctx, 10, 10, 180, 75, true);
 
 
     //debug.drawPanel_G();
@@ -158,24 +124,20 @@ function updateDebug() {
         [
             { label: 'Animation ', txt: animationID },
             { label: 'World info ', txt: '' },
-            { label: 'Size: ', txt: world.size.x + ' x|y ' + world.size.y },
-            { label: 'Canvas: ', txt: world.canvas.width + ' w|h ' + world.canvas.height },
-            { label: world.sytemes[0].typeName + ': Nbs moon: ', txt: world.sytemes[0].planets.length },
-            { label: 'Pos system: ', txt: world.sytemes[0].x.toFixed(0) + ' x|y ' + world.sytemes[0].y.toFixed(0) },
-            { label: 'Pos system: ', txt: world.sytemes[0].dx.toFixed(0) + ' dx|dy ' + world.sytemes[0].dy.toFixed(0) },
-            { label: 'Pos mouse: ', txt: mouse.x + ' x|y ' + mouse.y }/* ,
-            { label: 'Pos moon: ', txt: world.sytemes[0].planets[0].dx.toFixed(0) + ' x|y ' + world.sytemes[0].planets[0].dy.toFixed(0) },
-            { label: world.sytemes[1].typeName + ': Nbs moon: ', txt: world.sytemes[1].planets.length },
-            { label: 'Pos planet: ', txt: world.sytemes[1].dx.toFixed(0) + ' x|y ' + world.sytemes[1].dy.toFixed(0) },
-            { label: 'Pos moon: ', txt: world.sytemes[1].planets[0].dx.toFixed(0) + ' x|y ' + world.sytemes[1].planets[0].dy.toFixed(0) } */
+            { label: 'Radius: ', txt: systemSolarSimple.radius },
+            { label: 'Canvas: ', txt: width + ' w|h ' + height },
+            { label: 'System: 00 Nbs astre: ', txt: systemSolarSimple.planets.length },
+            { label: ' ', txt: '' },
+            { label: 'Pos mouse: ', txt: mouse.x + ' x|y ' + mouse.y }
         ],
         [
             { label: 'Player info ', txt: '' },
             { label: 'Size: ', txt: player.size.x + ' x|y ' + player.size.y },
             { label: 'Position: ', txt: player.x + ' x|y ' + player.y },
 
+            { label: ' ', txt: '' },
             { label: 'Map info ', txt: '' },
-            { label: 'Position: ', txt: move.x.toFixed(2) + ' x|y ' + move.y.toFixed(2) },
+            { label: 'Position: ', txt: move.x.toFixed(2) + ' dx|dy ' + move.y.toFixed(2) },
             { label: 'Scale: ', txt: scaleXY.toFixed(2) }
         ]);
 
@@ -184,6 +146,8 @@ function updateDebug() {
         debug.drawPanel_D({ wCanva: width });
     }
 }
+
+
 //#endregion
 
 //#region EVENTs DOM-Element-body
@@ -197,19 +161,15 @@ function addEvents() {
         console.log(event.key);
         switch (event.key) {
             case 'z': // up
-                /* game.ship.thrusting = true; */
                 move.y -= 10;
                 break;
             case 's': // down
-                /* game.ship.thrustingBack = true; */
                 move.y += 10;
                 break;
             case 'q': // left
-                /* game.ship.turningLeft = true; */
                 move.x -= 10;
                 break;
             case 'd': // right 
-                /* game.ship.turningRight = true; */
                 move.x += 10;
                 break;
             case 'Escape': // Escape ou echap
@@ -231,12 +191,6 @@ function addEvents() {
 
 
             case '²': // Pause game
-                /* game.isAppPause = !game.isAppPause;
-                if (game.isAppPause) {
-                    cancelAnimationFrame(game.animationID);
-                } else {
-                    gameLoop();
-                } */
                 angleTest += 0.1;
                 break;
 
@@ -245,24 +199,17 @@ function addEvents() {
         }
     });
     document.body.addEventListener('keyup', function (event) {
-        /* console.log(event.keyCode);
-        console.log(event.key); */
         switch (event.key) {
             case 'z': // up
-                /* game.ship.thrusting = false; */
                 break;
             case 's': // down
-                /* game.ship.thrustingBack = false; */
                 break;
             case 'q': // left
-                /* game.ship.turningLeft = false; */
                 break;
             case 'd': // right
-                /* game.ship.turningRight = false; */
                 break;
             case 'Escape': // Escape ou echap
-                /* DebugInfo.isShowDebug = !DebugInfo.isShowDebug;
-                game.isVueFollow = !game.isVueFollow; */
+
                 break;
 
             default:
@@ -270,29 +217,10 @@ function addEvents() {
         }
     });
     document.body.addEventListener('mousemove', (event) => {
-        //console.log(event.button);
         mouse = {
             x: event.clientX,
             y: event.clientY
         };
-
-        /* game.ship.aimPoint(mouse.x, mouse.y);
-        if (event.shiftKey) {
-
-            //game.ship.followPoint(target, 0.01);
-
-        } */
-    });
-    document.body.addEventListener('mousedown', (event) => {
-        /* 
-                game.ship.isShooting = true; */
-
-    });
-    document.body.addEventListener('mouseup', (event) => {
-
-        /* 
-                game.ship.isShooting = false; */
-
     });
 }
 //#endregion

@@ -28,7 +28,6 @@ let DebugInfo = {
         let ybis = offsetDroite;
         this.ctx.beginPath();
         this.ctx.lineJoin = "round";//butt|round|square 
-        this.ctx.fillStyle = 'rgba(255,255,255,1)';
         this.ctx.fillStyle = 'rgba(25,25,25,1)';
         this.ctx.strokeStyle = 'rgba(145,20,80,1)';
         this.ctx.rect(xbis, ybis, this.w, this.h);
@@ -63,7 +62,6 @@ let DebugInfo = {
 
     drawPanel_G() {
         this.ctx.beginPath();
-        this.ctx.fillStyle = 'rgba(255,255,255,1)';
         this.ctx.fillStyle = 'rgba(25,25,25,1)';
         this.ctx.strokeStyle = 'rgba(145,20,80,1)';
         this.ctx.rect(this.x, this.y, this.w, this.h);

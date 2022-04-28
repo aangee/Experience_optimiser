@@ -7,12 +7,13 @@ class SystemSolar {
         this.radius = 30;
 
         // The planet objects are initialized 
-        for (var i = 0; i < this.maxPlanet; i++) {
+        for (let i = 0; i < this.maxPlanet; i++) {
 
-            let r = this.radius*.5;
+            let r = this.radius * .5;
             let d = utils.randomRange(this.radius + r, (this.radius + r) * 2);
             let planet = new Astre_V1(d + i * this.radius, r, 1);
-         
+            planet.index = '0' + i;
+
             this.planets.push(planet);
 
 
@@ -22,11 +23,11 @@ class SystemSolar {
 
 
     draw(ctx) {
-
+        this.debugBorderCanvas(ctx);
         // Drawing the Sun
         ctx.save();
         ctx.beginPath();
-        ctx.translate(width / 2, height / 2);
+        ctx.translate((width * 2) / 2, (height * 2) / 2);
 
         ctx.lineWidth = 5;
         ctx.fillStyle = 'rgba(200,150,20,.9)';
@@ -39,7 +40,7 @@ class SystemSolar {
         ctx.closePath();
 
         // Drawing all Planets
-        for (var i = 0; i < this.planets.length; i++) {
+        for (let i = 0; i < this.planets.length; i++) {
             const planet = this.planets[i];
             planet.update();
             planet.draw(ctx);
@@ -47,17 +48,13 @@ class SystemSolar {
         ctx.restore();
     }
 
-}
+    debugBorderCanvas(ctx) {
 
-
-class SystemSolarV2 {
-    constructor() {
-        this.etoile = new Etoile(50,0,0,0,'red');
-        this.etoile.spawnPlanets(7,'lightblue');
-    }
-
-    draw(ctx) {
-        this.etoile.orbit();
-        this.etoile.draw(ctx);
+        ctx.beginPath();
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = 'rgba(150,20,20,.9)';
+        ctx.rect(0, 0, width * 2, height * 2);
+        ctx.stroke();
+        ctx.closePath();
     }
 }

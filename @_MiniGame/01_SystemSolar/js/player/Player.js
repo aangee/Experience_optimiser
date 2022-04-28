@@ -6,8 +6,8 @@ class Player{
         this.canvas = settings.canvas;
         this.ctx = settings.ctx;
 
-        this.visuelPlayer = new PlayerShap(this.x,this.y,this.size.x,'lightblue',true);
-        console.log(this.visuelPlayer);
+        this.visuelPlayer = new PlayerShap(this.x, this.y, this.size.x, 'lightblue');
+       // console.log(this.visuelPlayer);
     }
 
     loop(){

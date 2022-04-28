@@ -43,11 +43,15 @@ class PlayerShap {
 
 
         ctx.restore();
+        this.debugBorderCanvas(ctx);
+    }
 
-        // Pour afficher les bord de notre world
+    debugBorderCanvas(ctx) {
+
+        // Pour afficher les bord de notre canvas
         let offsetXY = 5;
-        let cw = ((width-offsetXY) * .5);
-        let ch = ((height-offsetXY) * .5);
+        let cw = ((width - offsetXY) * .5);
+        let ch = ((height - offsetXY) * .5);
         let cx = (this.x - cw);
         let cy = (this.y - ch);
         ctx.beginPath();
@@ -56,7 +60,7 @@ class PlayerShap {
         ctx.lineJoin = "round";//butt|round|square 
 
         ctx.strokeStyle = 'rgba(0,200,100,.8)';
-        ctx.rect(cx, cy, width-offsetXY, height-offsetXY);
+        ctx.rect(cx, cy, width - offsetXY, height - offsetXY);
         //ctx.fill();
         ctx.stroke();
         ctx.closePath();

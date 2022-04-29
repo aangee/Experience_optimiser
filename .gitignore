@@ -1,2 +1,4 @@
 # ignore all logs
 *.log
+# ignore le dossier vscode
+.vscode

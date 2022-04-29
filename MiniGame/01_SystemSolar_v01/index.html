@@ -6,27 +6,14 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Space World v01</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='../@_Global_Css/MasterCss.css'>
-    <script type="text/javascript" src='../@_Global_Class/MasterClass.js'></script>
+    <link rel='stylesheet' type='text/css' media='screen' href='../../@_Global_Css/MasterCss.css'>
+    <script type="text/javascript" src='../../@_Global_Class/MasterClass.js'></script>
 
 
 
 
 
-    <style type="text/css">
-        html,
-        body {
-            margin: 0px;
-            overflow: hidden;
-        }
 
-        canvas {
-            display: block;
-            position: absolute;
-            top: 0px;
-            left: 0px;
-        }
-    </style>
 </head>
 
 <body>
@@ -34,22 +21,43 @@
     <canvas id="world"></canvas>
     <canvas id="debug"></canvas>
 
-    <script type="text/javascript" src='debugA/DebugInfo.js'></script>
-    <script type="text/javascript" src='js/mathA/funktion/utils.js'></script>
+    <div class="titreProject">
+        <p>Space World<br>
+            v01</p>
+        <p id="js-debug"></p>
+        <div id="js-selector"></div>
+    </div>
+    <div id="js-info-input" class="contentInfoInput">
+        <h4 class="labelInfoInput">Info inputs</h4>
+        <span>- - - ---------- - - -</span>
+        
+        <span class="spanInfoInput">Z Q S D</span>
+        <div> to move</div>
+    
+        <span class="spanInfoInput">/ ou *</span>
+        <div> to scale x1</div>
+
+        <span class="spanInfoInput">+ ou -</span>
+        <div> to scale x10</div>
+
+        <span class="spanInfoInput">Echap</span>
+        <div> to close info</div>
+
+        <span>- - - ---------- - - -</span>
+        </div>
+        <script>
+            /* Pour cacher le panel info*/
+            document.addEventListener('keydown', (event) => { if (event.keyCode === 27 || 'Escape' === event.key) document.getElementById('js-info-input').classList.toggle('hidden') });
+        </script>
+        <script type="text/javascript" src='debugA/DebugInfo.js'></script>
 
 
 
     <script type="text/javascript" src='js/player/Player.js'></script>
     <script type="text/javascript" src='js/player/PlayerShap.js'></script>
 
-
-
-
     <script type="text/javascript" src='js/systemSolar/Astre_v1.js'></script>
-    
     <script type="text/javascript" src='js/systemSolar/SystemSolar.js'></script>
-
-
 
     <script type="text/javascript" src='js/main.js'></script>
 

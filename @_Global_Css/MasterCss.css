@@ -7,7 +7,7 @@
 html,
 body {
   background:rgb(38, 38, 38);
-  /*overflow: hidden;*/
+  overflow: hidden;
 }
 
 canvas {
@@ -41,9 +41,10 @@ span{
   position: absolute;
   display: flex;
   flex-wrap: wrap;
-  top: 10px;
+  top: 50%;
   left: 10px;
   width: 197px;
+  padding: 7px;
   /* height: 100px; */
   justify-content: space-between;
 
@@ -52,6 +53,9 @@ span{
   font-style: oblique;
   font-variant: small-caps;
   color: rgb(88, 253, 165);
+  border: 2px solid cyan;
+  border-radius: 15px;
+  background-color: rgba(42, 42, 42,.8);
   z-index: 2;
 }
 

@@ -5,10 +5,10 @@ class Astre_V1 {
         this.index = -1;
         //console.debug(index);
         // Each planet object keeps track of its own angle of rotation.
-        this.angle = utils.randomRange(-100, 100);                       // Rotation around sun
+        this.angle = Utils.randomRange(-100, 100);                       // Rotation around sun
         this.diameter = tempDiameter;         // Size of planet
         this.distance = tempDistance;         // Distance from sun
-        this.orbitspeed = utils.randomRange(0.00051, 0.00515); // Orbit speed
+        this.orbitspeed = Utils.randomRange(0.00051, 0.00515); // Orbit speed
 
     }
 

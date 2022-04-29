@@ -158,7 +158,7 @@ function addEvents() {
     document.body.addEventListener('keydown', function (event) {
 
         /*console.log(event.keyCode);*/
-        console.log(event.key);
+        //console.log(event.key);
         switch (event.key) {
             case 'z': // up
                 move.y -= 10;

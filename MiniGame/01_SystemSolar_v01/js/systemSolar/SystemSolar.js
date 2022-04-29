@@ -10,7 +10,7 @@ class SystemSolar {
         for (let i = 0; i < this.maxPlanet; i++) {
 
             let r = this.radius * .5;
-            let d = utils.randomRange(this.radius + r, (this.radius + r) * 2);
+            let d = Utils.randomRange(this.radius + r, (this.radius + r) * 2);
             let planet = new Astre_V1(d + i * this.radius, r, 1);
             planet.index = '0' + i;
 

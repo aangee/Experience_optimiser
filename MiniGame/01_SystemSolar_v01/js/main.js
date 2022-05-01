@@ -114,7 +114,7 @@ function initDebug() {
     DBG_Canvas.width = width;
     DBG_Canvas.height = height;
 
-    debug = DebugInfo.create(DBG_Ctx, 10, 10, 180, 75, true);
+    debug = DebugInfo.create(DBG_Ctx, 10, 10, 180, 125, true);
 
 
     //debug.drawPanel_G();
@@ -138,13 +138,17 @@ function updateDebug() {
             { label: ' ', txt: '' },
             { label: 'Map info ', txt: '' },
             { label: 'Position: ', txt: move.x.toFixed(2) + ' dx|dy ' + move.y.toFixed(2) },
-            { label: 'Scale: ', txt: scaleXY.toFixed(2) }
+            { label: 'Scale: ', txt: scaleXY.toFixed(2) },
+            { label: 'Info input ', txt: '' },
+            { label: 'Toggle show panel info: ', txt: '²' },
+            { label: 'Zoom x10: ', txt: '+ -' },
+            { label: 'Zoom x1: ', txt: '/ *' },
+            { label: 'Move: ', txt: 'Z Q S D' }
         ]);
 
-    if (debug.isShowDebug) {
         debug.drawPanel_G();
         debug.drawPanel_D({ wCanva: width });
-    }
+
 }
 
 
@@ -191,7 +195,7 @@ function addEvents() {
 
 
             case '²': // Pause game
-                angleTest += 0.1;
+                debug.isShowDebug = !debug.isShowDebug;
                 break;
 
             default:

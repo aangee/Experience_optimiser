@@ -126,8 +126,11 @@ function initDebug() {
     //debug.drawPanel_G();
 }
 function updateDebug() {
+
+
     debug.updateVarDebugInfo(
         [
+            { label: 'Animation ', txt: animationID },
             { label: 'World info ', txt: '' },
             { label: 'Nbs planets: ', txt: systemSolarSimple.etoile.planets.length },
             { label: 'Planet 1 ', txt: '' },
@@ -144,7 +147,6 @@ function updateDebug() {
              { label: 'Pos system: ', txt: systemSolarSimple.etoile[0].dx.toFixed(0) + ' dx|dy ' + systemSolarSimple.etoile[0].dy.toFixed(0) }, */
         ],
         [
-            { label: 'Animation ', txt: animationID },
             { label: 'Canvas: ', txt: worldCanvas.width + ' w|h ' + worldCanvas.height },
             { label: 'Player info ', txt: '' },
             { label: 'Size: ', txt: player.size.x + ' x|y ' + player.size.y },
@@ -153,19 +155,25 @@ function updateDebug() {
             { label: 'Map info ', txt: '' },
             { label: 'Position: ', txt: move.x.toFixed(2) + ' dx|dy ' + move.y.toFixed(2) },
             { label: 'Scale: ', txt: scaleXY.toFixed(2) },
-            { label: 'Pos mouse: ', txt: mouse.x + ' x|y ' + mouse.y }
+            { label: 'Pos mouse: ', txt: mouse.x + ' x|y ' + mouse.y },
+            { label: 'Info input ', txt: '' },
+            { label: 'Toggle show panel info: ', txt: '²' },
+            { label: 'Zoom x10: ', txt: '+ -' },
+            { label: 'Zoom x1: ', txt: '/ *' },
+            { label: 'Move: ', txt: 'Z Q S D' }
+
         ]);
 
-    if (debug.isShowDebug) {
         debug.drawPanel_G();
         debug.drawPanel_D({ wCanva: width });
-    }
+
+
 }
 //#endregion
 
 //#region EVENTs DOM-Element-body
 /** Ajout event 'keydown, keyup' pour la clavier
- *  & 'mousemove, mousedown, mouseup' pour la sourie
+ *  & ' mousemove, mousedown, mouseup ' pour la sourie
  */
 function addEvents() {
     document.body.addEventListener('keydown', function (event) {
@@ -204,7 +212,7 @@ function addEvents() {
 
 
             case '²':
-                angleTest += 0.1;
+                debug.isShowDebug = !debug.isShowDebug;
                 break;
 
             default:

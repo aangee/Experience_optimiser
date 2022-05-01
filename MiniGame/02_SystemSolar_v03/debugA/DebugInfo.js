@@ -26,9 +26,14 @@ let DebugInfo = {
         let offsetDroite = 10;
         let xbis = settings.wCanva - (this.w + offsetDroite);
         let ybis = offsetDroite;
+
+
+        this.ctx.clearRect(xbis - 5, ybis - 5, this.w + 10, this.h + 10);
+        if (!this.isShowDebug) return;
+
+
         this.ctx.beginPath();
         this.ctx.lineJoin = "round";//butt|round|square 
-        this.ctx.fillStyle = 'rgba(255,255,255,1)';
         this.ctx.fillStyle = 'rgba(25,25,25,1)';
         this.ctx.strokeStyle = 'rgba(145,20,80,1)';
         this.ctx.rect(xbis, ybis, this.w, this.h);
@@ -62,8 +67,12 @@ let DebugInfo = {
     },
 
     drawPanel_G() {
+
+        this.ctx.clearRect(this.x - 5, this.y - 5, this.w + 10, this.h + 10);
+        if (!this.isShowDebug) return;
+
+
         this.ctx.beginPath();
-        this.ctx.fillStyle = 'rgba(255,255,255,1)';
         this.ctx.fillStyle = 'rgba(25,25,25,1)';
         this.ctx.strokeStyle = 'rgba(145,20,80,1)';
         this.ctx.rect(this.x, this.y, this.w, this.h);

@@ -176,13 +176,17 @@ function updateDebug() {
 
             { label: 'Map info ', txt: '' },
             { label: 'Position: ', txt: move.x.toFixed(2) + ' x|y ' + move.y.toFixed(2) },
-            { label: 'Scale: ', txt: scaleXY.toFixed(2) }
+            { label: 'Scale: ', txt: scaleXY.toFixed(2) },
+            { label: 'Info input ', txt: '' },
+            { label: 'Toggle show panel info: ', txt: '²' },
+            { label: 'Zoom x10: ', txt: '+ -' },
+            { label: 'Zoom x1: ', txt: '/ *' },
+            { label: 'Move: ', txt: 'Z Q S D' }
         ]);
 
-    if (debug.isShowDebug) {
         debug.drawPanel_G();
         debug.drawPanel_D({ wCanva: width });
-    }
+
 }
 //#endregion
 
@@ -231,44 +235,14 @@ function addEvents() {
 
 
             case '²': // Pause game
-                /* game.isAppPause = !game.isAppPause;
-                if (game.isAppPause) {
-                    cancelAnimationFrame(game.animationID);
-                } else {
-                    gameLoop();
-                } */
-angleTest += 0.1;
+                debug.isShowDebug = !debug.isShowDebug;
                 break;
 
             default:
                 break;
         }
     });
-    document.body.addEventListener('keyup', function (event) {
-        /* console.log(event.keyCode);
-        console.log(event.key); */
-        switch (event.key) {
-            case 'z': // up
-                /* game.ship.thrusting = false; */
-                break;
-            case 's': // down
-                /* game.ship.thrustingBack = false; */
-                break;
-            case 'q': // left
-                /* game.ship.turningLeft = false; */
-                break;
-            case 'd': // right
-                /* game.ship.turningRight = false; */
-                break;
-            case 'Escape': // Escape ou echap
-                /* DebugInfo.isShowDebug = !DebugInfo.isShowDebug;
-                game.isVueFollow = !game.isVueFollow; */
-                break;
 
-            default:
-                break;
-        }
-    });
     document.body.addEventListener('mousemove', (event) => {
         //console.log(event.button);
         mouse = {

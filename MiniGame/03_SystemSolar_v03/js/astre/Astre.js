@@ -76,9 +76,10 @@ class Astre {
   }
 
   drawText(ctx) {
-    //ctx.save()
+    //ctx.save();
+    //ctx.rotate(this.angle);
     ctx.beginPath();
-    ctx.font = "3px monospace";
+    ctx.font = "10px monospace";
     ctx.shadowBlur = 0;
     ctx.shadowColor = "rgba(255, 255, 255, .1)";
     ctx.shadowOffsetX = 1.5;

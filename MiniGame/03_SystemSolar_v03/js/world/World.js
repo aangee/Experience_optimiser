@@ -45,8 +45,8 @@ class World {
         console.log(this.ctx.__proto__);
     }
 
-    createCenterGalactic(_settings) {
-        for (let i = 0; i < 1; i++) {
+    createCenterGalactic() {
+        for (let i = 0; i < 7; i++) {
             let sizeZoneSpawn = 300;// Taille du spawn des syteme
             let rx = utils.randomRange(this.centerWorld.x + sizeZoneSpawn, this.centerWorld.x - sizeZoneSpawn);// Position x
             let ry = utils.randomRange(this.centerWorld.y + sizeZoneSpawn, this.centerWorld.y - sizeZoneSpawn);// Position y
@@ -64,7 +64,7 @@ class World {
                 let rc1 = `rgba(${utils.randomRange(0, 255)},${utils.randomRange(0, 255)},${utils.randomRange(0, 255)},1)`;
                 let ra1 = utils.randomRange(-.003, .003);// Speed
                 let rm = utils.randomInt(-1, 2);//NOTE Chance pour avoir une ou plusieur lune
-                let tempPlanet = new Astre(rx1, ry1, rr1, ra1, rc1, 'moon ' + j, 0, rm);
+                let tempPlanet = new Astre(rx1, ry1, rr1, ra1, rc1, 'planet ' + j, 0, rm);
 
                 if (this.isActiveMoonForPlanet) {
                     for (let k = 0; k < tempPlanet.numMoons; k++) {
@@ -117,6 +117,7 @@ class World {
 
             // On dessin notre etoile
             tempSystem.draw(this.ctx);
+            tempSystem.drawText(this.ctx);
 
             // LOOP: Planetes
             for (let i = 0; i < tempSystem.planets.length; i++) {
@@ -137,6 +138,8 @@ class World {
 
                 // On dessin notre planete
                 planet.draw(this.ctx);
+
+                //planet.drawText(this.ctx);
 
                 //FIXME Avoir pour se faire une fonction pour eviter ses 3 repetition
                 // Si notre planete a ses propre lune

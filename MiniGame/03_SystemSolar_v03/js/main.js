@@ -24,9 +24,6 @@ let move = {
     y: 0  // Pour une map scale de 3 utilisiser cette pos (x:1360,y:1430) 
 }
 
-//TEST World v1
-let systemSolarSimple = new SystemSolar();
-let systemSolarSimpleV2 = new SystemSolarV2();
 
 
 window.onload = function () {
@@ -46,7 +43,6 @@ window.onload = function () {
         canvas: worldCanvas,
         ctx: worldCtx
     });
-    world.isActiveMoonForPlanet = false;
 
 
     player = new Player({
@@ -109,15 +105,6 @@ function gameLoop() {
         -move.x, // X
         -move.y // Y
     );
-
-
-
-
-
-    //TEST System solar simple
-    //systemSolarSimple.draw(worldCtx);
-    systemSolarSimpleV2.draw(worldCtx);
-
 
     //Loop de notre monde
     world.loop();

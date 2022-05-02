@@ -1,0 +1,3 @@
+NOTE 1 implementer les armenemnt pour le ship
+
+NOTE 2 creation de la class Game

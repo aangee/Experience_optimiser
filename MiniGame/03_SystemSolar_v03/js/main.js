@@ -22,9 +22,7 @@ let debug;// Notre panel de debug
 let move = {
     x: 0, // Pour une map scale de 1 a 2 utilisiser cette pos (x:430,y:560) 
     y: 0  // Pour une map scale de 3 utilisiser cette pos (x:1360,y:1430) 
-}
-
-
+};
 
 window.onload = function () {
 
@@ -52,49 +50,28 @@ window.onload = function () {
         ctx: worldCtx
     });
 
-
-
-
-
-
     //Init du debug panel
     initDebug();
-    updateDebug();
 
     addEvents();
     gameLoop();
 
 };
+
 //#region GameLoop
-let angleTrouNoir = 0;
-let angleMoon = 0;
 let scaleXY = 1;
 function gameLoop() {
 
-
-    //context.clearRect(0, 0, width, height);
+    animationID = requestAnimationFrame(gameLoop);
     updateDebug();
 
     clearCanvas(playerCtx, { x: 0, y: 0, w: width, h: height, isAlpha: false });
     clearCanvas(worldCtx, { x: world.x, y: world.y, w: world.size.x, h: world.size.y, isAlpha: true });
 
 
-
-    /* worldCtx.fillStyle = 'rgba(0,0,0,.9)';
-      worldCtx.rect(0, 0, width, height);
-      worldCtx.fill(); */
-    angleTrouNoir += .001;
-    angleMoon += .005;
-
-
-
     worldCtx.save();
 
-    // On centre le axe 0|0 sur le centre de notre monde
-    //worldCtx.translate(0 - world.size.x * 0.5, 0 - world.size.y * 0.5);
-    // On bouge le tous au centre du canvas qui nous sert de player & view ou camera
-    //worldCtx.translate(width * 0.5, height * 0.5);
-    // Ensuit on bouge notre monde en fonction des input (z,q,s,d)
+    // On bouge notre monde en fonction des input (z,q,s,d)
     worldCtx.transform(
         scaleXY, // Scale X
 
@@ -114,7 +91,6 @@ function gameLoop() {
 
     player.loop();
 
-    animationID = requestAnimationFrame(gameLoop);
 }
 function clearCanvas(ctx, params) {
 
@@ -150,11 +126,7 @@ function updateDebug() {
             { label: world.sytemes[0].typeName + ': Nbs moon: ', txt: world.sytemes[0].planets.length },
             { label: 'Pos system: ', txt: world.sytemes[0].x.toFixed(0) + ' x|y ' + world.sytemes[0].y.toFixed(0) },
             { label: 'Pos system: ', txt: world.sytemes[0].dx.toFixed(0) + ' dx|dy ' + world.sytemes[0].dy.toFixed(0) },
-            { label: 'Pos mouse: ', txt: mouse.x + ' x|y ' + mouse.y }/* ,
-            { label: 'Pos moon: ', txt: world.sytemes[0].planets[0].dx.toFixed(0) + ' x|y ' + world.sytemes[0].planets[0].dy.toFixed(0) },
-            { label: world.sytemes[1].typeName + ': Nbs moon: ', txt: world.sytemes[1].planets.length },
-            { label: 'Pos planet: ', txt: world.sytemes[1].dx.toFixed(0) + ' x|y ' + world.sytemes[1].dy.toFixed(0) },
-            { label: 'Pos moon: ', txt: world.sytemes[1].planets[0].dx.toFixed(0) + ' x|y ' + world.sytemes[1].planets[0].dy.toFixed(0) } */
+            { label: 'Pos mouse: ', txt: mouse.x + ' x|y ' + mouse.y }
         ],
         [
             { label: 'Player info ', txt: '' },
@@ -231,28 +203,11 @@ function addEvents() {
     });
 
     document.body.addEventListener('mousemove', (event) => {
-        //console.log(event.button);
+
         mouse = {
             x: event.clientX,
             y: event.clientY
         };
-
-        /* game.ship.aimPoint(mouse.x, mouse.y);
-        if (event.shiftKey) {
-
-            //game.ship.followPoint(target, 0.01);
-
-        } */
-    });
-    document.body.addEventListener('mousedown', (event) => {
-        /* 
-                game.ship.isShooting = true; */
-
-    });
-    document.body.addEventListener('mouseup', (event) => {
-
-        /* 
-                game.ship.isShooting = false; */
 
     });
 }

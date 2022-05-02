@@ -1,11 +1,3 @@
-const Alog = {
-    initCanvas(settingCanvas) {
-        this.canvas = settingCanvas.canvas;
-        this.ctx = settingCanvas.ctx;
-    }
-}
-
-
 /**
  * 
  */
@@ -52,8 +44,7 @@ var DebugInfo = {
         this.ctx.shadowOffsetX = 1.5;
         this.ctx.shadowOffsetY = 2;
         this.ctx.fillStyle = 'rgba(255,255,255,1)';
-        //this.ctx.strokeStyle = 'rgba(200,20,80,1)';
-        //this.ctx.fillText(Math.round(this.variable.txt),this.x+5,this.y+10,this.w)  
+
         if (this.variable2) {
             for (let i = 0; i < this.variable2.length; i++) {
                 const variable = this.variable2[i];
@@ -87,8 +78,7 @@ var DebugInfo = {
         this.ctx.shadowOffsetX = 1.5;
         this.ctx.shadowOffsetY = 2;
         this.ctx.fillStyle = 'rgba(255,255,255,1)';
-        //this.ctx.strokeStyle = 'rgba(200,20,80,1)';
-        //this.ctx.fillText(Math.round(this.variable.txt),this.x+5,this.y+10,this.w)  
+
         for (let i = 0; i < this.variable.length; i++) {
             const variable = this.variable[i];
             this.ctx.fillText(variable.label + '' + variable.txt, this.x + 5, this.y + 10 + (i * 10), this.w)
@@ -97,27 +87,6 @@ var DebugInfo = {
         //this.ctx.stroke();
         this.ctx.closePath();
         this.ctx.shadowColor = "rgba(0, 0, 0, 0)";
-        
-    },
-    drawShape(c, startX, startY, sideLength, sideCountNumerator, sideCountDenominator) {
 
-        // By Programming Thomas - https://programmingthomas.wordpress.com/2013/04/03/n-sided-shapes/
-        var sideCount = sideCountNumerator * sideCountDenominator;
-        var decimalSides = sideCountNumerator / sideCountDenominator;
-        var interiorAngleDegrees = (180 * (decimalSides - 2)) / decimalSides;
-        var interiorAngle = Math.PI - Math.PI * interiorAngleDegrees / 180; // convert to radians
-        c.save();
-        c.beginPath();
-        c.translate(startX, startY);
-        c.moveTo(0, 0);
-        for (var i = 0; i < sideCount; i++) {
-            c.lineTo(sideLength, 0);
-            c.translate(sideLength, 0);
-            c.rotate(interiorAngle);
-        }
-        //c.stroke();
-        c.fill();
-        c.restore();
-
-    },
+    }
 }

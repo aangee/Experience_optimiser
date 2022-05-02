@@ -171,14 +171,9 @@ window.onload = function () {
                 { label: 'Speed: ', txt: level00.station.engin.getSpeed().toFixed(2) },
                 { label: 'Cible trouve: ', txt: level00.station.isTarget },
                 { label: 'Nom: ', txt: level00.station.target.name },
-                /* { label: 'Id: ', txt: level00.station.target.id }, */
                 { label: 'Position: ', txt: level00.station.target.a + ' | ' + level00.station.target.b },
                 { label: 'INFO: ', txt: '"Echap" open/close DBG' },
                 { label: 'INFO: ', txt: '"²" Pause game' }
-                /* { label: '     ---  Turn  --- ', txt: '' },
-                { label: '', txt: '|Left> ' + ship.turningLeft + ' |Right> ' + ship.turningRight },
-                { label: 'Friction: ', txt: ship.engin.friction },
-                { label: 'Angle: ', txt: ship.shapeShip.angle.toFixed(2) }, */
             ]);
         //#endregion
 

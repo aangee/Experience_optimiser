@@ -8,6 +8,8 @@ let gameCanvas;// Pour le rendu de base
 let gameCtx;// context du rendu de base
 let collisionCanvas;// Pour gere les collision Bitmap
 let collisionCtx;// context pour la collison Bitmap
+let worldCanvas;// Pour le rendu world
+let worldCtx;// context pour le world
 let width;// Pour un appel plus simple dans notre programe ont defini widht global
 let height;// Pour un appel plus simple dans notre programe ont defini height global
 

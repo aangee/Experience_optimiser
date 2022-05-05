@@ -1,10 +1,14 @@
 class Level {
 
     #canvasGame;
-    #ctxGame;
+    #gameCtx;
+
+
+    #canvasWorld;
+    #worldCtx;
 
     #canvasCollison;
-    #ctxCollision;
+    #collisionCtx;
 
     /**
      * 
@@ -14,9 +18,11 @@ class Level {
     constructor(canvasSetting, levelSettings) {
         // canvas
         this.#canvasGame = canvasSetting.gameCanvas;
-        this.#ctxGame = canvasSetting.gameCtx;
+        this.#gameCtx = canvasSetting.gameCtx;
+        this.#canvasWorld = canvasSetting.worldCanvas;
+        this.#worldCtx = canvasSetting.worldCtx;
         this.#canvasCollison = canvasSetting.collisionCanvas;//targetCanvas;
-        this.#ctxCollision = canvasSetting.ctxCollision;//targetCtx;
+        this.#collisionCtx = canvasSetting.collisionCtx;//targetCtx;
         // level
         this.ship = levelSettings.ship;
         this.idLevel = levelSettings.idLevel;
@@ -28,8 +34,8 @@ class Level {
         this.numCollision = 0;
 
         // Entitys level
-        this.station = new Station(this.#ctxGame, 450, 300, 10, 'Terra VII');
-        this.sun = new Sun(this.#ctxGame, 350, 320 , 30);
+        //this.station = new Station(this.#worldCtx, 450, 300, 10, 'Terra VII');
+        //this.sun = new Sun(this.#worldCtx, 350, 320, 30);
     }
 
     start() {
@@ -40,16 +46,14 @@ class Level {
 
 
         //this.ship.engin.gravitateTo(this.sun.engin);
-        this.sun.update();
-        this.station.update(this.sun.engin);
+
+       //this.sun.update();
+        //this.station.update(this.sun.engin);
 
 
         if (this.enemys.length !== 0) {
             for (let j = 0; j < this.enemys.length; j++) {
                 this.enemys[j].Update();
-                // Pass j so we can track which asteroid points
-                // to store
-                //this.enemys[j].Draw();
             }
         }
         if (this.enemys.length === 0) {
@@ -63,7 +67,7 @@ class Level {
     spawnEnenys() {
 
         for (let i = 0; i < this.numEnemys; i++) {
-            let asteroid = new Asteroid(this.#ctxGame, this.#canvasGame);
+            let asteroid = new Asteroid(this.#gameCtx, this.#canvasGame);
             asteroid.speed = (Math.random() * 1.061 + .16180);
             //asteroid.level = 1;
             this.enemys.push(asteroid);
@@ -96,11 +100,11 @@ class Level {
                         // Check if asteroid can be broken into smaller pieces
                         if (this.enemys[l].radius >= 10) {
                             if (this.enemys[l].level === 1) {
-                                this.enemys.push(new Asteroid(this.#ctxGame, this.#canvasGame, this.enemys[l].x - 5, this.enemys[l].y - 5, 25, 2, 26));
-                                this.enemys.push(new Asteroid(this.#ctxGame, this.#canvasGame, this.enemys[l].x + 5, this.enemys[l].y + 5, 25, 2, 26));
+                                this.enemys.push(new Asteroid(this.#gameCtx, this.#canvasGame, this.enemys[l].x - 5, this.enemys[l].y - 5, 25, 2, 26));
+                                this.enemys.push(new Asteroid(this.#gameCtx, this.#canvasGame, this.enemys[l].x + 5, this.enemys[l].y + 5, 25, 2, 26));
                             } else if (this.enemys[l].level === 2) {
-                                this.enemys.push(new Asteroid(this.#ctxGame, this.#canvasGame, this.enemys[l].x - 5, this.enemys[l].y - 5, 15, 3, 16));
-                                this.enemys.push(new Asteroid(this.#ctxGame, this.#canvasGame, this.enemys[l].x + 5, this.enemys[l].y + 5, 15, 3, 16));
+                                this.enemys.push(new Asteroid(this.#gameCtx, this.#canvasGame, this.enemys[l].x - 5, this.enemys[l].y - 5, 15, 3, 16));
+                                this.enemys.push(new Asteroid(this.#gameCtx, this.#canvasGame, this.enemys[l].x + 5, this.enemys[l].y + 5, 15, 3, 16));
                             }
                         }
 
@@ -140,7 +144,7 @@ class Level {
         //this.#ctx.clearRect(0, 0, this.#canvas.width, this.#canvas.height);
         // On recup un pixel sur le canvas(target) et on check alpha du pixel
         let limiteColor = 50;//RVB a 50
-        var imageData = this.#ctxGame.getImageData(this.ship.engin.x, this.ship.engin.y, 2, 2);
+        var imageData = this.#gameCtx.getImageData(this.ship.engin.x, this.ship.engin.y, 2, 2);
         //console.log(imageData.data);
         if (imageData.data[0] > limiteColor || imageData.data[1] > limiteColor || imageData.data[2] > limiteColor ||
             imageData.data[4] > limiteColor || imageData.data[5] > limiteColor || imageData.data[6] > limiteColor ||
@@ -148,11 +152,11 @@ class Level {
             imageData.data[12] > limiteColor || imageData.data[13] > limiteColor || imageData.data[14] > limiteColor
         ) {
             //this.#targetCtx.globalCompositeOperation = 'destination-out';
-            this.#ctxCollision.beginPath();
-            this.#ctxCollision.fillStyle = "green";
-            this.#ctxCollision.strokeStyle = 'red';
-            this.#ctxCollision.arc(_p.x, _p.y, 2, 0, Math.PI * 2, false);
-            this.#ctxCollision.fill();
+            this.#collisionCtx.beginPath();
+            this.#collisionCtx.fillStyle = "green";
+            this.#collisionCtx.strokeStyle = 'red';
+            this.#collisionCtx.arc(_p.x, _p.y, 2, 0, Math.PI * 2, false);
+            this.#collisionCtx.fill();
 
 
             this.numCollision++;

@@ -89,7 +89,7 @@ function gameLoop() {
     }
     DebugInfo.updateVarDebugInfo(
         [
-            { label: 'Numbres enemy: ', txt: game.levels[0].enemys.length },
+            /*     { label: 'Numbres enemy: ', txt: game.levels[0].enemys.length }, */
             { label: 'Numbers balls: ', txt: game.ship.balls.length },
             { label: 'Cooldown Shoot: ', txt: game.cooldownShoot },
             { label: 'Speed: ', txt: game.ship.engin.getSpeed().toFixed(0) },
@@ -104,7 +104,7 @@ function gameLoop() {
             { label: 'Animation: ', txt: game.animationID }
         ],
         [
-            { label: 'Cillision World: ', txt: game.gameDetecteCollision },
+            { label: 'Cillision World: ', txt: game.gameDetecteCollision }/*,
             { label: 'Station: ', txt: game.levels[0].station.name },
             { label: 'Sante: ', txt: game.levels[0].station.lives.toFixed(0) },
             { label: 'DistanceTo Sun: ', txt: game.levels[0].station.engin.distanceTo(game.levels[0].sun.engin).toFixed(0) },
@@ -116,7 +116,7 @@ function gameLoop() {
             { label: 'Nom: ', txt: game.levels[0].station.target.name },
             { label: 'Id: ', txt: game.levels[0].station.target.id },
             { label: 'Position: ', txt: game.levels[0].station.target.x.toFixed(2) + ' | ' + game.levels[0].station.target.y.toFixed(2) },
-            { label: 'Armement: ', txt: game.levels[0].station.armements.armes.length + ' Actif: 1' }/*,
+            { label: 'Armement: ', txt: game.levels[0].station.armements.armes.length + ' Actif: 1' },
             { label: 'Type: ', txt: game.levels[0].station.armements.armes[0].type }
             { label: 'Thrust', txt: game.ship.thrusting },
             { label: '     ---  Turn  --- ', txt: '' },

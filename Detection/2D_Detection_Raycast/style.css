@@ -1,0 +1,28 @@
+body{ 
+    margin: 0px; 
+    background-color: rgb(48, 48, 48);
+    
+}
+
+#container{
+    width: 100%;
+    display: flex;
+}
+
+#console{
+    position: relative;
+    display: flex;
+    width: 100%;
+    min-height: 400px;
+    height: calc(100vh - 40px);
+
+}
+
+.canvas{
+    position: absolute;
+    top:0px;
+    left: 0px;
+}
+.map{
+    position: absolute;
+}

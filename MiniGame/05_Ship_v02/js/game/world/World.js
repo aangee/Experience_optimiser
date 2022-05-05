@@ -7,10 +7,12 @@ class World {
         this.ctxWorld = ctxWorld;
         this.size = size;
 
-        // Entitys level
-        //this.station = new Station(this.ctx, 450, 500, 10, 'World II');
 
-        this.sun = new Sun(this.ctxWorld, 500, 500, 30);
+        // Entitys level
+        this.station = new Station(this.ctxWorld, 400, 300, 5, 'World II');
+        this.sun = new Sun(this.ctxWorld, 300, 300, 10);
+
+
         this.astres = [];
         for (let i = 0; i < 50; i++) {
             let xR = utils.randomRange(0, size.x);//Random pos X
@@ -26,7 +28,9 @@ class World {
     update() {
 
         this.sun.update();
-        //this.station.update(this.sun.engin);
+        this.station.update(this.sun.engin);
+
+
         for (let i = 0; i < this.astres.length; i++) {
             const astre = this.astres[i];
 

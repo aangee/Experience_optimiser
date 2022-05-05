@@ -9,18 +9,18 @@ class Game {
 
         this.cooldownShoot = 0;
 
-        this.canvasGame = canvasSetting.gameCanvas;// = document.getElementById("canvas");
-        this.ctxGame = canvasSetting.gameCtx;
+        this.gameCanvas = canvasSetting.gameCanvas;// = document.getElementById("canvas");
+        this.gameCtx = canvasSetting.gameCtx;
 
-        this.canvasWorld = canvasSetting.worldCanvas;// = document.getElementById("target");
-        this.ctxWorld = canvasSetting.worldCtx;
+        this.worldCanvas = canvasSetting.worldCanvas;// = document.getElementById("target");
+        this.worldCtx = canvasSetting.worldCtx;
 
 
-        this.canvasCollision = canvasSetting.collisionCanvas;// = document.getElementById("target");
-        this.ctxCollision = canvasSetting.collisionCtx;
+        this.collisionCanvas = canvasSetting.collisionCanvas;// = document.getElementById("target");
+        this.collisionCtx = canvasSetting.collisionCtx;
 
-        this.width = this.canvasGame.width;
-        this.height = this.canvasGame.height;
+        this.width = this.gameCanvas.width;
+        this.height = this.gameCanvas.height;
 
         this.animationID = 0;
         this.gameDetecteCollision = 0;
@@ -28,11 +28,11 @@ class Game {
 
 
         let sizeWorld = { x: this.width*2, y: this.height*2 };
-        this.canvasWorld.width = sizeWorld.x;
-        this.canvasWorld.height = sizeWorld.y;
-        this.world = new World(this.ctxWorld, sizeWorld);
+        this.worldCanvas.width = sizeWorld.x;
+        this.worldCanvas.height = sizeWorld.y;
+        this.world = new World(this.worldCtx, sizeWorld);
 
-        this.ship = new Ship(this.canvasGame, this.width / 2, this.height / 2);
+        this.ship = new Ship(this.gameCanvas, this.width / 2, this.height / 2);
 
         // TEST Blocage de la vue sur le ship
         this.isVueFollow = true;
@@ -45,10 +45,12 @@ class Game {
 
     createOneLevel(settingLevel) {
         let tempCanvasSetting = {
-            gameCanvas: this.canvasGame,
-            gameCtx: this.ctxGame,
-            collisionCanvas: this.canvasCollision,
-            ctxCollision: this.ctxCollision
+            worldCanvas: this.worldCanvas,
+            worldCtx: this.worldCtx,
+            gameCanvas: this.gameCanvas,
+            gameCtx: this.gameCtx,
+            collisionCanvas: this.collisionCanvas,
+            collisionCtx: this.collisionCtx
         };
         this.levels.push(new Level(tempCanvasSetting, settingLevel));
     }
@@ -61,7 +63,7 @@ class Game {
 
         this.conteur++;
         //this.ctxGame.clearRect(0, 0, this.world.size.x, this.world.size.y);
-        this.ctxWorld.clearRect(0, 0, this.world.size.x, this.world.size.y);
+        this.worldCtx.clearRect(0, 0, this.world.size.x, this.world.size.y);
 
 
 
@@ -73,14 +75,14 @@ class Game {
 
         if (this.isVueFollow) {
             this.ship.isVueFollow = true;
-            this.ctxWorld.save();
+            this.worldCtx.save();
             let ratioDeplacement = 1;
             let centrageWorld = { w: (this.world.size.x * .5), h: (this.world.size.y * .5) }
             /* this.ctxWorld.setTransform(2, 0, 0, 2,
                 //Position 
                 centrageWorld.w + this.ship.engin.x * -ratioDeplacement,// X
                 centrageWorld.h + this.ship.engin.y * -ratioDeplacement);// Y */
-            this.ctxWorld.setTransform(2, 0, 0, 2,
+            this.worldCtx.setTransform(2, 0, 0, 2,
                 //Position 
                 this.ship.engin.x * -ratioDeplacement,// X
                 this.ship.engin.y * -ratioDeplacement);// Y
@@ -88,7 +90,7 @@ class Game {
 
             this.world.update();
 
-            this.ctxWorld.restore();
+            this.worldCtx.restore();
         } else {
             this.ship.isVueFollow = false;
             this.world.update();
@@ -115,8 +117,8 @@ class Game {
         this.levels[0].update();
 
 
-        this.getCollisionBitmap(this.ctxWorld);
-        this.getCollisionBitmap(this.ctxGame);
+        this.getCollisionBitmap(this.worldCtx);
+        this.getCollisionBitmap(this.gameCtx);
 
 
 

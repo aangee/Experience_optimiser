@@ -23,3 +23,21 @@ gallery.render(PROJECTS);
 // Timeline : affiche le parcours d'apprentissage
 const timeline = new Timeline('timeline');
 timeline.render(TIMELINE);
+
+// ===== Navigation par onglets =====
+const tabs = document.querySelectorAll('.tab');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    const target = tab.dataset.tab;
+
+    tabs.forEach(t => t.classList.remove('tab--active'));
+    tab.classList.add('tab--active');
+
+    tabContents.forEach(content => {
+      const isTarget = content.id === 'tab-' + target;
+      content.classList.toggle('hidden', !isTarget);
+    });
+  });
+});

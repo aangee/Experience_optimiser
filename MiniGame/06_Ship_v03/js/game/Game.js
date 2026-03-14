@@ -30,15 +30,19 @@ class Game {
         this.conteur = 0;
 
 
-        let sizeWorld = { x: this.width*2, y: this.height*2 };
+        // v3: worldCanvas à la taille de l'écran (était 2× en v2).
+        // Le camera-follow (setTransform) décalait le fond mais pas les astéroïdes (gameCtx),
+        // ce qui créait l'illusion qu'ils se déplaçaient avec le ship.
+        // Camera-follow désactivé (isVueFollow = false) — à revoir dans une future version
+        // quand tout sera sur le même espace de coordonnées.
+        let sizeWorld = { x: this.width, y: this.height };
         this.worldCanvas.width = sizeWorld.x;
         this.worldCanvas.height = sizeWorld.y;
         this.world = new World(this.worldCtx, sizeWorld);
 
         this.ship = new Ship(this.gameCanvas, this.width / 2, this.height / 2);
 
-        // TEST Blocage de la vue sur le ship
-        this.isVueFollow = true;
+        this.isVueFollow = false;
 
         this.levels = [];
         console.log(this.world);

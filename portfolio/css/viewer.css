@@ -31,38 +31,26 @@
   max-width: 220px;
 }
 
-/* ===== PILLS DE VERSION ===== */
+/* ===== SÉLECTEUR DE VERSION ===== */
 .viewer-versions {
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
   flex: 1;
-  padding: 0 0.5rem;
-  overflow-x: auto;
-}
-
-.version-btn {
-  background: none;
+  background: #1a1a1a;
   border: 1px solid var(--border);
-  color: #555;
-  font-size: 0.68rem;
-  padding: 0.2rem 0.6rem;
-  border-radius: 20px;
-  cursor: pointer;
-  white-space: nowrap;
-  letter-spacing: 0.04em;
-  transition: border-color 0.15s, color 0.15s;
-  flex-shrink: 0;
-}
-
-.version-btn:hover {
-  border-color: var(--accent-dim);
   color: var(--text-dim);
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  outline: none;
+  max-width: 200px;
+  letter-spacing: 0.04em;
+  appearance: auto;
 }
 
-.version-btn--active {
+.viewer-versions:hover,
+.viewer-versions:focus {
   border-color: var(--accent-dim);
-  color: var(--accent-dim);
+  color: var(--accent);
 }
 
 /* Groupe boutons droite */

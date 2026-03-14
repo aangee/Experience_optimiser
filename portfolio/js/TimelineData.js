@@ -17,6 +17,10 @@
  * Champ "demoId" (optionnel) :
  *   Si renseigné, un lien s'affiche pour ouvrir la démo depuis la timeline.
  *   La valeur doit correspondre à un "id" dans ProjectData.js.
+ *
+ * Champ "versionLabel" (optionnel) :
+ *   Si renseigné en même temps que demoId, "voir la démo" ouvre
+ *   directement cette version dans le viewer.
  * ============================================================
  */
 
@@ -41,9 +45,19 @@ const TIMELINE = [
   {
     date: { day: null, month: 'avr', year: 2022, approx: true },
     title: 'Vaisseau — Propulsion',
-    desc: 'Premier objet piloté au clavier. La physique de poussée et d\'inertie : le pont vers les jeux.',
-    demoId: 'ship-truster',
+    desc: 'Premier objet piloté au clavier. Vecteur de poussée, inertie, rotation. La physique devient jouable.',
+    demoId: 'vaisseau',
+    versionLabel: 'Propulsion',
     tags: ['physique', 'jeu']
+  },
+
+  {
+    date: { day: null, month: 'avr', year: 2022, approx: true },
+    title: 'Vaisseau — Friction',
+    desc: 'La résistance de l\'espace. Même moteur, mais la vélocité s\'amortit progressivement — plus réaliste.',
+    demoId: 'vaisseau',
+    versionLabel: 'Friction',
+    tags: ['physique']
   },
 
   {
@@ -56,9 +70,28 @@ const TIMELINE = [
 
   {
     date: { day: null, month: 'mai', year: 2022, approx: true },
-    title: 'Système solaire — Gravité',
-    desc: 'Premier essai de simulation : des planètes en orbite avec physique gravitationnelle.',
-    demoId: 'solar-v1',
+    title: 'Système Solaire — v1',
+    desc: 'Première simulation gravitationnelle : des planètes en orbite autour d\'un soleil. Pas encore de joueur.',
+    demoId: 'systeme-solaire',
+    versionLabel: 'v1',
+    tags: ['gravité', 'simulation']
+  },
+
+  {
+    date: { day: null, month: 'mai', year: 2022, approx: true },
+    title: 'Système Solaire — v2',
+    desc: 'Un vaisseau pilotable entre dans la simulation. Le joueur peut interagir avec le système gravitationnel.',
+    demoId: 'systeme-solaire',
+    versionLabel: 'v2',
+    tags: ['gravité', 'jeu']
+  },
+
+  {
+    date: { day: null, month: 'mai', year: 2022, approx: true },
+    title: 'Système Solaire — v3',
+    desc: 'Version épurée et équilibrée : orbites stables, pilotage fluide, esthétique soignée.',
+    demoId: 'systeme-solaire',
+    versionLabel: 'v3',
     tags: ['gravité', 'simulation']
   },
 
@@ -72,9 +105,19 @@ const TIMELINE = [
 
   {
     date: { day: null, month: 'mai', year: 2022, approx: true },
-    title: 'Vaisseau v2 — Projet complet',
-    desc: 'Tir, astéroïdes, physique complète, propriétés privées ES2022. Le projet le plus avancé de la collection.',
-    demoId: 'ship-v02',
+    title: 'Vaisseau — v1',
+    desc: 'Premier jeu complet : armement, cibles, souris pour viser. La boucle de jeu prend forme.',
+    demoId: 'vaisseau',
+    versionLabel: 'v1',
+    tags: ['jeu', 'architecture']
+  },
+
+  {
+    date: { day: null, month: 'mai', year: 2022, approx: true },
+    title: 'Vaisseau — v2',
+    desc: 'Propriétés privées ES2022, composition, 3 canvas séparés. Le projet le plus avancé de la collection.',
+    demoId: 'vaisseau',
+    versionLabel: 'v2',
     tags: ['jeu', 'ES2022', 'architecture']
   },
 

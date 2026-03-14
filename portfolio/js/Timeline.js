@@ -94,12 +94,12 @@ class Timeline {
       </div>
     `;
 
-    // Clic sur "voir la démo" → ouvre le viewer comme depuis la galerie
+    // Clic sur "voir la démo" → ouvre le viewer (avec la version précise si renseignée)
     if (entry.demoId) {
       el.querySelector('.tl-demo-btn').addEventListener('click', (e) => {
         e.stopPropagation();
         const project = PROJECTS.find(p => p.id === entry.demoId);
-        if (project && window.viewer) window.viewer.open(project);
+        if (project && window.viewer) window.viewer.open(project, entry.versionLabel || null);
       });
     }
 

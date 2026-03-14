@@ -34,10 +34,13 @@
 
 ### Contenu des démos
 - **Paticule/** (18 démos) : physique particules, tweening, easing, friction, ressorts, gravité
-- **Detection/** (5 démos) : collision bitmap, mathématique, line-to-line, raycast
-- **Fractal/** (2 démos) : arbres fractals récursifs, space colonization
-- **MiniGame/** (5 démos) : système solaire v1→v3, vaisseau v1→v2
-- **Pure_JS/** (2 démos) : rappels JS purs, constructeurs, contextes
+- **Detection/** (5 démos) : collision bitmap, mathématique, line-to-line, point-to-line, raycast
+- **Fractal/** (2 démos) : arbres fractals récursifs (5 algos dans 1 démo), space colonization
+- **MiniGame/** (6 démos) : système solaire v1→v3, vaisseau v1→v2→v3
+- **Pure_JS/** : `rappel/appel_function/` (démo avec index.html), `object/function/` (brouillon JS sans HTML, pas affichable)
+
+### Note sur Fractal_Trees
+La démo contient **5 algorithmes** sélectionnables via boutons : `f_Ifs`, `f_PyTree`, `f_PyTree_Anim`, `f_Tree`, `f_Tree_Anim`. Pas de démos cachées ailleurs dans le repo — aangee prévoit d'ajouter de nouvelles expériences (algo colonisation, etc.) depuis ses machines locales.
 
 ### Points forts du code
 - MasterClass.js bien conçu, réutilisable
@@ -119,35 +122,45 @@ Fusionner `Experience_optimiser` + `angine_js_v01` en un **site portfolio modern
 
 ---
 
-## État du portfolio — session 2026-03-14
+## État du portfolio — session 2026-03-14 (soir)
 
-### Branch de dev
-`claude/add-portfolio-demos-cEtCe` — **12+ commits d'avance sur `main`**, pas encore mergé.
-GitHub Pages déploie depuis `main` → les changements ne sont visibles en ligne que si mergés.
+### Branche de dev active
+`claude/fix-dpad-touch-mobile-75QDf` — plusieurs commits, pas encore mergé dans `main`.
+GitHub Pages déploie depuis `main` → merger via PR pour que les changements soient visibles.
 
 ### Ce qui est implémenté (portfolio/*)
-- `index.html` : page d'accueil galerie + timeline
-- `js/ProjectData.js` : catalogue de 9 démos (Particules, Fractales, Détection, Mini-jeux + Athena placeholder)
-- `js/Gallery.js` : grille de cards groupées par catégorie, lazy load via IntersectionObserver
-- `js/Timeline.js` + `js/TimelineData.js` : frise chronologique avec dates et jalons
-- `js/DemoViewer.js` : viewer fullscreen avec modes Jouer / Comprendre, sélecteur de versions (`<select>`)
-- `js/TouchControls.js` : contrôles tactiles overlay (D-pad portrait / joystick landscape / bouton tir)
+- `index.html` : navigation par **deux onglets** (Portfolio / Timeline) dans le header
+- `js/app.js` : logique de switch onglets (toggle `.hidden`)
+- `js/ProjectData.js` : **15 entrées** (Particules, Fractales, Détection, Mini-jeux + Athena placeholder)
+- `js/Gallery.js` : grille de cards avec badge `🕹` sur les cartes qui ont des contrôles
+- `js/Timeline.js` + `js/TimelineData.js` : frise chronologique, mise à jour avec Ship v3 et nouveaux jalons
+- `js/DemoViewer.js` : viewer fullscreen, modes Jouer / Comprendre, sélecteur de versions
+- `js/TouchControls.js` : contrôles tactiles (D-pad / joystick / bouton tir)
 - `css/main.css`, `css/gallery.css`, `css/viewer.css` : styles complets
 
+### Structure des cartes dans ProjectData.js
+| Catégorie | Cartes | Versions |
+|-----------|--------|----------|
+| Particules | Feu d'artifice, Mouvement, Gravité, Cycle de vie, Ressort, Optimisation, Tweening, Easing | Oui pour Mouvement, Gravité, Cycle de vie, Tweening |
+| Fractales | Space Colonization, Fractal Trees | Non |
+| Détection | Détection (fusionnée) | Oui : Mathématique, Bitmap, Ligne à Ligne, Point à Ligne, Raycast |
+| Mini-jeu | Système Solaire, Vaisseau | Oui : v1→v3 pour les deux |
+| Architecture | Athena (placeholder) | Non |
+
 ### Démos avec touch activé
-- **Vaisseau** (toutes versions : Propulsion, Friction, v1, v2) → `{ dpad: true, fire: true/false }`
+- **Vaisseau** (Propulsion, Friction, v1, v2, v3) → `{ dpad: true, fire: true/false }`
 - **Système Solaire v2 et v3** → `{ dpad: true, fire: false }`
-- Autres démos : pas de touch (souris/clic seulement)
 
-### Bugs corrigés cette session
-1. D-pad ne fonctionnait pas → les démos écoutent sur `document.body`, pas `window`
-2. Fix 2 → `KeyboardEvent` créé avec `new iwin.KeyboardEvent(...)` (constructeur de l'iframe) pour compatibilité Safari/iOS
-3. Bouton tir fonctionnait dès le départ (dispatche `MouseEvent` sur `document.body` — même cible)
+### Ship v03 — MiniGame/06_Ship_v03/
+Créé lors de cette session, 5 bugs corrigés par rapport à v02 :
+1. `beginPath()` manquant avant `rect()` → path s'accumulait frame par frame
+2. `getImageData` appelé 2× par frame → réduit à 1 seul appel
+3. `new AudioSource()` à chaque tir → instance unique réutilisée (`this.shootSound`)
+4. 50 étoiles redessinées chaque frame → canvas offscreen statique + `drawImage()`
+5. Bug angle astéroïdes : conversion degrés/radians incorrecte supprimée
+6. Bug caméra : `isVueFollow = false` + worldCanvas remis à taille écran (évite le décalage astéroïdes/ship)
 
-### À tester
-- D-pad et joystick sur téléphone après mise à jour GitHub Pages (fix `iwin.KeyboardEvent`)
-- Si toujours KO : envisager une approche alternative (ex. stocker state dans l'iframe via `contentWindow.myKeys = {}` + polling dans les démos)
-
-### Prochaines étapes probables
-- Merger la branche dans `main` pour déploiement stable
-- Phase 3 : mode "Comprendre" (bulles explicatives + code surligné)
+### Prochaines étapes
+- **Merger** `claude/fix-dpad-touch-mobile-75QDf` dans `main` via PR GitHub
+- **Nouveaux contenus** : aangee va fouiller ses machines locales pour ajouter de nouvelles expériences fractales / colonisation
+- **Phase 3** : mode "Comprendre" (bulles explicatives + code surligné)

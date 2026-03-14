@@ -70,7 +70,8 @@ class Gallery {
     const card = document.createElement('div');
     // On ajoute la classe 'card--locked' si la démo n'est pas encore dispo
     card.className = 'card' + (locked ? ' card--locked' : '');
-    card.dataset.id = project.id; // stocke l'id pour pouvoir l'identifier plus tard
+    card.dataset.id = project.id;
+    card.title = project.category; // catégorie visible en tooltip au survol
 
     // Génère les petites étiquettes de tags en HTML
     const tags = (project.tags || [])
@@ -96,7 +97,6 @@ class Gallery {
       </div>
 
       <div class="card-info">
-        <div class="card-category">${project.category}</div>
         <div class="card-name">${project.name}</div>
         <div class="card-desc">${project.description}</div>
         <div class="card-tags">${tags}</div>

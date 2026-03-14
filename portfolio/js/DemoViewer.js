@@ -8,6 +8,9 @@
  *   "jouer"      → iframe plein écran + bandeau contrôles en bas
  *   "comprendre" → panneau explicatif (placeholder Phase 3)
  *
+ * Si un projet a un tableau "versions", des pills apparaissent
+ * dans la barre du haut pour naviguer entre les versions.
+ *
  * Pourquoi vider l'iframe à la fermeture ?
  *   Les démos canvas tournent en boucle requestAnimationFrame().
  *   Sans ça, elles continuent en arrière-plan → gaspillage CPU.
@@ -21,6 +24,7 @@ class DemoViewer {
     this.overlay        = document.getElementById('viewer');
     this.iframe         = document.getElementById('viewer-iframe');
     this.titleEl        = document.getElementById('viewer-title');
+    this.versionsEl     = document.getElementById('viewer-versions');
     this.closeBtn       = document.getElementById('viewer-close');
     this.modeToggle     = document.getElementById('viewer-mode-toggle');
     this.comprendreEl   = document.getElementById('viewer-comprendre');
@@ -75,6 +79,9 @@ class DemoViewer {
     // Construit le bandeau de contrôles
     this._renderControls(project.controls || []);
 
+    // Construit les pills de version si besoin
+    this._renderVersions(project.versions || []);
+
     // Remet toujours en mode Jouer à l'ouverture
     this.mode = null; // force le recalcul dans setMode
     this.setMode('jouer');
@@ -116,6 +123,53 @@ class DemoViewer {
   }
 
   // ── Privé ────────────────────────────────────────────────
+
+  /**
+   * Affiche les pills de version si le projet en a.
+   * La version active est celle dont le src correspond à project.iframeSrc.
+   * @param {Array<{label, src, controls}>} versions
+   */
+  _renderVersions(versions) {
+    this.versionsEl.innerHTML = '';
+
+    if (versions.length === 0) {
+      this.versionsEl.classList.add('hidden');
+      return;
+    }
+
+    this.versionsEl.classList.remove('hidden');
+
+    versions.forEach(version => {
+      const btn = document.createElement('button');
+      btn.className = 'version-btn';
+      btn.textContent = version.label;
+
+      // Marque comme active la version correspondant à iframeSrc
+      if (version.src === this.project.iframeSrc) {
+        btn.classList.add('version-btn--active');
+      }
+
+      btn.addEventListener('click', () => this._switchVersion(version));
+      this.versionsEl.appendChild(btn);
+    });
+  }
+
+  /**
+   * Bascule vers une version différente du même projet.
+   * @param {{label, src, controls}} version
+   */
+  _switchVersion(version) {
+    // Recharge l'iframe avec la nouvelle source
+    this.iframe.src = version.src;
+
+    // Met à jour les contrôles (fallback sur les contrôles du projet)
+    this._renderControls(version.controls || this.project.controls || []);
+
+    // Met à jour le pill actif
+    this.versionsEl.querySelectorAll('.version-btn').forEach(btn => {
+      btn.classList.toggle('version-btn--active', btn.textContent === version.label);
+    });
+  }
 
   /**
    * Remplit le bandeau des contrôles.

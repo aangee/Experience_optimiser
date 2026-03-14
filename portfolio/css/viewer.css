@@ -24,10 +24,45 @@
   color: var(--accent);
   font-size: 0.9rem;
   letter-spacing: 0.08em;
-  flex: 1;
+  flex: 0 0 auto;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 220px;
+}
+
+/* ===== PILLS DE VERSION ===== */
+.viewer-versions {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex: 1;
+  padding: 0 0.5rem;
+  overflow-x: auto;
+}
+
+.version-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: #555;
+  font-size: 0.68rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  cursor: pointer;
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+  transition: border-color 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+
+.version-btn:hover {
+  border-color: var(--accent-dim);
+  color: var(--text-dim);
+}
+
+.version-btn--active {
+  border-color: var(--accent-dim);
+  color: var(--accent-dim);
 }
 
 /* Groupe boutons droite */

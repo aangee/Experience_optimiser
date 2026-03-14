@@ -32,6 +32,89 @@ const PROJECTS = [
   },
 
   {
+    id: 'mouvement',
+    name: 'Mouvement',
+    category: 'Particules',
+    description: 'Les bases du mouvement — accélération, wrapping, rebond et friction. Les briques fondamentales de toute physique 2D.',
+    iframeSrc: '../Paticule/01_Acceleration/index.html',
+    tags: ['mouvement', 'physique', 'bases'],
+    controls: [],
+    versions: [
+      {
+        label: 'Accélération',
+        src: '../Paticule/01_Acceleration/index.html',
+        controls: []
+      },
+      {
+        label: 'Wrapping',
+        src: '../Paticule/04_Wrapping/index.html',
+        controls: [
+          { key: 'Z / Q / D', desc: 'Propulsion et rotation' }
+        ]
+      },
+      {
+        label: 'Rebond',
+        src: '../Paticule/07_Bounce/index.html',
+        controls: [
+          { key: 'Clic souris', desc: 'Relancer l\'animation' }
+        ]
+      },
+      {
+        label: 'Friction',
+        src: '../Paticule/08_Friction/index.html',
+        controls: []
+      }
+    ],
+    phase: 1
+  },
+
+  {
+    id: 'gravite',
+    name: 'Gravité',
+    category: 'Particules',
+    description: 'La gravité simulée — chute libre puis attraction orbitale entre corps célestes.',
+    iframeSrc: '../Paticule/03_Gravity_Orbital/index.html',
+    tags: ['gravité', 'physique', 'orbite'],
+    controls: [],
+    versions: [
+      {
+        label: 'Simple',
+        src: '../Paticule/02_Gravity/index.html',
+        controls: []
+      },
+      {
+        label: 'Orbitale',
+        src: '../Paticule/03_Gravity_Orbital/index.html',
+        controls: []
+      }
+    ],
+    phase: 1
+  },
+
+  {
+    id: 'cycle-de-vie',
+    name: 'Cycle de vie',
+    category: 'Particules',
+    description: 'Naissance et mort des particules — comment les créer, les supprimer, et les faire renaître.',
+    iframeSrc: '../Paticule/06_Regeneration/index.html',
+    tags: ['particules', 'cycle', 'gestion'],
+    controls: [],
+    versions: [
+      {
+        label: 'Suppression',
+        src: '../Paticule/05_Removal/index.html',
+        controls: []
+      },
+      {
+        label: 'Régénération',
+        src: '../Paticule/06_Regeneration/index.html',
+        controls: []
+      }
+    ],
+    phase: 1
+  },
+
+  {
     id: 'spring',
     name: 'Ressort',
     category: 'Particules',
@@ -41,6 +124,57 @@ const PROJECTS = [
     controls: [
       { key: 'Déplacer souris', desc: 'Étire le ressort' },
       { key: 'Clic souris',     desc: 'Accroche / lâche la particule' }
+    ],
+    phase: 1
+  },
+
+  {
+    id: 'optimisation',
+    name: 'Optimisation',
+    category: 'Particules',
+    description: 'Des centaines de particules gérées efficacement — ressorts, gravité, interactions massives sans perdre en fluidité.',
+    iframeSrc: '../Paticule/10_Optimisation/index.html',
+    tags: ['optimisation', 'performance', 'ressort'],
+    controls: [
+      { key: 'Clic souris',   desc: 'Interagit avec les particules' },
+      { key: 'Glisser souris', desc: 'Déplace / attire les particules' }
+    ],
+    phase: 1
+  },
+
+  {
+    id: 'tweening',
+    name: 'Tweening',
+    category: 'Particules',
+    description: 'Interpolation et animation fluide — déplacer un objet d\'un point A à un point B de façon contrôlée.',
+    iframeSrc: '../Paticule/13_TweeningPart2/index.html',
+    tags: ['tweening', 'animation', 'interpolation'],
+    controls: [
+      { key: 'Clic souris', desc: 'Déplace la cible' }
+    ],
+    versions: [
+      {
+        label: 'Part 1',
+        src: '../Paticule/13_TweeningPart1/index.html',
+        controls: [
+          { key: 'Clic souris', desc: 'Déplace la cible' }
+        ]
+      },
+      {
+        label: 'Part 2',
+        src: '../Paticule/13_TweeningPart2/index.html',
+        controls: [
+          { key: 'Clic souris',       desc: 'Déplace la cible' },
+          { key: 'Shift + Clic',      desc: 'Déplace la cible secondaire' }
+        ]
+      },
+      {
+        label: 'Complet',
+        src: '../Paticule/11_Tweening/index.html',
+        controls: [
+          { key: 'Clic souris', desc: 'Lance une animation' }
+        ]
+      }
     ],
     phase: 1
   },
@@ -93,27 +227,52 @@ const PROJECTS = [
   // ──────────────────────────────────────────────────────────
 
   {
-    id: 'detection-math',
-    name: 'Détection Mathématique',
+    id: 'detection',
+    name: 'Détection',
     category: 'Détection',
-    description: 'Collisions cercle-cercle par la distance — simple, élégant, et c\'est comme ça que ça marche dans tous les jeux.',
-    iframeSrc: '../Detection/2D_Detection_Mathematique/index.html',
-    tags: ['collision', 'mathématiques', 'géométrie'],
+    description: 'Toutes les méthodes de collision — mathématique, bitmap, lignes, points, et raycast. Cinq approches, un même problème.',
+    iframeSrc: '../Detection/2D_Detection_Raycast/index.html',
+    tags: ['collision', 'mathématiques', 'raycast', 'bitmap'],
     controls: [
-      { key: 'Déplacer souris', desc: 'Déplace l\'objet de détection' }
+      { key: 'Déplacer souris', desc: 'Interagit avec la scène' }
     ],
-    phase: 1
-  },
-
-  {
-    id: 'bitmap-detection',
-    name: 'Détection Bitmap',
-    category: 'Détection',
-    description: 'Collisions via lecture pixel — chaque objet a une couleur unique sur un canvas caché.',
-    iframeSrc: '../Detection/2D_Detection_Bitmap/index.html',
-    tags: ['collision', 'bitmap', 'créatif'],
-    controls: [
-      { key: 'Déplacer souris', desc: 'Teste les collisions en temps réel' }
+    versions: [
+      {
+        label: 'Mathématique',
+        src: '../Detection/2D_Detection_Mathematique/index.html',
+        controls: [
+          { key: 'Déplacer souris', desc: 'Déplace l\'objet de détection' }
+        ]
+      },
+      {
+        label: 'Bitmap',
+        src: '../Detection/2D_Detection_Bitmap/index.html',
+        controls: [
+          { key: 'Déplacer souris', desc: 'Teste les collisions en temps réel' }
+        ]
+      },
+      {
+        label: 'Ligne à Ligne',
+        src: '../Detection/2D_Detection_LineToLine/index.html',
+        controls: [
+          { key: 'Clic + glisser', desc: 'Dessine une ligne' }
+        ]
+      },
+      {
+        label: 'Point à Ligne',
+        src: '../Detection/2D_Detection_PointToLine/index.html',
+        controls: [
+          { key: 'Déplacer souris', desc: 'Déplace le point' },
+          { key: 'Clic souris',     desc: 'Ajoute un segment' }
+        ]
+      },
+      {
+        label: 'Raycast',
+        src: '../Detection/2D_Detection_Raycast/index.html',
+        controls: [
+          { key: 'Déplacer souris', desc: 'Déplace la source de lumière' }
+        ]
+      }
     ],
     phase: 1
   },

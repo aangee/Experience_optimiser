@@ -13,9 +13,8 @@
  * open(project, versionLabel) permet d'ouvrir directement
  * une version précise (ex. depuis la timeline).
  *
- * Pourquoi vider l'iframe à la fermeture ?
- *   Les démos canvas tournent en boucle requestAnimationFrame().
- *   Sans ça, elles continuent en arrière-plan → gaspillage CPU.
+ * Sur appareil tactile, TouchControls monte un overlay D-pad /
+ * joystick par-dessus l'iframe si la version a une config touch.
  * ============================================================
  */
 
@@ -35,6 +34,9 @@ class DemoViewer {
     this.controlsToggle = document.getElementById('controls-toggle');
     this.backBtn        = document.getElementById('btn-back-jouer');
 
+    // Contrôles tactiles (opérationnel seulement sur touch device)
+    this.touch = new TouchControls();
+
     // État courant
     this.mode    = 'jouer';
     this.project = null;
@@ -42,31 +44,25 @@ class DemoViewer {
     // ── Événements ──────────────────────────────────────────
     this.closeBtn.addEventListener('click', () => this.close());
 
-    // Touche Échap → fermer
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') this.close();
     });
 
-    // Bascule Jouer ↔ Comprendre
     this.modeToggle.addEventListener('click', () => {
       this.setMode(this.mode === 'jouer' ? 'comprendre' : 'jouer');
     });
 
-    // Bouton "Retour à Jouer" dans le panneau Comprendre
     this.backBtn.addEventListener('click', () => this.setMode('jouer'));
 
-    // Toggle plier / déplier le bandeau contrôles
     this.controlsToggle.addEventListener('click', () => {
       this.controlsBar.classList.toggle('controls-bar--collapsed');
       this.controlsToggle.textContent =
         this.controlsBar.classList.contains('controls-bar--collapsed') ? '▸' : '▾';
     });
 
-    // Changement de version via le <select>
     this.versionsEl.addEventListener('change', () => {
-      if (!this.project || !this.project.versions) return;
-      const idx = parseInt(this.versionsEl.value);
-      this._switchVersion(this.project.versions[idx]);
+      if (!this.project?.versions) return;
+      this._switchVersion(this.project.versions[parseInt(this.versionsEl.value)]);
     });
   }
 
@@ -75,50 +71,35 @@ class DemoViewer {
   /**
    * Ouvre le viewer avec un projet donné.
    * @param {Object} project      - objet de ProjectData.js
-   * @param {string} versionLabel - (optionnel) label de la version à afficher d'emblée
+   * @param {string} versionLabel - (optionnel) version à afficher d'emblée
    */
   open(project, versionLabel = null) {
     this.project = project;
-
-    // Titre dans la barre du haut
     this.titleEl.textContent = project.name;
 
-    // Détermine quelle version charger en priorité
-    let initialSrc      = project.iframeSrc;
-    let initialControls = project.controls || [];
+    // Détermine la version initiale
+    const version = this._resolveVersion(project, versionLabel);
+    const src      = version?.src      ?? project.iframeSrc;
+    const controls = version?.controls ?? project.controls ?? [];
+    const touch    = version?.touch    ?? null;
 
-    if (versionLabel && project.versions) {
-      const target = project.versions.find(v => v.label === versionLabel);
-      if (target) {
-        initialSrc      = target.src;
-        initialControls = target.controls || project.controls || [];
-      }
-    }
+    this.iframe.src = src;
+    this._renderControls(controls);
+    this._renderVersions(project.versions ?? [], src);
+    this.touch.mount(this.iframe, touch);
 
-    // Charge la démo dans l'iframe
-    this.iframe.src = initialSrc;
-
-    // Construit le bandeau de contrôles
-    this._renderControls(initialControls);
-
-    // Construit le sélecteur de version si besoin
-    this._renderVersions(project.versions || [], initialSrc);
-
-    // Remet toujours en mode Jouer à l'ouverture
-    this.mode = null; // force le recalcul dans setMode
+    this.mode = null;
     this.setMode('jouer');
 
-    // Affiche l'overlay
     this.overlay.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
   }
 
-  /**
-   * Ferme le viewer et stoppe la démo.
-   */
+  /** Ferme le viewer et stoppe la démo. */
   close() {
+    this.touch.unmount();
     this.overlay.classList.add('hidden');
-    this.iframe.src = '';             // IMPORTANT : stoppe la boucle d'animation
+    this.iframe.src = '';
     document.body.style.overflow = '';
     this.project = null;
   }
@@ -132,24 +113,43 @@ class DemoViewer {
     this.mode = mode;
 
     const isJouer = mode === 'jouer';
-
-    // Met à jour l'attribut data-mode sur le bouton (utilisé par le CSS pour le style actif)
     this.modeToggle.dataset.mode = mode;
-
-    // Affiche iframe ou panneau Comprendre
     this.iframe.classList.toggle('hidden', !isJouer);
     this.comprendreEl.classList.toggle('hidden', isJouer);
-
-    // Bandeau contrôles visible seulement en mode Jouer
     this.controlsBar.classList.toggle('hidden', !isJouer);
+
+    // Cache le D-pad/joystick en mode Comprendre
+    this.touch.setVisible(isJouer);
   }
 
   // ── Privé ────────────────────────────────────────────────
 
   /**
+   * Retourne la version à charger en priorité.
+   * Si versionLabel est fourni → cherche cette version.
+   * Sinon → dernière version du tableau (la plus récente).
+   */
+  _resolveVersion(project, versionLabel) {
+    if (!project.versions) return null;
+    if (versionLabel) {
+      const found = project.versions.find(v => v.label === versionLabel);
+      if (found) return found;
+    }
+    // Par défaut : dernière version (= iframeSrc de la racine)
+    return project.versions[project.versions.length - 1];
+  }
+
+  /** Bascule vers une version différente du même projet. */
+  _switchVersion(version) {
+    this.iframe.src = version.src;
+    this._renderControls(version.controls || this.project.controls || []);
+    this.touch.mount(this.iframe, version.touch || null);
+  }
+
+  /**
    * Peuple le <select> de version ou le cache s'il n'y a pas de versions.
-   * @param {Array<{label, src, controls}>} versions
-   * @param {string} activeSrc - src actuellement chargé (pour présélectionner)
+   * @param {Array} versions
+   * @param {string} activeSrc
    */
   _renderVersions(versions, activeSrc) {
     this.versionsEl.innerHTML = '';
@@ -160,7 +160,6 @@ class DemoViewer {
     }
 
     this.versionsEl.classList.remove('hidden');
-
     versions.forEach((version, index) => {
       const option = document.createElement('option');
       option.value = index;
@@ -168,15 +167,6 @@ class DemoViewer {
       if (version.src === activeSrc) option.selected = true;
       this.versionsEl.appendChild(option);
     });
-  }
-
-  /**
-   * Bascule vers une version différente du même projet.
-   * @param {{label, src, controls}} version
-   */
-  _switchVersion(version) {
-    this.iframe.src = version.src;
-    this._renderControls(version.controls || this.project.controls || []);
   }
 
   /**
@@ -198,7 +188,6 @@ class DemoViewer {
       this.controlsList.appendChild(item);
     });
 
-    // Remet la barre visible et dépliée
     this.controlsBar.classList.remove('hidden');
     this.controlsBar.classList.remove('controls-bar--collapsed');
     this.controlsToggle.textContent = '▾';

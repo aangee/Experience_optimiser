@@ -264,3 +264,157 @@ kbd {
 .controls-toggle:hover {
   color: var(--text-dim);
 }
+
+/* ============================================================
+   TOUCH CONTROLS OVERLAY
+   ============================================================
+
+   Portrait  → D-pad visible,    joystick masqué
+   Landscape → joystick visible, D-pad masqué
+   .tc-swapped → inverse les panneaux gauche/droite
+   ============================================================ */
+
+/* Overlay transparent par-dessus l'iframe */
+.tc-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;   /* transparent sauf sur les boutons */
+  z-index: 20;
+  touch-action: none;
+}
+
+/* ── Panneaux gauche / droite ── */
+.tc-move,
+.tc-fire {
+  position: absolute;
+  bottom: 1.2rem;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+/* Défaut : mouvement à droite, tir à gauche */
+.tc-move { right: 1.2rem; }
+.tc-fire { left:  1.2rem; }
+
+/* Swap → inversion */
+.tc-overlay.tc-swapped .tc-move { right: auto; left:  1.2rem; }
+.tc-overlay.tc-swapped .tc-fire { left:  auto; right: 1.2rem; }
+
+/* ── D-PAD (portrait) ── */
+.tc-dpad {
+  display: none;              /* masqué par défaut */
+  grid-template-columns: repeat(3, 56px);
+  grid-template-rows:    repeat(3, 56px);
+  gap: 5px;
+  touch-action: none;
+}
+
+@media (orientation: portrait) {
+  .tc-dpad { display: grid; }
+}
+
+/* Boutons génériques */
+.tc-btn {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 12px;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: background 0.08s, border-color 0.08s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tc-btn:active {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #fff;
+}
+
+/* Positions dans la grille du D-pad */
+.tc-btn--top    { grid-column: 2; grid-row: 1; }
+.tc-btn--left   { grid-column: 1; grid-row: 2; }
+.tc-btn--right  { grid-column: 3; grid-row: 2; }
+.tc-btn--bottom { grid-column: 2; grid-row: 3; }
+
+/* ── JOYSTICK (landscape) ── */
+.tc-joystick {
+  display: none;              /* masqué par défaut */
+  width:  130px;
+  height: 130px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  position: relative;
+  touch-action: none;
+  pointer-events: auto;
+}
+
+@media (orientation: landscape) {
+  .tc-joystick { display: block; }
+}
+
+.tc-joystick-knob {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width:  52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  pointer-events: none;
+  transition: background 0.08s;
+}
+
+.tc-joystick:active .tc-joystick-knob {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+/* ── BOUTON TIR ── */
+.tc-btn--fire {
+  width:  76px;
+  height: 76px;
+  border-radius: 50%;
+  font-size: 1.8rem;
+  background: rgba(200, 60, 60, 0.12);
+  border: 2px solid rgba(200, 60, 60, 0.3);
+  color: rgba(255, 100, 100, 0.8);
+  touch-action: none;
+}
+
+.tc-btn--fire:active {
+  background: rgba(200, 60, 60, 0.35);
+  border-color: rgba(255, 100, 100, 0.6);
+  color: #fff;
+}
+
+/* ── BOUTON SWAP ⇄ ── */
+.tc-btn--swap {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  width:  36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.35);
+  pointer-events: auto;
+  touch-action: none;
+  transition: background 0.15s, color 0.15s;
+}
+
+.tc-btn--swap:active,
+.tc-btn--swap:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.7);
+}

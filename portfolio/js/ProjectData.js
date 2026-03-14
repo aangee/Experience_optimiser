@@ -90,7 +90,7 @@ const PROJECTS = [
   },
 
   // ──────────────────────────────────────────────────────────
-  // PHASE 2 — Démos à venir
+  // PHASE 2 — Démos intégrées
   // ──────────────────────────────────────────────────────────
 
   {
@@ -105,7 +105,7 @@ const PROJECTS = [
       { key: 'S',   desc: 'Propulsion arrière' },
       { key: 'Q / D', desc: 'Rotation gauche / droite' }
     ],
-    phase: 2
+    phase: 1
   },
 
   {
@@ -118,7 +118,7 @@ const PROJECTS = [
     controls: [
       { key: 'Déplacer souris', desc: 'Déplace l\'objet de détection' }
     ],
-    phase: 2
+    phase: 1
   },
 
   {
@@ -131,7 +131,7 @@ const PROJECTS = [
     controls: [
       { key: 'Déplacer souris', desc: 'Perturbe le système' }
     ],
-    phase: 2
+    phase: 1
   },
 
   {
@@ -147,7 +147,7 @@ const PROJECTS = [
       { key: 'Clic souris', desc: 'Tire' },
       { key: '²',           desc: 'Pause' }
     ],
-    phase: 2
+    phase: 1
   },
 
   {
@@ -160,7 +160,7 @@ const PROJECTS = [
     controls: [
       { key: 'Déplacer souris', desc: 'Teste les collisions en temps réel' }
     ],
-    phase: 2
+    phase: 1
   },
 
   // ──────────────────────────────────────────────────────────

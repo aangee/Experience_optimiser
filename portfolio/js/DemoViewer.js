@@ -2,51 +2,85 @@
  * ============================================================
  * DemoViewer.js
  * ============================================================
- * Ce fichier gère la fenêtre plein-écran qui s'ouvre quand on
- * clique sur une carte de démo.
+ * Gère la fenêtre plein-écran d'une démo.
  *
- * Fonctionnement :
- *   - open(project) → affiche l'overlay et charge la démo dans l'iframe
- *   - close()       → cache l'overlay et vide l'iframe
+ * Deux modes :
+ *   "jouer"      → iframe plein écran + bandeau contrôles en bas
+ *   "comprendre" → panneau explicatif (placeholder Phase 3)
  *
  * Pourquoi vider l'iframe à la fermeture ?
- *   Les démos canvas utilisent requestAnimationFrame() en boucle infinie.
- *   Si on se contente de cacher l'overlay sans vider l'iframe, la démo
- *   continue de tourner en arrière-plan → gaspillage CPU inutile.
- *   En mettant iframe.src = '', on arrête tout proprement.
+ *   Les démos canvas tournent en boucle requestAnimationFrame().
+ *   Sans ça, elles continuent en arrière-plan → gaspillage CPU.
  * ============================================================
  */
 
 class DemoViewer {
 
   constructor() {
-    // On récupère les éléments HTML dont on a besoin
-    this.overlay  = document.getElementById('viewer');        // la div qui couvre tout l'écran
-    this.iframe   = document.getElementById('viewer-iframe'); // l'iframe qui affiche la démo
-    this.titleEl  = document.getElementById('viewer-title'); // le titre dans la barre du haut
-    this.closeBtn = document.getElementById('viewer-close'); // le bouton ✕
+    // Éléments HTML
+    this.overlay        = document.getElementById('viewer');
+    this.iframe         = document.getElementById('viewer-iframe');
+    this.titleEl        = document.getElementById('viewer-title');
+    this.closeBtn       = document.getElementById('viewer-close');
+    this.modeToggle     = document.getElementById('viewer-mode-toggle');
+    this.comprendreEl   = document.getElementById('viewer-comprendre');
+    this.controlsBar    = document.getElementById('controls-bar');
+    this.controlsList   = document.getElementById('controls-list');
+    this.controlsToggle = document.getElementById('controls-toggle');
+    this.backBtn        = document.getElementById('btn-back-jouer');
 
-    // Clic sur le bouton ✕ → fermer
+    // État courant
+    this.mode    = 'jouer';
+    this.project = null;
+
+    // ── Événements ──────────────────────────────────────────
     this.closeBtn.addEventListener('click', () => this.close());
 
-    // Touche Échap → fermer (pratique sur PC)
+    // Touche Échap → fermer
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') this.close();
     });
+
+    // Bascule Jouer ↔ Comprendre
+    this.modeToggle.addEventListener('click', () => {
+      this.setMode(this.mode === 'jouer' ? 'comprendre' : 'jouer');
+    });
+
+    // Bouton "Retour à Jouer" dans le panneau Comprendre
+    this.backBtn.addEventListener('click', () => this.setMode('jouer'));
+
+    // Toggle plier / déplier le bandeau contrôles
+    this.controlsToggle.addEventListener('click', () => {
+      this.controlsBar.classList.toggle('controls-bar--collapsed');
+      this.controlsToggle.textContent =
+        this.controlsBar.classList.contains('controls-bar--collapsed') ? '▸' : '▾';
+    });
   }
 
+  // ── API publique ─────────────────────────────────────────
+
   /**
-   * Ouvre le viewer avec une démo donnée.
-   * @param {Object} project - un objet projet de ProjectData.js
+   * Ouvre le viewer avec un projet donné.
+   * @param {Object} project - objet de ProjectData.js
    */
   open(project) {
-    this.titleEl.textContent = project.name; // affiche le nom de la démo en haut
-    this.iframe.src = project.iframeSrc;     // charge la démo dans l'iframe
+    this.project = project;
 
-    // Affiche l'overlay en retirant la classe 'hidden'
+    // Titre dans la barre du haut
+    this.titleEl.textContent = project.name;
+
+    // Charge la démo dans l'iframe
+    this.iframe.src = project.iframeSrc;
+
+    // Construit le bandeau de contrôles
+    this._renderControls(project.controls || []);
+
+    // Remet toujours en mode Jouer à l'ouverture
+    this.mode = null; // force le recalcul dans setMode
+    this.setMode('jouer');
+
+    // Affiche l'overlay
     this.overlay.classList.remove('hidden');
-
-    // Empêche le scroll de la page en arrière-plan pendant que la démo est ouverte
     document.body.style.overflow = 'hidden';
   }
 
@@ -54,9 +88,58 @@ class DemoViewer {
    * Ferme le viewer et stoppe la démo.
    */
   close() {
-    this.overlay.classList.add('hidden'); // cache l'overlay
-    this.iframe.src = '';                 // IMPORTANT : stoppe la boucle d'animation
-    document.body.style.overflow = '';   // réactive le scroll de la page
+    this.overlay.classList.add('hidden');
+    this.iframe.src = '';             // IMPORTANT : stoppe la boucle d'animation
+    document.body.style.overflow = '';
+    this.project = null;
+  }
+
+  /**
+   * Bascule entre les modes 'jouer' et 'comprendre'.
+   * @param {'jouer'|'comprendre'} mode
+   */
+  setMode(mode) {
+    if (this.mode === mode) return;
+    this.mode = mode;
+
+    const isJouer = mode === 'jouer';
+
+    // Met à jour l'attribut data-mode sur le bouton (utilisé par le CSS pour le style actif)
+    this.modeToggle.dataset.mode = mode;
+
+    // Affiche iframe ou panneau Comprendre
+    this.iframe.classList.toggle('hidden', !isJouer);
+    this.comprendreEl.classList.toggle('hidden', isJouer);
+
+    // Bandeau contrôles visible seulement en mode Jouer
+    this.controlsBar.classList.toggle('hidden', !isJouer);
+  }
+
+  // ── Privé ────────────────────────────────────────────────
+
+  /**
+   * Remplit le bandeau des contrôles.
+   * @param {Array<{key: string, desc: string}>} controls
+   */
+  _renderControls(controls) {
+    this.controlsList.innerHTML = '';
+
+    if (controls.length === 0) {
+      this.controlsBar.classList.add('hidden');
+      return;
+    }
+
+    controls.forEach(({ key, desc }) => {
+      const item = document.createElement('div');
+      item.className = 'control-item';
+      item.innerHTML = `<kbd>${key}</kbd><span>${desc}</span>`;
+      this.controlsList.appendChild(item);
+    });
+
+    // Remet la barre visible et dépliée
+    this.controlsBar.classList.remove('hidden');
+    this.controlsBar.classList.remove('controls-bar--collapsed');
+    this.controlsToggle.textContent = '▾';
   }
 
 }

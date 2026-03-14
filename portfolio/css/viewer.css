@@ -8,22 +8,65 @@
   flex-direction: column;
 }
 
+/* ===== BARRE DU HAUT ===== */
 .viewer-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.6rem 1rem;
+  padding: 0.5rem 1rem;
   background: #111;
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
+  gap: 1rem;
 }
 
 #viewer-title {
   color: var(--accent);
   font-size: 0.9rem;
   letter-spacing: 0.08em;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
+/* Groupe boutons droite */
+.viewer-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+/* ===== BOUTON JOUER / COMPRENDRE ===== */
+.btn-mode {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Le bouton affiche "Comprendre" quand on est en mode Jouer (= propose le switch) */
+.btn-mode .mode-label-jouer     { display: none; }
+.btn-mode .mode-label-comprendre { display: inline; }
+
+/* Quand on est en mode comprendre, le bouton propose de revenir à Jouer */
+.btn-mode[data-mode="comprendre"] .mode-label-jouer     { display: inline; }
+.btn-mode[data-mode="comprendre"] .mode-label-comprendre { display: none; }
+
+.btn-mode:hover {
+  border-color: var(--accent-dim);
+  color: var(--accent);
+}
+
+/* ===== BOUTON FERMER ===== */
 #viewer-close {
   background: none;
   border: 1px solid var(--border);
@@ -37,6 +80,7 @@
   align-items: center;
   justify-content: center;
   transition: border-color 0.15s, color 0.15s;
+  flex-shrink: 0;
 }
 
 #viewer-close:hover {
@@ -44,8 +88,156 @@
   color: var(--accent);
 }
 
+/* ===== CORPS (iframe ou panneau comprendre) ===== */
+#viewer-body {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
 #viewer-iframe {
   flex: 1;
   width: 100%;
   border: none;
+}
+
+/* ===== PANNEAU COMPRENDRE (placeholder Phase 3) ===== */
+.comprendre-panel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0d0d0d;
+}
+
+.comprendre-content {
+  text-align: center;
+  max-width: 420px;
+  padding: 2rem;
+}
+
+.comprendre-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.comprendre-content h2 {
+  color: var(--accent);
+  font-size: 1.2rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+}
+
+.comprendre-content p {
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  margin-bottom: 0.6rem;
+}
+
+.comprendre-desc {
+  font-size: 0.8rem !important;
+  opacity: 0.7;
+}
+
+.btn-back-to-jouer {
+  margin-top: 1.5rem;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+  letter-spacing: 0.05em;
+}
+
+.btn-back-to-jouer:hover {
+  border-color: var(--accent-dim);
+  color: var(--accent);
+}
+
+/* ===== BANDEAU CONTRÔLES (bas du viewer) ===== */
+.controls-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.45rem 1rem;
+  background: #0a0a0a;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+  min-height: 2.4rem;
+  transition: padding 0.2s;
+}
+
+.controls-bar-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #555;
+  flex-shrink: 0;
+}
+
+/* Liste des raccourcis */
+.controls-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.2rem;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Quand la barre est repliée, on cache la liste */
+.controls-bar--collapsed .controls-list {
+  display: none;
+}
+
+.controls-bar--collapsed {
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
+}
+
+/* Un élément = touche + description */
+.control-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+kbd {
+  display: inline-block;
+  background: #222;
+  border: 1px solid #444;
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  padding: 0.05rem 0.4rem;
+  font-family: 'Lucida Console', monospace;
+  font-size: 0.7rem;
+  color: var(--accent);
+  line-height: 1.5;
+}
+
+/* Bouton plier / déplier la barre */
+.controls-toggle {
+  background: none;
+  border: none;
+  color: #555;
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  line-height: 1;
+  transition: color 0.15s;
+}
+
+.controls-toggle:hover {
+  color: var(--text-dim);
 }

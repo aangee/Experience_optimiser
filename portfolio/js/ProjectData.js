@@ -140,7 +140,8 @@ const PROJECTS = [
         src: '../MiniGame/01_SystemSolar_v01/index.html',
         controls: [
           { key: 'Déplacer souris', desc: 'Perturbe le système solaire' }
-        ]
+        ],
+        touch: null
       },
       {
         label: 'v2',
@@ -148,7 +149,8 @@ const PROJECTS = [
         controls: [
           { key: 'Z / S / Q / D', desc: 'Déplace le vaisseau' },
           { key: 'Déplacer souris', desc: 'Vise' }
-        ]
+        ],
+        touch: { dpad: true, fire: false }
       },
       {
         label: 'v3',
@@ -156,7 +158,8 @@ const PROJECTS = [
         controls: [
           { key: 'Z / Q / D',       desc: 'Déplace le vaisseau' },
           { key: 'Déplacer souris', desc: 'Vise' }
-        ]
+        ],
+        touch: { dpad: true, fire: false }
       }
     ],
     phase: 1
@@ -184,7 +187,8 @@ const PROJECTS = [
           { key: 'Z',      desc: 'Propulsion avant' },
           { key: 'S',      desc: 'Propulsion arrière' },
           { key: 'Q / D',  desc: 'Rotation gauche / droite' }
-        ]
+        ],
+        touch: { dpad: true, fire: false }
       },
       {
         label: 'Friction',
@@ -192,7 +196,8 @@ const PROJECTS = [
         controls: [
           { key: 'Z / S',  desc: 'Propulsion avant / arrière' },
           { key: 'Q / D',  desc: 'Rotation gauche / droite' }
-        ]
+        ],
+        touch: { dpad: true, fire: false }
       },
       {
         label: 'v1',
@@ -201,7 +206,8 @@ const PROJECTS = [
           { key: 'Z / S',       desc: 'Propulsion avant / arrière' },
           { key: 'Q / D',       desc: 'Rotation gauche / droite' },
           { key: 'Clic souris', desc: 'Tire' }
-        ]
+        ],
+        touch: { dpad: true, fire: true }
       },
       {
         label: 'v2',
@@ -211,7 +217,8 @@ const PROJECTS = [
           { key: 'Q / D',       desc: 'Rotation gauche / droite' },
           { key: 'Clic souris', desc: 'Tire' },
           { key: '²',           desc: 'Pause' }
-        ]
+        ],
+        touch: { dpad: true, fire: true }
       }
     ],
     phase: 1

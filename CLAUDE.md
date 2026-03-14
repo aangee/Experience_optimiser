@@ -116,3 +116,38 @@ Fusionner `Experience_optimiser` + `angine_js_v01` en un **site portfolio modern
 - Ne pas travailler directement sur `main` (push refusé par le système)
 
 ### Voir ROADMAP.md pour le plan détaillé
+
+---
+
+## État du portfolio — session 2026-03-14
+
+### Branch de dev
+`claude/add-portfolio-demos-cEtCe` — **12+ commits d'avance sur `main`**, pas encore mergé.
+GitHub Pages déploie depuis `main` → les changements ne sont visibles en ligne que si mergés.
+
+### Ce qui est implémenté (portfolio/*)
+- `index.html` : page d'accueil galerie + timeline
+- `js/ProjectData.js` : catalogue de 9 démos (Particules, Fractales, Détection, Mini-jeux + Athena placeholder)
+- `js/Gallery.js` : grille de cards groupées par catégorie, lazy load via IntersectionObserver
+- `js/Timeline.js` + `js/TimelineData.js` : frise chronologique avec dates et jalons
+- `js/DemoViewer.js` : viewer fullscreen avec modes Jouer / Comprendre, sélecteur de versions (`<select>`)
+- `js/TouchControls.js` : contrôles tactiles overlay (D-pad portrait / joystick landscape / bouton tir)
+- `css/main.css`, `css/gallery.css`, `css/viewer.css` : styles complets
+
+### Démos avec touch activé
+- **Vaisseau** (toutes versions : Propulsion, Friction, v1, v2) → `{ dpad: true, fire: true/false }`
+- **Système Solaire v2 et v3** → `{ dpad: true, fire: false }`
+- Autres démos : pas de touch (souris/clic seulement)
+
+### Bugs corrigés cette session
+1. D-pad ne fonctionnait pas → les démos écoutent sur `document.body`, pas `window`
+2. Fix 2 → `KeyboardEvent` créé avec `new iwin.KeyboardEvent(...)` (constructeur de l'iframe) pour compatibilité Safari/iOS
+3. Bouton tir fonctionnait dès le départ (dispatche `MouseEvent` sur `document.body` — même cible)
+
+### À tester
+- D-pad et joystick sur téléphone après mise à jour GitHub Pages (fix `iwin.KeyboardEvent`)
+- Si toujours KO : envisager une approche alternative (ex. stocker state dans l'iframe via `contentWindow.myKeys = {}` + polling dans les démos)
+
+### Prochaines étapes probables
+- Merger la branche dans `main` pour déploiement stable
+- Phase 3 : mode "Comprendre" (bulles explicatives + code surligné)

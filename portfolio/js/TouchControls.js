@@ -224,8 +224,10 @@ class TouchControls {
   _pressKey(key) {
     if (this.heldKeys.has(key)) return;
     this.heldKeys.add(key);
-    this.iframe?.contentWindow?.document.body.dispatchEvent(
-      new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true })
+    const iwin = this.iframe?.contentWindow;
+    if (!iwin) return;
+    iwin.document.body.dispatchEvent(
+      new iwin.KeyboardEvent('keydown', { key, bubbles: true, cancelable: true })
     );
     if ('vibrate' in navigator) navigator.vibrate(18);
   }
@@ -233,8 +235,10 @@ class TouchControls {
   _releaseKey(key) {
     if (!this.heldKeys.has(key)) return;
     this.heldKeys.delete(key);
-    this.iframe?.contentWindow?.document.body.dispatchEvent(
-      new KeyboardEvent('keyup', { key, bubbles: true, cancelable: true })
+    const iwin = this.iframe?.contentWindow;
+    if (!iwin) return;
+    iwin.document.body.dispatchEvent(
+      new iwin.KeyboardEvent('keyup', { key, bubbles: true, cancelable: true })
     );
   }
 

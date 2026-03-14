@@ -27,9 +27,10 @@
 ## Analyse de Experience_optimiser
 
 ### Architecture
-- `MasterClass.js` : lib partagée avec `Vec2D`, `Particle`, `ParticleVec2D`, `SetupCanvas`, `Utils`
-- `MasterCss.css` : styles globaux canvas (fond sombre, titre, panneau info)
+- `_lib/MasterClass.js` : lib partagée avec `Vec2D`, `Particle`, `ParticleVec2D`, `SetupCanvas`, `Utils`
+- `_lib/MasterCss.css` : styles globaux canvas (fond sombre, titre, panneau info)
 - Chaque sous-dossier = une démo autonome (HTML + JS)
+- **Réorg 2026-03-14** : `@_Global_Class/` + `@_Global_Css/` fusionnés en `_lib/` (19 HTML mis à jour)
 
 ### Contenu des démos
 - **Paticule/** (18 démos) : physique particules, tweening, easing, friction, ressorts, gravité

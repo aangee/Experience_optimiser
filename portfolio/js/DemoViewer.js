@@ -8,8 +8,10 @@
  *   "jouer"      → iframe plein écran + bandeau contrôles en bas
  *   "comprendre" → panneau explicatif (placeholder Phase 3)
  *
- * Si un projet a un tableau "versions", des pills apparaissent
+ * Si un projet a un tableau "versions", un <select> apparaît
  * dans la barre du haut pour naviguer entre les versions.
+ * open(project, versionLabel) permet d'ouvrir directement
+ * une version précise (ex. depuis la timeline).
  *
  * Pourquoi vider l'iframe à la fermeture ?
  *   Les démos canvas tournent en boucle requestAnimationFrame().
@@ -59,28 +61,48 @@ class DemoViewer {
       this.controlsToggle.textContent =
         this.controlsBar.classList.contains('controls-bar--collapsed') ? '▸' : '▾';
     });
+
+    // Changement de version via le <select>
+    this.versionsEl.addEventListener('change', () => {
+      if (!this.project || !this.project.versions) return;
+      const idx = parseInt(this.versionsEl.value);
+      this._switchVersion(this.project.versions[idx]);
+    });
   }
 
   // ── API publique ─────────────────────────────────────────
 
   /**
    * Ouvre le viewer avec un projet donné.
-   * @param {Object} project - objet de ProjectData.js
+   * @param {Object} project      - objet de ProjectData.js
+   * @param {string} versionLabel - (optionnel) label de la version à afficher d'emblée
    */
-  open(project) {
+  open(project, versionLabel = null) {
     this.project = project;
 
     // Titre dans la barre du haut
     this.titleEl.textContent = project.name;
 
+    // Détermine quelle version charger en priorité
+    let initialSrc      = project.iframeSrc;
+    let initialControls = project.controls || [];
+
+    if (versionLabel && project.versions) {
+      const target = project.versions.find(v => v.label === versionLabel);
+      if (target) {
+        initialSrc      = target.src;
+        initialControls = target.controls || project.controls || [];
+      }
+    }
+
     // Charge la démo dans l'iframe
-    this.iframe.src = project.iframeSrc;
+    this.iframe.src = initialSrc;
 
     // Construit le bandeau de contrôles
-    this._renderControls(project.controls || []);
+    this._renderControls(initialControls);
 
-    // Construit les pills de version si besoin
-    this._renderVersions(project.versions || []);
+    // Construit le sélecteur de version si besoin
+    this._renderVersions(project.versions || [], initialSrc);
 
     // Remet toujours en mode Jouer à l'ouverture
     this.mode = null; // force le recalcul dans setMode
@@ -125,11 +147,11 @@ class DemoViewer {
   // ── Privé ────────────────────────────────────────────────
 
   /**
-   * Affiche les pills de version si le projet en a.
-   * La version active est celle dont le src correspond à project.iframeSrc.
+   * Peuple le <select> de version ou le cache s'il n'y a pas de versions.
    * @param {Array<{label, src, controls}>} versions
+   * @param {string} activeSrc - src actuellement chargé (pour présélectionner)
    */
-  _renderVersions(versions) {
+  _renderVersions(versions, activeSrc) {
     this.versionsEl.innerHTML = '';
 
     if (versions.length === 0) {
@@ -139,18 +161,12 @@ class DemoViewer {
 
     this.versionsEl.classList.remove('hidden');
 
-    versions.forEach(version => {
-      const btn = document.createElement('button');
-      btn.className = 'version-btn';
-      btn.textContent = version.label;
-
-      // Marque comme active la version correspondant à iframeSrc
-      if (version.src === this.project.iframeSrc) {
-        btn.classList.add('version-btn--active');
-      }
-
-      btn.addEventListener('click', () => this._switchVersion(version));
-      this.versionsEl.appendChild(btn);
+    versions.forEach((version, index) => {
+      const option = document.createElement('option');
+      option.value = index;
+      option.textContent = version.label;
+      if (version.src === activeSrc) option.selected = true;
+      this.versionsEl.appendChild(option);
     });
   }
 
@@ -159,16 +175,8 @@ class DemoViewer {
    * @param {{label, src, controls}} version
    */
   _switchVersion(version) {
-    // Recharge l'iframe avec la nouvelle source
     this.iframe.src = version.src;
-
-    // Met à jour les contrôles (fallback sur les contrôles du projet)
     this._renderControls(version.controls || this.project.controls || []);
-
-    // Met à jour le pill actif
-    this.versionsEl.querySelectorAll('.version-btn').forEach(btn => {
-      btn.classList.toggle('version-btn--active', btn.textContent === version.label);
-    });
   }
 
   /**

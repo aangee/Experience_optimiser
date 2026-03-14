@@ -13,16 +13,25 @@
   <header>
     <h1>expériences JS</h1>
     <p class="subtitle">une collection de démos canvas — physique, fractales, jeux</p>
+    <nav class="tabs">
+      <button class="tab tab--active" data-tab="portfolio">Portfolio</button>
+      <button class="tab" data-tab="timeline">Timeline</button>
+    </nav>
   </header>
 
-  <main id="gallery"></main>
+  <!-- Onglet Portfolio -->
+  <main id="tab-portfolio" class="tab-content">
+    <div id="gallery"></div>
+  </main>
 
-  <!-- Section timeline -->
-  <section id="timeline">
-    <div class="timeline-header">
-      <span class="timeline-title">parcours d'apprentissage</span>
-    </div>
-  </section>
+  <!-- Onglet Timeline -->
+  <main id="tab-timeline" class="tab-content hidden">
+    <section id="timeline">
+      <div class="timeline-header">
+        <span class="timeline-title">parcours d'apprentissage</span>
+      </div>
+    </section>
+  </main>
 
   <!-- Overlay DemoViewer -->
   <div id="viewer" class="viewer hidden">

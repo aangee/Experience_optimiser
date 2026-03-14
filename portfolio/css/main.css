@@ -29,7 +29,7 @@ html, body {
 /* ===== HEADER ===== */
 header {
   text-align: center;
-  padding: 3rem 1rem 2rem;
+  padding: 3rem 1rem 0;
   border-bottom: 1px solid var(--border);
 }
 
@@ -48,12 +48,47 @@ header .subtitle {
   letter-spacing: 0.05em;
 }
 
+/* ===== ONGLETS ===== */
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  margin-top: 2rem;
+}
+
+.tab {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-dim);
+  font-family: inherit;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.6rem 1.8rem;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.tab:hover {
+  color: var(--text);
+}
+
+.tab--active {
+  color: var(--accent);
+  border-bottom-color: var(--accent-dim);
+}
+
+/* ===== CONTENU DES ONGLETS ===== */
+.tab-content {
+  min-height: calc(100vh - 160px);
+}
+
 /* ===== TIMELINE ===== */
 #timeline {
   max-width: 720px;
   margin: 0 auto;
   padding: 3rem 2rem 5rem;
-  border-top: 1px solid var(--border);
 }
 
 .timeline-header {

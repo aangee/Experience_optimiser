@@ -36,10 +36,26 @@ const TIMELINE = [
 
   {
     date: { day: null, month: 'avr', year: 2022, approx: true },
+    title: 'Mouvement, gravité, cycle de vie',
+    desc: 'Les briques fondamentales : accélération, wrapping, rebond, friction, gravité, naissance et mort des particules.',
+    demoId: 'mouvement',
+    tags: ['physique', 'particules']
+  },
+
+  {
+    date: { day: null, month: 'avr', year: 2022, approx: true },
     title: 'Physique — Ressort & Easing',
     desc: 'Forces élastiques, fonctions d\'easing. La physique commence à donner vie aux animations.',
     demoId: 'spring',
     tags: ['physique', 'animation']
+  },
+
+  {
+    date: { day: null, month: 'avr', year: 2022, approx: true },
+    title: 'Tweening — interpolation contrôlée',
+    desc: 'Déplacer un objet d\'un point A à un point B de façon fluide et paramétrable. Trois versions progressives.',
+    demoId: 'tweening',
+    tags: ['tweening', 'animation']
   },
 
   {
@@ -62,9 +78,9 @@ const TIMELINE = [
 
   {
     date: { day: null, month: 'avr', year: 2022, approx: true },
-    title: 'Détection — Maths & Bitmap',
-    desc: 'Collisions par calcul de distance, puis par lecture de pixel sur canvas caché. Deux approches très différentes.',
-    demoId: 'detection-math',
+    title: 'Détection — 5 méthodes',
+    desc: 'Mathématique, bitmap, ligne à ligne, point à ligne, raycast. Cinq façons de détecter une collision.',
+    demoId: 'detection',
     tags: ['collision', 'algorithme']
   },
 
@@ -122,11 +138,20 @@ const TIMELINE = [
   },
 
   {
-    date: { day: null, month: 'mar', year: 2026, approx: false },
+    date: { day: 14, month: 'mar', year: 2026, approx: false },
     title: 'Portfolio — Ce site',
-    desc: 'Mise en valeur de la collection. JS vanilla, iframes lazy-loaded, architecture modulaire.',
+    desc: 'Mise en valeur de la collection. JS vanilla, iframes lazy-loaded, architecture modulaire, contrôles tactiles.',
     demoId: null,
     tags: ['portfolio', 'architecture']
+  },
+
+  {
+    date: { day: 14, month: 'mar', year: 2026, approx: false },
+    title: 'Vaisseau — v3',
+    desc: 'Review de perf : beginPath() manquant, double getImageData, AudioSource pooling, étoiles statiques. Bugs corrigés, astéroïdes mieux formés.',
+    demoId: 'vaisseau',
+    versionLabel: 'v3',
+    tags: ['optimisation', 'bug fix']
   },
 
 ];

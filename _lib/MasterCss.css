@@ -8,6 +8,7 @@ html,
 body {
   background:rgb(38, 38, 38);
   overflow: hidden;
+  user-select: none;
 }
 
 canvas {

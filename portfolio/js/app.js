@@ -4,20 +4,22 @@
  * ============================================================
  * Ce fichier est le dernier chargé par index.html.
  * À ce stade, tous les autres scripts sont déjà disponibles :
- *   - ProjectData.js → la constante PROJECTS
- *   - Gallery.js     → la classe Gallery
- *   - DemoViewer.js  → la classe DemoViewer
- *
- * On initialise tout ici en 3 lignes.
+ *   - ProjectData.js  → la constante PROJECTS
+ *   - TimelineData.js → la constante TIMELINE
+ *   - Gallery.js      → la classe Gallery
+ *   - Timeline.js     → la classe Timeline
+ *   - DemoViewer.js   → la classe DemoViewer
  * ============================================================
  */
 
 // Crée le viewer plein-écran et le rend accessible globalement
-// (window.viewer permet à Gallery.js d'y accéder depuis les cartes)
+// (window.viewer permet à Gallery.js et Timeline.js d'y accéder)
 window.viewer = new DemoViewer();
 
-// Crée la galerie et lui dit où afficher les cartes (#gallery dans index.html)
+// Galerie : génère toutes les cartes à partir du catalogue PROJECTS
 const gallery = new Gallery('gallery');
-
-// Lance le rendu : génère toutes les cartes à partir du catalogue PROJECTS
 gallery.render(PROJECTS);
+
+// Timeline : affiche le parcours d'apprentissage
+const timeline = new Timeline('timeline');
+timeline.render(TIMELINE);

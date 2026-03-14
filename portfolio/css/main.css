@@ -1,0 +1,54 @@
+/* ===== RESET & BASE ===== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg:        #1a1a1a;
+  --bg-card:   #242424;
+  --bg-card-hover: #2c2c2c;
+  --accent:    #bcdefc;
+  --accent-dim: #6aabdf;
+  --text:      #d0d0d0;
+  --text-dim:  #888;
+  --border:    #333;
+  --radius:    10px;
+}
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Lucida Sans', 'Segoe UI', sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* ===== HEADER ===== */
+header {
+  text-align: center;
+  padding: 3rem 1rem 2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+header h1 {
+  font-size: 2rem;
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  text-transform: lowercase;
+}
+
+header .subtitle {
+  margin-top: 0.5rem;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+}
+
+/* ===== UTILITAIRES ===== */
+.hidden {
+  display: none !important;
+}

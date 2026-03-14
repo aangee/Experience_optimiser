@@ -170,8 +170,8 @@ const PROJECTS = [
     name: 'Vaisseau',
     category: 'Mini-jeu',
     description: 'De la première propulsion au jeu complet — armement, astéroïdes, physique avancée, ES2022.',
-    // Dernière version par défaut
-    iframeSrc: '../MiniGame/05_Ship_v02/index.html',
+    // Dernière version par défaut — mise à jour 2026-03-14 : v3 optimisée
+    iframeSrc: '../MiniGame/06_Ship_v03/index.html',
     tags: ['jeu', 'physique', 'progression'],
     controls: [
       { key: 'Z / S',       desc: 'Propulsion avant / arrière' },
@@ -212,6 +212,17 @@ const PROJECTS = [
       {
         label: 'v2',
         src: '../MiniGame/05_Ship_v02/index.html',
+        controls: [
+          { key: 'Z / S',       desc: 'Propulsion avant / arrière' },
+          { key: 'Q / D',       desc: 'Rotation gauche / droite' },
+          { key: 'Clic souris', desc: 'Tire' },
+          { key: '²',           desc: 'Pause' }
+        ],
+        touch: { dpad: true, fire: true }
+      },
+      {
+        label: 'v3',
+        src: '../MiniGame/06_Ship_v03/index.html',
         controls: [
           { key: 'Z / S',       desc: 'Propulsion avant / arrière' },
           { key: 'Q / D',       desc: 'Rotation gauche / droite' },

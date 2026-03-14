@@ -58,6 +58,42 @@ class Gallery {
       active.forEach(p => this.container.appendChild(this._createCard(p, false)));
       locked.forEach(p => this.container.appendChild(this._createCard(p, true)));
     });
+
+    // Démarre le chargement intelligent des iframes après injection du DOM
+    this._initLazyLoad();
+  }
+
+  /**
+   * Intersection Observer : charge l'iframe quand elle approche du viewport,
+   * la décharge quand elle s'en éloigne.
+   * Résultat : seulement ~4-5 canvases actifs en même temps.
+   *
+   * rootMargin: "400px 0px"
+   *   → l'iframe se charge 400px AVANT d'être visible (scroll fluide)
+   *   → elle se décharge 400px APRÈS être sortie du viewport
+   *   Avec des cartes de ~260px de hauteur, ça couvre environ 1-2 cartes
+   *   au-dessus et 1-2 en dessous de ce qui est visible.
+   */
+  _initLazyLoad() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const iframe = entry.target;
+        if (entry.isIntersecting) {
+          // La carte approche → on branche la source pour démarrer le canvas
+          if (iframe.dataset.src && iframe.src !== iframe.dataset.src) {
+            iframe.src = iframe.dataset.src;
+          }
+        } else {
+          // La carte est loin → on coupe le canvas pour libérer les ressources
+          iframe.removeAttribute('src');
+        }
+      });
+    }, { rootMargin: '400px 0px' });
+
+    // On observe toutes les iframes qui ont un data-src (les démos actives)
+    this.container.querySelectorAll('iframe[data-src]').forEach(iframe => {
+      observer.observe(iframe);
+    });
   }
 
   /**
@@ -86,11 +122,11 @@ class Gallery {
         ${locked
           // Si la démo est verrouillée : juste un fond sombre avec "bientôt"
           ? '<div class="card-preview-placeholder"></div>'
-          // Sinon : un vrai iframe qui charge la démo en miniature
-          // loading="lazy" = le navigateur attend que la carte soit visible pour charger
-          // tabindex="-1"  = l'iframe ne peut pas être sélectionnée au clavier (navigation clavier)
+          // Sinon : iframe sans src au départ — l'IntersectionObserver la chargera
+          // quand elle sera proche du viewport (voir _initLazyLoad).
+          // tabindex="-1" = l'iframe ne reçoit pas le focus clavier
           // pointer-events: none (dans le CSS) = les clics passent à travers l'iframe
-          : `<iframe src="${project.iframeSrc}" loading="lazy" tabindex="-1"></iframe>`
+          : `<iframe data-src="${project.iframeSrc}" tabindex="-1"></iframe>`
         }
 
         ${locked ? '<div class="card-lock">bientôt</div>' : ''}

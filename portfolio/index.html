@@ -19,11 +19,44 @@
 
   <!-- Overlay DemoViewer -->
   <div id="viewer" class="viewer hidden">
+
+    <!-- Barre du haut : titre + toggle de mode + fermer -->
     <div class="viewer-header">
       <span id="viewer-title"></span>
-      <button id="viewer-close" title="Fermer (Échap)">✕</button>
+      <div class="viewer-header-actions">
+        <button id="viewer-mode-toggle" class="btn-mode" title="Basculer entre Jouer et Comprendre">
+          <span class="mode-label-jouer">Jouer</span>
+          <span class="mode-label-comprendre">Comprendre</span>
+        </button>
+        <button id="viewer-close" title="Fermer (Échap)">✕</button>
+      </div>
     </div>
-    <iframe id="viewer-iframe" src="" frameborder="0" allowfullscreen></iframe>
+
+    <!-- Zone principale : iframe (Jouer) ou panneau explicatif (Comprendre) -->
+    <div id="viewer-body">
+      <iframe id="viewer-iframe" src="" frameborder="0" allowfullscreen></iframe>
+
+      <div id="viewer-comprendre" class="comprendre-panel hidden">
+        <div class="comprendre-content">
+          <div class="comprendre-icon">🔭</div>
+          <h2>Mode Comprendre</h2>
+          <p>Cette fonctionnalité arrive en <strong>Phase 3</strong>.</p>
+          <p class="comprendre-desc">
+            Elle affichera la démo avec des annotations interactives et un panneau de code surligné
+            qui explique ce qui se passe en temps réel.
+          </p>
+          <button class="btn-back-to-jouer" id="btn-back-jouer">← Retour à Jouer</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bandeau de contrôles (mode Jouer uniquement) -->
+    <div id="controls-bar" class="controls-bar">
+      <span class="controls-bar-label">contrôles</span>
+      <div id="controls-list" class="controls-list"></div>
+      <button id="controls-toggle" class="controls-toggle" title="Masquer / afficher">▾</button>
+    </div>
+
   </div>
 
   <script src="js/ProjectData.js"></script>

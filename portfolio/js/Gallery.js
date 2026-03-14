@@ -26,27 +26,38 @@ class Gallery {
   }
 
   /**
-   * Génère et affiche toutes les cartes à partir d'un tableau de projets.
+   * Génère et affiche toutes les cartes à partir d'un tableau de projets,
+   * regroupées par catégorie.
    * @param {Array} projects - le tableau PROJECTS de ProjectData.js
    */
   render(projects) {
-    // On sépare les projets disponibles (phase 1) des projets à venir (phase 2+)
-    const phase1 = projects.filter(p => p.phase === 1);
-    const phase2 = projects.filter(p => p.phase >= 2);
+    // On collecte les catégories dans l'ordre d'apparition
+    const categories = [];
+    const byCategory = {};
 
-    // On crée d'abord les cartes des démos disponibles
-    phase1.forEach(p => this.container.appendChild(this._createCard(p, false)));
+    projects.forEach(p => {
+      if (!byCategory[p.category]) {
+        categories.push(p.category);
+        byCategory[p.category] = [];
+      }
+      byCategory[p.category].push(p);
+    });
 
-    // Puis, si des démos "bientôt" existent, on ajoute un séparateur et leurs cartes
-    if (phase2.length > 0) {
-      const sep = document.createElement('div');
-      sep.className = 'section-label';
-      sep.textContent = 'bientôt';
-      this.container.appendChild(sep);
+    // Pour chaque catégorie : titre de section puis cartes (actives d'abord, verrouillées ensuite)
+    categories.forEach((cat, index) => {
+      const items = byCategory[cat];
 
-      // locked = true → la carte est grisée, pas cliquable
-      phase2.forEach(p => this.container.appendChild(this._createCard(p, true)));
-    }
+      const header = document.createElement('div');
+      header.className = 'section-header' + (index === 0 ? ' section-header--first' : '');
+      header.textContent = cat;
+      this.container.appendChild(header);
+
+      const active = items.filter(p => p.phase === 1);
+      const locked = items.filter(p => p.phase > 1);
+
+      active.forEach(p => this.container.appendChild(this._createCard(p, false)));
+      locked.forEach(p => this.container.appendChild(this._createCard(p, true)));
+    });
   }
 
   /**
@@ -59,7 +70,8 @@ class Gallery {
     const card = document.createElement('div');
     // On ajoute la classe 'card--locked' si la démo n'est pas encore dispo
     card.className = 'card' + (locked ? ' card--locked' : '');
-    card.dataset.id = project.id; // stocke l'id pour pouvoir l'identifier plus tard
+    card.dataset.id = project.id;
+    card.title = project.category; // catégorie visible en tooltip au survol
 
     // Génère les petites étiquettes de tags en HTML
     const tags = (project.tags || [])
@@ -85,7 +97,6 @@ class Gallery {
       </div>
 
       <div class="card-info">
-        <div class="card-category">${project.category}</div>
         <div class="card-name">${project.name}</div>
         <div class="card-desc">${project.description}</div>
         <div class="card-tags">${tags}</div>

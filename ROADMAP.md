@@ -68,22 +68,20 @@ portfolio-aangee/
 
 ## Phases de construction
 
-### Phase 1 — Squelette + galerie (MVP) ✅ 2026-03-14
-- [x] Portfolio intégré dans `Experience_optimiser/portfolio/` (pas de repo séparé)
-- [x] Page d'accueil avec grille de cartes (CSS Grid)
-- [x] `ProjectData.js` : catalogue structuré (3 démos pour l'instant)
-- [x] `Gallery.js` : génère les cartes dynamiquement
-- [x] `DemoViewer.js` : ouvre/ferme la démo en overlay
-- [x] Mergé sur `main`
-- [ ] Activer GitHub Pages (Settings → Pages → `/portfolio`)
-- [ ] Ajouter thumbnails dans `portfolio/assets/thumbnails/`
-- [ ] Compléter `ProjectData.js` avec toutes les démos prioritaires
+### Phase 1 — Squelette + galerie (MVP) ✓
+- [x] Page d'accueil avec grille de cartes groupées par catégorie
+- [x] Cartes avec preview iframe animée en miniature
+- [x] `ProjectData.js` : catalogue structuré de toutes les démos
+- [x] 5 démos actives (feu-artifice, spring, easing, fractal-trees, space-colonization)
+- [x] DemoViewer plein écran — modes Jouer / Comprendre (placeholder)
+- [x] Bandeau contrôles clavier par démo
+- [x] Support tactile (TouchAdapter)
+- [x] Section timeline placeholder en bas de page
 
-### Phase 2 — DemoViewer
-- [ ] Overlay/modal pour ouvrir une démo en plein écran
-- [ ] Mode **Jouer** : démo en iframe + bandeau contrôles
-- [ ] Bouton switch Jouer ↔ Comprendre
-- [ ] Navigation clavier (Échap pour fermer, etc.)
+### Phase 2 — Intégration des démos restantes ← en cours
+- [ ] Activer les 5 démos verrouillées (ship-truster, detection-math, solar-v1, ship-v02, bitmap-detection)
+- [ ] Vérifier les chemins `iframeSrc` et le comportement dans le viewer
+- [ ] Affiner les descriptions et contrôles dans `ProjectData.js` si besoin
 
 ### Phase 3 — Mode Comprendre
 - [ ] Système d'annotations : bulles positionnées sur canvas
@@ -129,8 +127,4 @@ portfolio-aangee/
 
 ## Prochaine étape
 
-Phase 1 terminée. Prochaines actions immédiates :
-1. Activer GitHub Pages sur `main` → dossier `/portfolio`
-2. Tester le site depuis le téléphone
-3. Ajouter les thumbnails + compléter ProjectData.js avec les 10 démos prioritaires
-4. Démarrer Phase 2 (DemoViewer modes Jouer/Comprendre)
+Activer les démos Phase 2 dans `ProjectData.js` (passer `phase: 2` → `phase: 1`) et valider chaque démo dans le viewer.

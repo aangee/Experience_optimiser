@@ -48,6 +48,93 @@ header .subtitle {
   letter-spacing: 0.05em;
 }
 
+/* ===== TIMELINE (placeholder) ===== */
+#timeline {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem 4rem;
+  border-top: 1px solid var(--border);
+}
+
+.timeline-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.6rem;
+}
+
+.timeline-title {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.timeline-badge {
+  font-size: 0.65rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  color: #555;
+  letter-spacing: 0.08em;
+}
+
+.timeline-desc {
+  font-size: 0.8rem;
+  color: #555;
+  font-style: italic;
+  margin-bottom: 1.5rem;
+}
+
+.timeline-track {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.timeline-milestone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  position: relative;
+}
+
+/* Séparateur « · » entre les jalons */
+.timeline-milestone + .timeline-milestone::before {
+  content: '·';
+  position: absolute;
+  left: -1.25rem;
+  top: 0.1rem;
+  color: var(--border);
+  font-size: 1rem;
+}
+
+.milestone-year {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent-dim);
+  letter-spacing: 0.05em;
+}
+
+.milestone-label {
+  font-size: 0.72rem;
+  color: #555;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.timeline-milestone--future .milestone-year {
+  color: #444;
+}
+
+.timeline-milestone--future .milestone-label {
+  color: #3a3a3a;
+  font-style: italic;
+}
+
 /* ===== UTILITAIRES ===== */
 .hidden {
   display: none !important;

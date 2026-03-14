@@ -88,7 +88,8 @@ class Gallery {
           iframe.removeAttribute('src');
         }
       });
-    }, { rootMargin: '400px 0px' });
+    // haut: ~1 carte | bas: ~2 cartes (on scrolle plus souvent vers le bas)
+    }, { rootMargin: '280px 0px 560px 0px' });
 
     // On observe toutes les iframes qui ont un data-src (les démos actives)
     this.container.querySelectorAll('iframe[data-src]').forEach(iframe => {

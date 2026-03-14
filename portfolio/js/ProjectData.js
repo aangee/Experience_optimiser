@@ -2,25 +2,20 @@
  * ============================================================
  * ProjectData.js
  * ============================================================
- * Ce fichier contient la liste de toutes les démos du portfolio.
+ * Catalogue de toutes les démos du portfolio.
  *
- * C'est le "catalogue" — comme une bibliothèque où chaque livre
- * a une fiche avec son titre, sa description, et où le trouver.
- *
- * Pour ajouter une nouvelle démo plus tard, il suffit d'ajouter
- * un bloc { ... } dans le tableau PROJECTS ci-dessous.
- *
- * Champ "controls" : tableau de { key, desc } affiché dans le
- * bandeau de contrôles du viewer (mode Jouer).
- *   key  → touche ou action (ex: "Clic souris", "Z", "Espace")
- *   desc → ce que ça fait  (ex: "Explosion de particules")
+ * Champ "versions" (optionnel) :
+ *   Si présent, le viewer affiche des pills de version dans sa
+ *   barre du haut. Chaque version peut avoir ses propres contrôles.
+ *   La version par défaut est la dernière du tableau (la plus récente).
+ *   iframeSrc et controls au niveau racine = copie de cette dernière version.
  * ============================================================
  */
 
 const PROJECTS = [
 
   // ──────────────────────────────────────────────────────────
-  // PHASE 1 — Démos visibles maintenant
+  // PARTICULES
   // ──────────────────────────────────────────────────────────
 
   {
@@ -51,19 +46,6 @@ const PROJECTS = [
   },
 
   {
-    id: 'space-colonization',
-    name: 'Space Colonization',
-    category: 'Fractales',
-    description: 'Un arbre qui pousse vers des points de lumière — algorithme de colonisation de l\'espace.',
-    iframeSrc: '../Fractal/Space_Colonization/index.html',
-    tags: ['fractal', 'algorithme', 'génératif'],
-    controls: [
-      { key: 'Déplacer souris', desc: 'Guide la croissance de l\'arbre' }
-    ],
-    phase: 1
-  },
-
-  {
     id: 'easing',
     name: 'Easing',
     category: 'Particules',
@@ -72,6 +54,23 @@ const PROJECTS = [
     tags: ['tweening', 'animation', 'mathématiques'],
     controls: [
       { key: 'Clic souris', desc: 'Lance une nouvelle animation' }
+    ],
+    phase: 1
+  },
+
+  // ──────────────────────────────────────────────────────────
+  // FRACTALES
+  // ──────────────────────────────────────────────────────────
+
+  {
+    id: 'space-colonization',
+    name: 'Space Colonization',
+    category: 'Fractales',
+    description: 'Un arbre qui pousse vers des points de lumière — algorithme de colonisation de l\'espace.',
+    iframeSrc: '../Fractal/Space_Colonization/index.html',
+    tags: ['fractal', 'algorithme', 'génératif'],
+    controls: [
+      { key: 'Déplacer souris', desc: 'Guide la croissance de l\'arbre' }
     ],
     phase: 1
   },
@@ -90,23 +89,8 @@ const PROJECTS = [
   },
 
   // ──────────────────────────────────────────────────────────
-  // PHASE 2 — Démos intégrées
+  // DÉTECTION
   // ──────────────────────────────────────────────────────────
-
-  {
-    id: 'ship-truster',
-    name: 'Vaisseau — Propulsion',
-    category: 'Particules',
-    description: 'Pont vers les jeux — un vaisseau piloté au clavier avec une physique de poussée et d\'inertie.',
-    iframeSrc: '../Paticule/14_1_Ship_Truster/index.html',
-    tags: ['physique', 'clavier', 'jeu'],
-    controls: [
-      { key: 'Z',   desc: 'Propulsion avant' },
-      { key: 'S',   desc: 'Propulsion arrière' },
-      { key: 'Q / D', desc: 'Rotation gauche / droite' }
-    ],
-    phase: 1
-  },
 
   {
     id: 'detection-math',
@@ -117,35 +101,6 @@ const PROJECTS = [
     tags: ['collision', 'mathématiques', 'géométrie'],
     controls: [
       { key: 'Déplacer souris', desc: 'Déplace l\'objet de détection' }
-    ],
-    phase: 1
-  },
-
-  {
-    id: 'solar-v1',
-    name: 'Système Solaire v1',
-    category: 'Mini-jeu',
-    description: 'Premier essai de "jeu" — des planètes en orbite, la physique gravitationnelle en action.',
-    iframeSrc: '../MiniGame/01_SystemSolar_v01/index.html',
-    tags: ['gravité', 'orbite', 'simulation'],
-    controls: [
-      { key: 'Déplacer souris', desc: 'Perturbe le système' }
-    ],
-    phase: 1
-  },
-
-  {
-    id: 'ship-v02',
-    name: 'Vaisseau v2',
-    category: 'Mini-jeu',
-    description: 'Jeu de vaisseau spatial — armement, astéroïdes, physique complète. Le projet le plus avancé.',
-    iframeSrc: '../MiniGame/05_Ship_v02/index.html',
-    tags: ['jeu', 'physique', 'ES2022'],
-    controls: [
-      { key: 'Z / S',       desc: 'Propulsion avant / arrière' },
-      { key: 'Q / D',       desc: 'Rotation gauche / droite' },
-      { key: 'Clic souris', desc: 'Tire' },
-      { key: '²',           desc: 'Pause' }
     ],
     phase: 1
   },
@@ -164,7 +119,106 @@ const PROJECTS = [
   },
 
   // ──────────────────────────────────────────────────────────
-  // PHASE 3 — Projets futurs (emplacements réservés)
+  // MINI-JEUX — avec versions
+  // ──────────────────────────────────────────────────────────
+
+  {
+    id: 'systeme-solaire',
+    name: 'Système Solaire',
+    category: 'Mini-jeu',
+    description: 'Simulation gravitationnelle : des orbites, un joueur, l\'évolution d\'une idée en trois versions.',
+    // Dernière version par défaut
+    iframeSrc: '../MiniGame/03_SystemSolar_v03/index.html',
+    tags: ['gravité', 'orbite', 'simulation'],
+    controls: [
+      { key: 'Z / Q / D',       desc: 'Déplace le vaisseau' },
+      { key: 'Déplacer souris', desc: 'Vise' }
+    ],
+    versions: [
+      {
+        label: 'v1',
+        src: '../MiniGame/01_SystemSolar_v01/index.html',
+        controls: [
+          { key: 'Déplacer souris', desc: 'Perturbe le système solaire' }
+        ]
+      },
+      {
+        label: 'v2',
+        src: '../MiniGame/02_SystemSolar_v02/index.html',
+        controls: [
+          { key: 'Z / S / Q / D', desc: 'Déplace le vaisseau' },
+          { key: 'Déplacer souris', desc: 'Vise' }
+        ]
+      },
+      {
+        label: 'v3',
+        src: '../MiniGame/03_SystemSolar_v03/index.html',
+        controls: [
+          { key: 'Z / Q / D',       desc: 'Déplace le vaisseau' },
+          { key: 'Déplacer souris', desc: 'Vise' }
+        ]
+      }
+    ],
+    phase: 1
+  },
+
+  {
+    id: 'vaisseau',
+    name: 'Vaisseau',
+    category: 'Mini-jeu',
+    description: 'De la première propulsion au jeu complet — armement, astéroïdes, physique avancée, ES2022.',
+    // Dernière version par défaut
+    iframeSrc: '../MiniGame/05_Ship_v02/index.html',
+    tags: ['jeu', 'physique', 'progression'],
+    controls: [
+      { key: 'Z / S',       desc: 'Propulsion avant / arrière' },
+      { key: 'Q / D',       desc: 'Rotation gauche / droite' },
+      { key: 'Clic souris', desc: 'Tire' },
+      { key: '²',           desc: 'Pause' }
+    ],
+    versions: [
+      {
+        label: 'Propulsion',
+        src: '../Paticule/14_1_Ship_Truster/index.html',
+        controls: [
+          { key: 'Z',      desc: 'Propulsion avant' },
+          { key: 'S',      desc: 'Propulsion arrière' },
+          { key: 'Q / D',  desc: 'Rotation gauche / droite' }
+        ]
+      },
+      {
+        label: 'Friction',
+        src: '../Paticule/14_2_Ship_Friction/index.html',
+        controls: [
+          { key: 'Z / S',  desc: 'Propulsion avant / arrière' },
+          { key: 'Q / D',  desc: 'Rotation gauche / droite' }
+        ]
+      },
+      {
+        label: 'v1',
+        src: '../MiniGame/04_Ship_v01/index.html',
+        controls: [
+          { key: 'Z / S',       desc: 'Propulsion avant / arrière' },
+          { key: 'Q / D',       desc: 'Rotation gauche / droite' },
+          { key: 'Clic souris', desc: 'Tire' }
+        ]
+      },
+      {
+        label: 'v2',
+        src: '../MiniGame/05_Ship_v02/index.html',
+        controls: [
+          { key: 'Z / S',       desc: 'Propulsion avant / arrière' },
+          { key: 'Q / D',       desc: 'Rotation gauche / droite' },
+          { key: 'Clic souris', desc: 'Tire' },
+          { key: '²',           desc: 'Pause' }
+        ]
+      }
+    ],
+    phase: 1
+  },
+
+  // ──────────────────────────────────────────────────────────
+  // À VENIR
   // ──────────────────────────────────────────────────────────
 
   {

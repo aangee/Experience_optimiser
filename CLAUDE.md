@@ -100,6 +100,19 @@ Fusionner `Experience_optimiser` + `angine_js_v01` en un **site portfolio modern
 ### Décisions prises
 - Repartir de zéro (ne pas récupérer portfolio_projets)
 - Garder les démos existantes comme contenu, ne pas les réécrire
+- Portfolio intégré dans `Experience_optimiser` (dossier `portfolio/`), déployé via GitHub Pages
 - Prévoir un emplacement pour les projets futurs (Ship avancé sur Chromebook, angine v2...)
+
+### État d'avancement (2026-03-14)
+- **Phase 1 terminée** : squelette `portfolio/` mergé sur `main`
+  - `portfolio/index.html` + `css/` (main, gallery, viewer) + `js/` (app, Gallery, DemoViewer, ProjectData)
+  - 3 démos référencées dans ProjectData.js
+  - GitHub Pages : activer depuis Settings → Pages → dossier `/portfolio`
+- **Phase 2** : DemoViewer + modes Jouer/Comprendre — à faire
+
+### Workflow Git (Claude Code)
+- Chaque session crée une branche `claude/...`
+- Merger via PR sur GitHub → `main`
+- Ne pas travailler directement sur `main` (push refusé par le système)
 
 ### Voir ROADMAP.md pour le plan détaillé

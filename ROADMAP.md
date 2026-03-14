@@ -68,13 +68,16 @@ portfolio-aangee/
 
 ## Phases de construction
 
-### Phase 1 — Squelette + galerie (MVP)
-- [ ] Créer le repo `portfolio-aangee`
-- [ ] Page d'accueil avec grille de cartes (CSS Grid)
-- [ ] Carte projet : thumbnail animée (canvas miniature) + nom + description courte
-- [ ] `ProjectData.js` : catalogue structuré de toutes les démos
-- [ ] Intégrer 3 démos en iframe (feu-artifice, spring, fractal-trees)
-- [ ] Déploiement GitHub Pages
+### Phase 1 — Squelette + galerie (MVP) ✅ 2026-03-14
+- [x] Portfolio intégré dans `Experience_optimiser/portfolio/` (pas de repo séparé)
+- [x] Page d'accueil avec grille de cartes (CSS Grid)
+- [x] `ProjectData.js` : catalogue structuré (3 démos pour l'instant)
+- [x] `Gallery.js` : génère les cartes dynamiquement
+- [x] `DemoViewer.js` : ouvre/ferme la démo en overlay
+- [x] Mergé sur `main`
+- [ ] Activer GitHub Pages (Settings → Pages → `/portfolio`)
+- [ ] Ajouter thumbnails dans `portfolio/assets/thumbnails/`
+- [ ] Compléter `ProjectData.js` avec toutes les démos prioritaires
 
 ### Phase 2 — DemoViewer
 - [ ] Overlay/modal pour ouvrir une démo en plein écran
@@ -126,4 +129,8 @@ portfolio-aangee/
 
 ## Prochaine étape
 
-Démarrer Phase 1 : créer le repo + structure de base + 3 premières cartes.
+Phase 1 terminée. Prochaines actions immédiates :
+1. Activer GitHub Pages sur `main` → dossier `/portfolio`
+2. Tester le site depuis le téléphone
+3. Ajouter les thumbnails + compléter ProjectData.js avec les 10 démos prioritaires
+4. Démarrer Phase 2 (DemoViewer modes Jouer/Comprendre)

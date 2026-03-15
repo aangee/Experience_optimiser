@@ -77,6 +77,10 @@ function initDemo(canvas, kit) {
                 ctx.fill();
             }
         }
+        // Vecteurs sur couche SVG — mis à jour même quand gelé
+        if (kit.showVectors)
+            kit.drawVelocityVectors(balls, { scale: 5, maxCount: 12 });
+
         requestAnimationFrame(update);
     }
 

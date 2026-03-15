@@ -67,6 +67,10 @@ function initDemo(canvas, kit) {
 
             ctx.globalAlpha = 1;
         }
+        // Vecteurs sur couche SVG — mis à jour même quand gelé (flèches statiques)
+        if (kit.showVectors)
+            kit.drawVelocityVectors(particles, { scale: 14, maxCount: 12 });
+
         requestAnimationFrame(update);
     }
 

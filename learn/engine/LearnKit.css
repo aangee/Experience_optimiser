@@ -110,6 +110,39 @@ body {
     font-weight: 600;
 }
 
+/* Marqueur d'émetteur — vert pour se distinguer des annotations jaunes */
+.emitter-ring {
+    fill: none;
+    stroke: #7fff7f;
+    stroke-width: 2;
+    stroke-dasharray: 5 4;
+    animation: edge-pulse 1.2s ease-in-out infinite;
+}
+
+.emitter-cross {
+    stroke: #7fff7f;
+    stroke-width: 2;
+    stroke-linecap: round;
+}
+
+.emitter-label {
+    fill: #7fff7f;
+    font-size: 12px;
+    font-family: system-ui, sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+}
+
+/* Vecteurs de vélocité — orange semi-transparent, mis à jour chaque frame */
+.vel-line {
+    stroke: rgba(255, 160, 50, 0.75);
+    stroke-width: 1.5;
+}
+
+.vel-head {
+    fill: rgba(255, 160, 50, 0.75);
+}
+
 /* ── Panneau (droite) ───────────────────────────── */
 
 #learn-panel {

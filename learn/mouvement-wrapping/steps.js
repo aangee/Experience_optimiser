@@ -18,10 +18,11 @@ const STEPS = [
 
     {
         title: "Le déplacement de base",
-        text: `Comme toujours : à chaque frame, on ajoute la vélocité à la position.
+        text: `L'animation est gelée. Regarde les flèches : elles montrent
+               la <strong>direction et la vitesse</strong> de chaque particule.
                <br><br>
-               Sans wrapping, une particule qui sort à droite continuerait
-               à <code>x = 900, 1000…</code> et disparaîtrait de l'écran pour toujours.`,
+               Sans wrapping, elles continueraient hors du canvas et
+               disparaîtraient pour toujours. Le wrapping les y ramène.`,
         code:
 `// Chaque frame :
 p.x += p.vx;
@@ -29,6 +30,8 @@ p.y += p.vy;
 // → sans wrapping, hors canvas = invisible`,
         highlight: 'p.x += p.vx;',
         freeze: true,
+        onEnter(kit) { kit.showVectors = true; },
+        onExit(kit)  { kit.clearVectors(); },
     },
 
     {
@@ -47,15 +50,13 @@ if (p.x + p.r < 0)  p.x = W + p.r;`,
         highlight: 'if (p.x - p.r > W)',
         freeze: false,
         onEnter(kit) {
-            // Allume les deux bords verticaux pour montrer la paire
-            const W = kit.demo.W, H = kit.demo.H;
-            const S = 6;
-            kit.svgOverlay.innerHTML = `
+            const W = kit.demo.W, H = kit.demo.H, S = 6;
+            kit.setAnnotRaw(`
                 <line class="edge-highlight" x1="${W-S}" y1="${S}" x2="${W-S}" y2="${H-S}"/>
-                <text class="edge-label" x="${W-S-10}" y="${H/2 - 14}" text-anchor="end">bord droit</text>
+                <text class="edge-label" x="${W-S-10}" y="${H/2-14}" text-anchor="end">bord droit</text>
                 <line class="edge-highlight" x1="${S}" y1="${S}" x2="${S}" y2="${H-S}" style="animation-delay:0.45s"/>
-                <text class="edge-label" x="${S+10}" y="${H/2 + 8}" text-anchor="start">bord gauche</text>
-            `;
+                <text class="edge-label" x="${S+10}" y="${H/2+8}" text-anchor="start">bord gauche</text>
+            `);
         },
         onExit(kit) { kit.clearAnnotation(); },
     },
@@ -65,7 +66,7 @@ if (p.x + p.r < 0)  p.x = W + p.r;`,
         text: `Même logique sur l'axe Y : le <strong>bord bas</strong> renvoie en haut, et inversement.
                <br><br>
                Avec les 4 conditions, l'espace devient <strong>toroïdal</strong> —
-               comme la surface d'un donut. Sortir à droite = rentrer à gauche,
+               comme la surface d'un donut : sortir à droite = rentrer à gauche,
                sortir en bas = rentrer en haut.`,
         code:
 `// Bord bas → téléporte en haut
@@ -76,14 +77,13 @@ if (p.y + p.r < 0)  p.y = H + p.r;`,
         highlight: 'if (p.y - p.r > H)',
         freeze: false,
         onEnter(kit) {
-            const W = kit.demo.W, H = kit.demo.H;
-            const S = 6;
-            kit.svgOverlay.innerHTML = `
+            const W = kit.demo.W, H = kit.demo.H, S = 6;
+            kit.setAnnotRaw(`
                 <line class="edge-highlight" x1="${S}" y1="${H-S}" x2="${W-S}" y2="${H-S}"/>
                 <text class="edge-label" x="${W/2}" y="${H-S-14}" text-anchor="middle">bord bas</text>
                 <line class="edge-highlight" x1="${S}" y1="${S}" x2="${W-S}" y2="${S}" style="animation-delay:0.45s"/>
                 <text class="edge-label" x="${W/2}" y="${S+22}" text-anchor="middle">bord haut</text>
-            `;
+            `);
         },
         onExit(kit) { kit.clearAnnotation(); },
     },

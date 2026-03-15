@@ -64,8 +64,7 @@ const STEPS = [
         highlight: 'Math.random() * Math.PI * 2',
         freeze: true,
         onEnter(kit) {
-            // Pointer le centre du canvas où naissent les particules
-            kit.pointTo(kit.demo.W / 2, kit.demo.H / 2, 'Naissance des particules');
+            kit.markEmitter(kit.demo.W / 2, kit.demo.H / 2, 'émetteur');
         },
         onExit(kit) {
             kit.clearAnnotation();

@@ -11,37 +11,32 @@ const STEPS = [
                Chacune a sa propre direction d'accélération, choisie au hasard.`,
         code: null,
         freeze: false,
-        target: null,
     },
 
     {
         title: "Position et vélocité",
-        text: `Regarde les particules bouger. Chacune a une <strong>position</strong> <code>(x, y)</code>
-               et une <strong>vélocité</strong> <code>(vx, vy)</code>.
+        text: `Regarde les flèches orangées sur les particules : ce sont les <strong>vecteurs de vélocité</strong>.
+               Leur direction = où va la particule. Leur longueur = à quelle vitesse.
                <br><br>
-               À chaque frame, on ajoute la vélocité à la position.
-               C'est la seule raison pour laquelle elles avancent.`,
+               À chaque frame : <code>x += vx</code> et <code>y += vy</code>.
+               C'est tout ce qui fait bouger une particule.`,
         code:
 `// À chaque frame :
 p.x += p.vx;   // avance de vx pixels en X
 p.y += p.vy;   // avance de vy pixels en Y`,
         highlight: 'p.x += p.vx;',
         freeze: false,
-        onEnter(kit) {
-            const W = kit.demo.W, H = kit.demo.H;
-            // Flèche vers bas-droite depuis le centre : visualise un (vx, vy) quelconque
-            kit.drawArrow(W/2, H/2, W/2 + 60, H/2 + 45, 'vx, vy');
-        },
-        onExit(kit) { kit.clearAnnotation(); },
+        onEnter(kit) { kit.showVectors = true; },
+        onExit(kit)  { kit.clearVectors(); },
     },
 
     {
         title: "L'accélération modifie la vélocité",
-        text: `L'accélération <code>(ax, ay)</code> ne déplace pas directement la particule.
-               Elle <em>modifie la vélocité</em> à chaque frame.
+        text: `Regarde la longueur des flèches : les particules récentes ont des flèches courtes
+               (elles viennent de naître, <code>vx ≈ 0</code>).
+               Les plus anciennes ont des flèches longues — leur vélocité a grandi.
                <br><br>
-               La vélocité grossit → la particule va de plus en plus vite.
-               C'est la différence entre "vitesse constante" et "accélération".`,
+               C'est l'accélération en action : elle s'ajoute à la vélocité à chaque frame.`,
         code:
 `// 1. L'accélération modifie la vélocité
 p.vx += p.ax;
@@ -52,23 +47,18 @@ p.x  += p.vx;
 p.y  += p.vy;`,
         highlight: 'p.vx += p.ax;',
         freeze: false,
-        onEnter(kit) {
-            const W = kit.demo.W, H = kit.demo.H;
-            // Deux flèches empilées : la petite = ax,ay qui s'ajoute à vx,vy
-            kit.drawArrow(W/2 - 10, H/2, W/2 + 55, H/2 + 40, 'ax → vx → x');
-        },
-        onExit(kit) { kit.clearAnnotation(); },
+        onEnter(kit) { kit.showVectors = true; },
+        onExit(kit)  { kit.clearVectors(); },
     },
 
     {
         title: "Direction aléatoire à la création",
-        text: `À la création de chaque particule, <code>ax</code> et <code>ay</code>
-               reçoivent une valeur aléatoire entre <code>-0.075</code> et <code>+0.075</code>.
+        text: `La croix verte marque l'<strong>émetteur</strong> — la zone de naissance des particules.
+               Les flèches partent dans toutes les directions car chaque particule reçoit un
+               <code>ax</code> et <code>ay</code> aléatoires à sa création.
                <br><br>
-               Au départ <code>vx = vy = 0</code>. Après quelques frames,
-               la vélocité a grandi et la particule file dans sa direction.
-               <br><br>
-               C'est pourquoi elles partent dans toutes les directions à la fois.`,
+               Au départ <code>vx = vy = 0</code>.
+               Quelques frames plus tard, la vélocité a grandi dans sa direction unique.`,
         code:
 `// À la création :
 p.vx = 0;
@@ -77,7 +67,14 @@ p.ax = (Math.random() - 0.5) * 0.15;  // -0.075 → +0.075
 p.ay = (Math.random() - 0.5) * 0.15;`,
         highlight: 'p.ax = (Math.random() - 0.5) * 0.15;',
         freeze: false,
-        target: null,
+        onEnter(kit) {
+            kit.showVectors = true;
+            kit.markEmitter(kit.demo.W / 2, kit.demo.H / 2, 'spawn');
+        },
+        onExit(kit) {
+            kit.clearVectors();
+            kit.clearAnnotation();
+        },
     },
 
     {
@@ -99,7 +96,6 @@ p.ay = (Math.random() - 0.5) * 0.15;`,
 }`,
         highlight: 'p.vx += p.ax;',
         freeze: false,
-        target: null,
     },
 
 ];

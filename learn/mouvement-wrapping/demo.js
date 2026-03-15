@@ -98,6 +98,10 @@ function initDemo(canvas, kit) {
             );
             ctx.stroke();
         }
+        // Vecteurs sur couche SVG — mis à jour même quand gelé
+        if (kit.showVectors)
+            kit.drawVelocityVectors([main, ...autos], { scale: 18, maxCount: 9 });
+
         requestAnimationFrame(update);
     }
 

@@ -34,12 +34,12 @@ window.onload = function () {
       this.highlighted = null;
       const w = canvas.width, h = canvas.height;
       for (let i = 0; i < 100; i++) {
-        this.particles.push(
-          new Particle(w / 2, h / 2,
-            Math.random() * 4 + 1,
-            Math.random() * M_PI * 2,
-            0)
-        );
+        const p = new Particle(w / 2, h / 2,
+          Math.random() * 4 + 1,
+          Math.random() * M_PI * 2,
+          0);
+        p.friction = 0.99;   // ralentissement progressif → reste visible
+        this.particles.push(p);
       }
     },
 
@@ -139,12 +139,12 @@ window.onload = function () {
         ];
         for (const o of origins) {
           for (let i = 0; i < 100; i++) {
-            sim.particles.push(
-              new Particle(o.x, o.y,
-                Math.random() * 4 + 1,
-                Math.random() * M_PI * 2,
-                0)
-            );
+            const p = new Particle(o.x, o.y,
+              Math.random() * 4 + 1,
+              Math.random() * M_PI * 2,
+              0);
+            p.friction = 0.99;
+            sim.particles.push(p);
           }
         }
       }

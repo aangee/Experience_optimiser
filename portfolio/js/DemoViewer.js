@@ -37,12 +37,13 @@ class DemoViewer {
     // Contrôles tactiles (opérationnel seulement sur touch device)
     this.touch = new TouchControls();
 
-    // Overlay annotations mode Comprendre
-    this.learn = new LearnMode(document.getElementById('viewer-body'));
+    // LearnMode conservé en stub no-op pour compatibilité
+    this.learn = new LearnMode();
 
     // État courant
-    this.mode    = 'jouer';
-    this.project = null;
+    this.mode        = 'jouer';
+    this.project     = null;
+    this._currentSrc = '';
 
     // ── Événements ──────────────────────────────────────────
     this.closeBtn.addEventListener('click', () => this.close());
@@ -86,7 +87,8 @@ class DemoViewer {
     const controls = version?.controls ?? project.controls ?? [];
     const touch    = version?.touch    ?? null;
 
-    this.iframe.src = src;
+    this._currentSrc = src;
+    this.iframe.src  = src;
     this._renderControls(controls);
     this._renderVersions(project.versions ?? [], src);
     this.touch.mount(this.iframe, touch);
@@ -123,16 +125,17 @@ class DemoViewer {
     if (isJouer) {
       this.learn.unmount();
       this.comprendreEl.classList.add('hidden');
+      this.iframe.src = this._currentSrc;
       this.iframe.classList.remove('hidden');
     } else {
-      const steps = this.project?.learn;
-      if (steps && steps.length > 0) {
-        // L'iframe reste visible — l'overlay se pose par-dessus
+      const learnSrc = this.project?.learnSrc;
+      if (learnSrc) {
+        // Charge le fichier learn.html dans l'iframe
+        this.iframe.src = learnSrc;
         this.iframe.classList.remove('hidden');
         this.comprendreEl.classList.add('hidden');
-        this.learn.mount(steps, this.iframe);
       } else {
-        // Pas de steps définis pour cette démo : placeholder Phase 3
+        // Pas de learnSrc : placeholder Phase 3
         this.iframe.classList.add('hidden');
         this.comprendreEl.classList.remove('hidden');
       }
@@ -158,7 +161,8 @@ class DemoViewer {
 
   /** Bascule vers une version différente du même projet. */
   _switchVersion(version) {
-    this.iframe.src = version.src;
+    this._currentSrc = version.src;
+    this.iframe.src  = version.src;
     this._renderControls(version.controls || this.project.controls || []);
     this.touch.mount(this.iframe, version.touch || null);
   }

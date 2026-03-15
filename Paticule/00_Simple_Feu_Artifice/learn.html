@@ -3,17 +3,50 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Feu d'artifice — Comprendre</title>
-  <link rel="stylesheet" href="../../_lib/MasterCss.css">
+  <title>Comprendre — Feu d'artifice</title>
   <link rel="stylesheet" href="../../_lib/LearnKit.css">
 </head>
-<body>
+<body class="lk-body">
 
-  <canvas id="canvas"></canvas>
+  <div id="lk-app">
 
-  <!-- Compteur de particules — visible en mode bug (step 4) -->
-  <div class="lk-count-badge" id="lk-count-badge">
-    particules : <span id="lk-particle-count">0</span>
+    <header class="lk-header">
+      <span class="lk-demo-name">Feu d'artifice</span>
+      <a href="index.html" class="lk-btn-play">▶ Jouer</a>
+    </header>
+
+    <div class="lk-main">
+
+      <!-- Zone canvas -->
+      <div class="lk-canvas-wrap">
+        <canvas id="canvas"></canvas>
+        <!-- Cercle cible : positionné par LearnKit.js -->
+        <div class="lk-target" id="lk-target"></div>
+      </div>
+
+      <!-- Panneau explicatif -->
+      <aside class="lk-panel">
+        <div class="lk-panel-inner">
+
+          <div class="lk-step-badge" id="lk-step-badge">étape 1 / 4</div>
+          <h2 class="lk-title" id="lk-title">…</h2>
+          <p class="lk-text" id="lk-text">…</p>
+
+          <!-- Badge compteur particules (affiché seulement au step "bug") -->
+          <div class="lk-count-badge" id="lk-count-badge" style="display:none">
+            particules actives : <span id="lk-particle-count">0</span>
+          </div>
+
+          <nav class="lk-nav">
+            <button class="lk-btn" id="lk-prev">◀</button>
+            <span class="lk-counter" id="lk-counter">1 / 4</span>
+            <button class="lk-btn" id="lk-next">▶</button>
+          </nav>
+
+        </div>
+      </aside>
+
+    </div>
   </div>
 
   <script src="../../_lib/MasterClass.js"></script>

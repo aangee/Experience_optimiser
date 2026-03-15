@@ -34,10 +34,6 @@ b.vy *= FRICTION;`,
             kit.showVectors = true;
             kit.markEmitter(kit.demo.W / 2, kit.demo.H / 2, 'spawn');
         },
-        onExit(kit) {
-            kit.clearVectors();
-            kit.clearAnnotation();
-        },
     },
 
     {
@@ -53,7 +49,6 @@ b.vy *= FRICTION;`,
             kit.demo.spawnAll();
             kit.showVectors = true;
         },
-        onExit(kit) { kit.clearVectors(); },
     },
 
     {

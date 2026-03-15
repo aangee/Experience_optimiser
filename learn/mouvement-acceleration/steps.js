@@ -27,7 +27,6 @@ p.y += p.vy;   // avance de vy pixels en Y`,
         highlight: 'p.x += p.vx;',
         freeze: false,
         onEnter(kit) { kit.showVectors = true; },
-        onExit(kit)  { kit.clearVectors(); },
     },
 
     {
@@ -48,7 +47,6 @@ p.y  += p.vy;`,
         highlight: 'p.vx += p.ax;',
         freeze: false,
         onEnter(kit) { kit.showVectors = true; },
-        onExit(kit)  { kit.clearVectors(); },
     },
 
     {
@@ -70,10 +68,6 @@ p.ay = (Math.random() - 0.5) * 0.15;`,
         onEnter(kit) {
             kit.showVectors = true;
             kit.markEmitter(kit.demo.W / 2, kit.demo.H / 2, 'spawn');
-        },
-        onExit(kit) {
-            kit.clearVectors();
-            kit.clearAnnotation();
         },
     },
 

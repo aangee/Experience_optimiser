@@ -66,9 +66,6 @@ const STEPS = [
         onEnter(kit) {
             kit.markEmitter(kit.demo.W / 2, kit.demo.H / 2, 'émetteur');
         },
-        onExit(kit) {
-            kit.clearAnnotation();
-        },
     },
 
     {

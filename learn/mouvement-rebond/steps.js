@@ -11,7 +11,6 @@ const STEPS = [
                Clique sur le canvas pour faire apparaître de nouvelles balles.`,
         code: null,
         freeze: false,
-        target: null,
     },
 
     {
@@ -33,7 +32,6 @@ b.y  += b.vy;`,
             // Flèche vers le bas depuis le milieu haut : représente la gravité
             kit.drawArrow(W / 2, H * 0.25, W / 2, H * 0.25 + 70, 'gravité');
         },
-        onExit(kit) { kit.clearAnnotation(); },
     },
 
     {

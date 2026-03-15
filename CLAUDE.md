@@ -160,8 +160,20 @@ Moteur pédagogique "Mode Comprendre" créé en 2026-03-15 :
 - `learn/engine/LearnKit.js` : classe `LearnKit` (steps, navigation, SVG annotations, freeze, code highlight)
 - `learn/engine/LearnKit.css` : layout deux colonnes (canvas gauche / panneau droite), responsive mobile
 - `learn/feu-artifice/` : première démo pédagogique (6 étapes, feu d'artifice)
-  - `index.html` + `demo.js` + `steps.js`
-  - Activé via `learnSrc: '../learn/feu-artifice/index.html'` dans ProjectData.js
+- `learn/mouvement/` : deuxième démo pédagogique (6 étapes, vélocité / gravité / rebond / friction)
+
+#### Ajouter un module LearnKit — checklist
+1. Créer `learn/<nom>/index.html` (copier feu-artifice, changer titre)
+2. Créer `learn/<nom>/demo.js` — exporte `initDemo(canvas, kit)`, peuple `kit.demo`
+3. Créer `learn/<nom>/steps.js` — exporte `STEPS` (tableau d'objets étapes)
+4. Ajouter `learnSrc: '../learn/<nom>/index.html'` dans la carte ProjectData.js
+5. **Merger la branche dans `main`** — GitHub Pages sert `main`, rien n'est visible avant le merge
+
+#### Bugs connus / pièges
+- Si le bouton "Comprendre" montre le placeholder Phase 3 → vérifier d'abord si la branche est mergée
+- Si `learnSrc` pointe vers un fichier supprimé → DemoViewer échoue silencieusement (404)
+- Si `freeze: true` ne gèle pas → vérifier que `demo.js` lit bien `if (!kit.frozen)` dans la boucle
+- Paths `learnSrc` sont relatifs à `portfolio/` : `'../learn/<nom>/index.html'`
 
 ### Format d'un step LearnKit
 ```js

@@ -87,7 +87,12 @@ portfolio-aangee/
 
 ### Phase 3 — Mode Comprendre ← en cours
 - [x] Moteur LearnKit (`learn/engine/`) — steps, navigation, SVG annotations, freeze, code highlight
-- [x] Première démo pédagogique : `learn/feu-artifice/` (6 étapes)
+- [x] `learn/feu-artifice/` — 5 étapes (particules, émetteur, vélocité, cycle de vie, gravité)
+- [x] `learn/mouvement-acceleration/` — 5 étapes (position, vélocité, accélération, direction aléatoire)
+- [x] `learn/mouvement-wrapping/` — 5 étapes (déplacement, bords, espace toroïdal)
+- [x] `learn/mouvement-rebond/` — 5 étapes (gravité, détection sol, inversion, 4 murs)
+- [x] `learn/mouvement-friction/` — 5 étapes (coefficient, multiplication, comparatif 3 niveaux)
+- [x] `learnSrc` par version dans ProjectData.js (carte Mouvement)
 - [ ] `learn/spring/` — ressorts (bonne démo pour expliquer les vecteurs)
 - [ ] `learn/easing/` — courbes d'animation
 - [ ] `learn/fractal-trees/` — récursion
@@ -131,4 +136,4 @@ portfolio-aangee/
 
 ## Prochaine étape
 
-Créer les prochains modules `learn/` — `spring/` ou `easing/` sont de bons candidats (visuels, concis, faciles à expliquer en quelques étapes).
+Modules Mouvement terminés et splittés par version. Prochains candidats : `spring/` ou `easing/` (visuels, concis, faciles à expliquer).

@@ -32,6 +32,8 @@ function initDemo(canvas, kit) {
         createBurst((e.clientX - rect.left) * sx, (e.clientY - rect.top) * sy);
     });
 
+    let frameCount = 0;
+
     function update() {
         if (!kit.frozen) {
             ctx.clearRect(0, 0, W, H);
@@ -42,6 +44,14 @@ function initDemo(canvas, kit) {
                 ctx.fillStyle = 'red';
                 ctx.arc(p.position.getX(), p.position.getY(), 5, 0, TAU);
                 ctx.fill();
+            }
+            // Supprimer les particules hors canvas toutes les 120 frames
+            if (++frameCount % 120 === 0) {
+                particles = particles.filter(p =>
+                    p.position.getX() > -20 && p.position.getX() < W + 20 &&
+                    p.position.getY() > -20 && p.position.getY() < H + 20
+                );
+                kit.demo.particles = particles;
             }
         }
         requestAnimationFrame(update);

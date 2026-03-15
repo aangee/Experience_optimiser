@@ -127,12 +127,14 @@ ctx.fill();`,
         code:
 `canvas.addEventListener('click', e => {
     const rect = canvas.getBoundingClientRect();
+    const sx = canvas.width  / rect.width;  // facteur d'échelle X
+    const sy = canvas.height / rect.height; // facteur d'échelle Y
     createBurst(
-        e.clientX - rect.left,   // X relatif au canvas
-        e.clientY - rect.top     // Y relatif au canvas
+        (e.clientX - rect.left) * sx,  // X en coordonnées canvas
+        (e.clientY - rect.top)  * sy   // Y en coordonnées canvas
     );
 });`,
-        highlight: 'createBurst(',
+        highlight: 'const sx = canvas.width  / rect.width;',
         freeze: false,
     },
 ];

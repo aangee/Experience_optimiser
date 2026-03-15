@@ -55,8 +55,7 @@ class LearnKit {
 
     _go(index) {
         const prev = this.steps[this.currentIndex];
-        if (prev?.onExit)  prev.onExit(this);
-        if (prev?.freeze)  this.unfreeze();
+        if (prev?.onExit) prev.onExit(this);
 
         this.currentIndex = index;
         this._applyStep(index);
@@ -65,8 +64,9 @@ class LearnKit {
     _applyStep(index) {
         const step = this.steps[index];
 
-        // Gel de l'animation
+        // Toujours synchroniser l'état de gel avec l'étape courante
         if (step.freeze) this.freeze();
+        else             this.unfreeze();
 
         // Annotation SVG
         if (step.target) this.pointTo(step.target.x, step.target.y, step.target.label || '');

@@ -63,45 +63,58 @@ class LearnMode {
   // ── Animation pause / resume ─────────────────────────────
 
   /**
-   * Gèle la boucle requestAnimationFrame de l'iframe sans toucher
-   * au code source de la démo. On remplace rAF par un no-op qui
-   * stocke le dernier callback reçu — la boucle s'arrête au prochain tour.
+   * Gèle visuellement l'iframe en deux temps :
+   *
+   * 1. Snapshot canvas → <img> posé par-dessus l'iframe.
+   *    Garanti instantané, indépendant de l'implémentation de la démo.
+   *
+   * 2. Tentative de freeze RAF (bonus CPU) : remplace requestAnimationFrame
+   *    par un no-op qui stocke le dernier callback pour pouvoir reprendre.
+   *    Si l'accès contentWindow échoue, le snapshot suffit quand même.
    */
   _pauseAnimation() {
+    this._snapshot = null;
+    try {
+      const doc = this._iframe?.contentDocument;
+      const canvas = doc?.querySelector('canvas');
+      if (canvas) {
+        const img = document.createElement('img');
+        img.src = canvas.toDataURL();
+        img.className = 'learn-snapshot';
+        this._body.appendChild(img);
+        this._snapshot = img;
+      }
+    } catch (_) {}
+
     try {
       const win = this._iframe?.contentWindow;
       if (!win || win._learnPaused) return;
-
       const orig = win.requestAnimationFrame.bind(win);
       win._learnOrigRAF = orig;
       win._learnLastCb  = null;
       win._learnPaused  = true;
-
-      win.requestAnimationFrame = (cb) => {
-        win._learnLastCb = cb;   // on mémorise sans exécuter
-        return 0;
-      };
-    } catch (_) { /* cross-origin ou iframe pas encore chargée */ }
+      win.requestAnimationFrame = (cb) => { win._learnLastCb = cb; return 0; };
+    } catch (_) {}
   }
 
   /**
-   * Rebranche le requestAnimationFrame original et relance la boucle
-   * à partir du dernier callback mémorisé.
+   * Retire le snapshot et relance la boucle RAF si elle avait été gelée.
    */
   _resumeAnimation() {
+    if (this._snapshot) {
+      this._snapshot.remove();
+      this._snapshot = null;
+    }
     try {
       const win = this._iframe?.contentWindow;
       if (!win || !win._learnPaused) return;
-
       const orig = win._learnOrigRAF;
       const cb   = win._learnLastCb;
-
       win.requestAnimationFrame = orig;
       delete win._learnOrigRAF;
       delete win._learnLastCb;
       delete win._learnPaused;
-
-      if (cb) orig(cb);   // redémarre la boucle
+      if (cb) orig(cb);
     } catch (_) {}
   }
 

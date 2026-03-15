@@ -130,7 +130,7 @@ class DemoViewer {
         // L'iframe reste visible — l'overlay se pose par-dessus
         this.iframe.classList.remove('hidden');
         this.comprendreEl.classList.add('hidden');
-        this.learn.mount(steps);
+        this.learn.mount(steps, this.iframe);
       } else {
         // Pas de steps définis pour cette démo : placeholder Phase 3
         this.iframe.classList.add('hidden');

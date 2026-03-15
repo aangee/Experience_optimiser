@@ -10,10 +10,14 @@
  *   - un cercle + point cible
  *   - une barre de navigation ◀ n/total ▶
  *
+ * L'animation de l'iframe est gelée à l'entrée en mode Comprendre
+ * en remplaçant son requestAnimationFrame par une version no-op
+ * (compatible toutes démos, sans modifier les fichiers source).
+ *
  * Usage :
  *   const learn = new LearnMode(bodyEl);
- *   learn.mount(stepsArray);   // affiche l'overlay, step 0
- *   learn.unmount();           // retire l'overlay proprement
+ *   learn.mount(stepsArray, iframeEl);  // gèle + affiche step 0
+ *   learn.unmount();                    // dégèle + retire l'overlay
  *
  * Format d'un step :
  *   {
@@ -30,16 +34,19 @@ class LearnMode {
   constructor(bodyEl) {
     this._body    = bodyEl;
     this._overlay = null;
+    this._iframe  = null;
     this._steps   = [];
     this._current = 0;
   }
 
   // ── API publique ─────────────────────────────────────────
 
-  mount(steps) {
+  mount(steps, iframeEl = null) {
     this.unmount();
     this._steps   = steps;
     this._current = 0;
+    this._iframe  = iframeEl;
+    this._pauseAnimation();
     this._build();
     this._goTo(0);
   }
@@ -49,6 +56,66 @@ class LearnMode {
       this._overlay.remove();
       this._overlay = null;
     }
+    this._resumeAnimation();
+    this._iframe = null;
+  }
+
+  // ── Animation pause / resume ─────────────────────────────
+
+  /**
+   * Gèle visuellement l'iframe en deux temps :
+   *
+   * 1. Snapshot canvas → <img> posé par-dessus l'iframe.
+   *    Garanti instantané, indépendant de l'implémentation de la démo.
+   *
+   * 2. Tentative de freeze RAF (bonus CPU) : remplace requestAnimationFrame
+   *    par un no-op qui stocke le dernier callback pour pouvoir reprendre.
+   *    Si l'accès contentWindow échoue, le snapshot suffit quand même.
+   */
+  _pauseAnimation() {
+    this._snapshot = null;
+    try {
+      const doc = this._iframe?.contentDocument;
+      const canvas = doc?.querySelector('canvas');
+      if (canvas) {
+        const img = document.createElement('img');
+        img.src = canvas.toDataURL();
+        img.className = 'learn-snapshot';
+        this._body.appendChild(img);
+        this._snapshot = img;
+      }
+    } catch (_) {}
+
+    try {
+      const win = this._iframe?.contentWindow;
+      if (!win || win._learnPaused) return;
+      const orig = win.requestAnimationFrame.bind(win);
+      win._learnOrigRAF = orig;
+      win._learnLastCb  = null;
+      win._learnPaused  = true;
+      win.requestAnimationFrame = (cb) => { win._learnLastCb = cb; return 0; };
+    } catch (_) {}
+  }
+
+  /**
+   * Retire le snapshot et relance la boucle RAF si elle avait été gelée.
+   */
+  _resumeAnimation() {
+    if (this._snapshot) {
+      this._snapshot.remove();
+      this._snapshot = null;
+    }
+    try {
+      const win = this._iframe?.contentWindow;
+      if (!win || !win._learnPaused) return;
+      const orig = win._learnOrigRAF;
+      const cb   = win._learnLastCb;
+      win.requestAnimationFrame = orig;
+      delete win._learnOrigRAF;
+      delete win._learnLastCb;
+      delete win._learnPaused;
+      if (cb) orig(cb);
+    } catch (_) {}
   }
 
   // ── Privé ────────────────────────────────────────────────

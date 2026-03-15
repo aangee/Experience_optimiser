@@ -162,11 +162,44 @@ Moteur pédagogique "Mode Comprendre" créé en 2026-03-15 :
 - `learn/feu-artifice/` : première démo pédagogique (6 étapes, feu d'artifice)
 - `learn/mouvement/` : deuxième démo pédagogique (6 étapes, vélocité / gravité / rebond / friction)
 
+#### Architecture cible (DÉCISION LONG TERME — ne pas condenser)
+
+> **Règle** : chaque version d'un projet a son propre dossier `learn/` et son propre `learnSrc`.
+> Un seul `learnSrc` par carte = mauvaise idée → le sélecteur de versions devient inutile en mode Comprendre.
+
+Structure ProjectData.js cible :
+```js
+{
+  name: 'Mouvement',
+  versions: [
+    { label: 'Vélocité',  src: '../Paticule/01_.../v1/', learnSrc: '../learn/mouvement-velocite/index.html' },
+    { label: 'Gravité',   src: '../Paticule/01_.../v2/', learnSrc: '../learn/mouvement-gravite/index.html' },
+    { label: 'Rebond',    src: '../Paticule/01_.../v3/', learnSrc: '../learn/mouvement-rebond/index.html' },
+    { label: 'Friction',  src: '../Paticule/01_.../v4/', learnSrc: '../learn/mouvement-friction/index.html' },
+  ]
+}
+```
+
+Structure `learn/` cible :
+```
+learn/
+  engine/           ← moteur générique partagé (ne pas dupliquer)
+  feu-artifice/     ← 1 dossier = 1 version = 1 concept
+  mouvement-velocite/
+  mouvement-gravite/
+  mouvement-rebond/
+  mouvement-friction/
+  ...
+```
+
+DemoViewer : en mode Comprendre, le sélecteur charge `version.learnSrc` (même logique que Jouer).
+**État actuel (transitoire)** : `learnSrc` au niveau carte, sélecteur caché en mode Comprendre.
+
 #### Ajouter un module LearnKit — checklist
 1. Créer `learn/<nom>/index.html` (copier feu-artifice, changer titre)
 2. Créer `learn/<nom>/demo.js` — exporte `initDemo(canvas, kit)`, peuple `kit.demo`
 3. Créer `learn/<nom>/steps.js` — exporte `STEPS` (tableau d'objets étapes)
-4. Ajouter `learnSrc: '../learn/<nom>/index.html'` dans la carte ProjectData.js
+4. Ajouter `learnSrc: '../learn/<nom>/index.html'` dans la **version** concernée de ProjectData.js
 5. **Merger la branche dans `main`** — GitHub Pages sert `main`, rien n'est visible avant le merge
 
 #### Bugs connus / pièges

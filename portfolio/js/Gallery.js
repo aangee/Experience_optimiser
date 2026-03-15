@@ -131,6 +131,7 @@ class Gallery {
         }
 
         ${locked ? '<div class="card-lock">bientôt</div>' : ''}
+        ${project.wip ? '<div class="card-wip-badge" title="Travaux en cours">WIP</div>' : ''}
         ${project.controls && project.controls.length > 0
           ? '<div class="card-controls-badge" title="Contrôles disponibles">🕹</div>'
           : ''}

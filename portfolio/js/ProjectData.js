@@ -402,11 +402,15 @@ const PROJECTS = [
     id: 'athena',
     name: 'Athena — moteur ECS',
     category: 'Architecture',
-    description: 'Un mini moteur de jeu Unity-like en JS vanilla — ECS, gestion de scènes, collisions bitmap sur canvas dédié.',
-    iframeSrc: '',
+    description: 'Un mini moteur de jeu Unity-like en JS vanilla — ECS, factories, pattern Command, collisions bitmap sur canvas dédié. Projet en cours d\'amélioration.',
+    iframeSrc: '../MiniGame/07_angine_js_v01-feat-menu/index.html',
     tags: ['ECS', 'architecture', 'moteur', 'avancé'],
-    controls: [],
-    phase: 3
+    controls: [
+      { key: 'Z / S',  desc: 'Propulsion avant / arrière' },
+      { key: 'Q / D',  desc: 'Rotation gauche / droite' }
+    ],
+    wip: true,
+    phase: 1
   },
 
 ];

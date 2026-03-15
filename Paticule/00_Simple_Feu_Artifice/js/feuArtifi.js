@@ -18,19 +18,27 @@ window.onload = function () {
 
     function update() {
         setup.ctx.clearRect(0, 0, setup.width, setup.height);
-        counterElement.textContent = currentNbsParticle;
 
-
-        for (let i = 0; i < particles.length; i += 1) {
+        for (let i = particles.length - 1; i >= 0; i -= 1) {
             const p = particles[i];
             p.update();
+
+            const px = p.position.getX();
+            const py = p.position.getY();
+
+            if (px < -10 || px > setup.width + 10 || py < -10 || py > setup.height + 10) {
+                particles.splice(i, 1);
+                currentNbsParticle -= 1;
+                continue;
+            }
+
             setup.ctx.beginPath();
             setup.ctx.fillStyle = 'red';
-            setup.ctx.arc(p.position.getX(), p.position.getY(), 5, 0, M_PI * 2, false);
+            setup.ctx.arc(px, py, 5, 0, M_PI * 2, false);
             setup.ctx.fill();
-
         }
 
+        counterElement.textContent = currentNbsParticle;
         requestAnimationFrame(update);
     }
 

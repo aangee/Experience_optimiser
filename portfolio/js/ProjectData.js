@@ -38,6 +38,7 @@ const PROJECTS = [
     category: 'Particules',
     description: 'Les bases du mouvement — accélération, wrapping, rebond et friction. Les briques fondamentales de toute physique 2D.',
     iframeSrc: '../Paticule/01_Acceleration/index.html',
+    learnSrc:  '../learn/mouvement/index.html',
     tags: ['mouvement', 'physique', 'bases'],
     controls: [],
     versions: [

@@ -8,9 +8,10 @@ const STEPS = [
         text: `Trois groupes de balles partent du centre avec la même vitesse.
                Elles ralentissent à des rythmes différents selon leur coefficient de friction.
                <br><br>
-               Clique pour relancer toutes les balles.`,
+               Clique pour relancer toutes les balles depuis le centre.`,
         code: null,
         freeze: false,
+        onEnter(kit) { kit.demo.spawnAll(); },
         target: null,
     },
 
@@ -28,9 +29,12 @@ const STEPS = [
 b.vx *= FRICTION;   // 4% de la vitesse perdue
 b.vy *= FRICTION;`,
         highlight: 'b.vx *= FRICTION;',
-        freeze: true,
+        freeze: false,
         onEnter(kit) {
-            kit.pointTo(kit.demo.W / 2, kit.demo.H / 2, 'départ depuis le centre');
+            kit.demo.spawnAll();
+            // Flèche depuis le centre qui "rétrécit" — représente la décroissance
+            const W = kit.demo.W, H = kit.demo.H;
+            kit.drawArrow(W/2, H/2, W/2 + 80, H/2, '× 0.96 par frame');
         },
         onExit(kit) { kit.clearAnnotation(); },
     },
@@ -38,27 +42,26 @@ b.vy *= FRICTION;`,
     {
         title: "L'effet du coefficient",
         text: `Les trois couleurs illustrent trois coefficients différents :<br><br>
-               <span style="color:#4ECDC4"><strong>0.99</strong></span> → perd 1% par frame → ralentit très lentement (air léger)<br>
-               <span style="color:#FFD700"><strong>0.96</strong></span> → perd 4% par frame → ralentit clairement<br>
-               <span style="color:#FF6B6B"><strong>0.90</strong></span> → perd 10% par frame → freine fort (dans l'eau)<br><br>
-               Un coefficient de <strong>1</strong> = aucune friction. De <strong>0</strong> = arrêt immédiat.`,
-        code:
-`// Même vitesse initiale, coefficients différents :
-// cyan  : vx *= 0.99  →  lente décroissance
-// jaune : vx *= 0.96  →  décroissance moyenne
-// rouge : vx *= 0.90  →  décroissance rapide`,
-        highlight: 'vx *= 0.99',
+               <span style="color:#4ECDC4"><strong>0.99</strong></span> — perd 1% par frame, ralentit très lentement<br>
+               <span style="color:#FFD700"><strong>0.96</strong></span> — perd 4% par frame, ralentit clairement<br>
+               <span style="color:#FF6B6B"><strong>0.90</strong></span> — perd 10% par frame, freine fort (dans l'eau)<br><br>
+               Un coefficient de <strong>1</strong> = aucune friction. <strong>0</strong> = arrêt immédiat.`,
+        code: null,
         freeze: false,
+        onEnter(kit) {
+            kit.demo.spawnAll();   // relancer proprement pour la comparaison
+        },
+        target: null,
     },
 
     {
         title: "Pourquoi une multiplication et pas une soustraction ?",
         text: `On pourrait soustraire une valeur fixe à chaque frame.
-               Mais ça poserait un problème : la vélocité pourrait passer en négatif
-               et le objet repartirait dans l'autre sens.
+               Mais ça poserait un problème : si la vitesse est déjà quasi-nulle,
+               <code>vx</code> passerait en négatif et l'objet repartirait dans l'autre sens.
                <br><br>
-               La multiplication garantit que la vélocité <em>converge vers zéro</em>
-               sans jamais changer de signe — comportement physiquement correct.`,
+               La multiplication garantit que la vélocité
+               <em>converge vers zéro sans jamais changer de signe</em>.`,
         code:
 `// ❌ Soustraction — peut inverser la direction
 b.vx -= 0.1;   // si vx = 0.05 → devient -0.05 → repart !
@@ -67,6 +70,7 @@ b.vx -= 0.1;   // si vx = 0.05 → devient -0.05 → repart !
 b.vx *= 0.96;  // toujours dans la même direction`,
         highlight: 'b.vx *= 0.96;',
         freeze: false,
+        target: null,
     },
 
     {
@@ -74,7 +78,7 @@ b.vx *= 0.96;  // toujours dans la même direction`,
         text: `Dans la plupart des simulations, friction et rebond s'utilisent ensemble.
                La friction freine dans l'air, l'amortissement au rebond absorbe l'énergie à l'impact.
                <br><br>
-               La prochaine démo (Rebond) montre comment les combiner.`,
+               Le module Rebond montre comment les combiner.`,
         code:
 `// À chaque frame :
 b.vx *= FRICTION;   // résistance de l'air
@@ -89,6 +93,7 @@ if (b.y + b.r > H) {
 }`,
         highlight: 'b.vx *= FRICTION;',
         freeze: false,
+        target: null,
     },
 
 ];

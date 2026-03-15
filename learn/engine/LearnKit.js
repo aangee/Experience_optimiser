@@ -37,12 +37,74 @@ class LearnKit {
             this._go(this.currentIndex - 1);
     }
 
+    // Cercle pointillé sur une coordonnée canvas
     pointTo(cx, cy, label = '') {
         const labelSVG = label
             ? `<text class="target-label" x="${cx}" y="${cy - 34}" text-anchor="middle">${label}</text>`
             : '';
         this.svgOverlay.innerHTML = `
             <circle class="target-ring" cx="${cx}" cy="${cy}" r="28"/>
+            ${labelSVG}
+        `;
+    }
+
+    // Bord clignotant : side = 'left' | 'right' | 'top' | 'bottom'
+    highlightEdge(side, label = '') {
+        const W = this.canvas.width;
+        const H = this.canvas.height;
+        const S = 6;
+        let x1, y1, x2, y2, lx, ly, anchor;
+        switch (side) {
+            case 'right':
+                x1 = W-S; y1 = S;   x2 = W-S; y2 = H-S;
+                lx = W-S-10; ly = H/2 - 14; anchor = 'end'; break;
+            case 'left':
+                x1 = S;   y1 = S;   x2 = S;   y2 = H-S;
+                lx = S+10; ly = H/2 - 14; anchor = 'start'; break;
+            case 'bottom':
+                x1 = S;   y1 = H-S; x2 = W-S; y2 = H-S;
+                lx = W/2; ly = H-S-14; anchor = 'middle'; break;
+            case 'top':
+                x1 = S;   y1 = S;   x2 = W-S; y2 = S;
+                lx = W/2; ly = S+22; anchor = 'middle'; break;
+        }
+        const labelSVG = label
+            ? `<text class="edge-label" x="${lx}" y="${ly}" text-anchor="${anchor}">${label}</text>`
+            : '';
+        this.svgOverlay.innerHTML = `
+            <line class="edge-highlight" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>
+            ${labelSVG}
+        `;
+    }
+
+    // Cadre clignotant sur les 4 bords d'un coup
+    highlightAllEdges(label = '') {
+        const W = this.canvas.width;
+        const H = this.canvas.height;
+        const S = 6;
+        const labelSVG = label
+            ? `<text class="edge-label" x="${W/2}" y="${H/2}" text-anchor="middle">${label}</text>`
+            : '';
+        this.svgOverlay.innerHTML = `
+            <rect class="edge-rect" x="${S}" y="${S}" width="${W - S*2}" height="${H - S*2}"/>
+            ${labelSVG}
+        `;
+    }
+
+    // Flèche directionnelle
+    drawArrow(x1, y1, x2, y2, label = '') {
+        const mx = (x1 + x2) / 2;
+        const my = (y1 + y2) / 2;
+        const labelSVG = label
+            ? `<text class="arrow-label" x="${mx + 8}" y="${my}" text-anchor="start">${label}</text>`
+            : '';
+        this.svgOverlay.innerHTML = `
+            <defs>
+                <marker id="ah" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                    <polygon class="arrow-head" points="0 0, 8 3, 0 6"/>
+                </marker>
+            </defs>
+            <line class="arrow-line" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" marker-end="url(#ah)"/>
             ${labelSVG}
         `;
     }

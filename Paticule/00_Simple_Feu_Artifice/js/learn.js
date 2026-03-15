@@ -4,11 +4,10 @@
  * Reconstruit la simulation depuis zéro pour un contrôle
  * frame-by-frame via LearnKit.
  *
- * Steps :
- *  0 — La première étincelle  (100 particules, centre, libre)
- *  1 — Particule = objet       (une particule mise en valeur)
- *  2 — La boucle de jeu        (boucle RAF expliquée)
- *  3 — Premier bug conscient   (400 particules, compteur visible)
+ * Chaque step :
+ *   - joue quelques frames pour montrer l'animation
+ *   - se fige → annotation + indicateur visuel (cercle) sur le canvas
+ *   - clic ▶ → step suivant
  */
 
 window.onload = function () {
@@ -17,8 +16,8 @@ window.onload = function () {
   canvas.width  = window.innerWidth;
   canvas.height = window.innerHeight;
 
-  const counterEl   = document.getElementById('lk-particle-count');
-  const countBadge  = document.getElementById('lk-count-badge');
+  const counterEl  = document.getElementById('lk-particle-count');
+  const countBadge = document.getElementById('lk-count-badge');
   const M_PI = Math.PI;
 
   // ── Simulation ───────────────────────────────────────────
@@ -34,16 +33,18 @@ window.onload = function () {
       this.highlighted = null;
       const w = canvas.width, h = canvas.height;
       for (let i = 0; i < 100; i++) {
-        const p = new Particle(w / 2, h / 2,
+        const p = new Particle(
+          w / 2, h / 2,
           Math.random() * 4 + 1,
           Math.random() * M_PI * 2,
-          0);
-        p.friction = 0.99;   // ralentissement progressif → reste visible
+          0
+        );
+        p.friction = 0.99;
         this.particles.push(p);
       }
     },
 
-    /** Dessine une frame. Appelé par LearnKit. */
+    /** Dessine une frame. Appelé par LearnKit via _drawFrame(). */
     update(ctx, w, h) {
       ctx.clearRect(0, 0, w, h);
 
@@ -52,7 +53,6 @@ window.onload = function () {
         ctx.beginPath();
 
         if (p === this.highlighted) {
-          // Particule mise en valeur : blanche + halo jaune
           ctx.arc(p.x, p.y, 9, 0, M_PI * 2);
           ctx.fillStyle = '#ffffff';
           ctx.fill();
@@ -79,10 +79,12 @@ window.onload = function () {
       title: 'La première étincelle',
       annotation: {
         text: 'Au démarrage, 100 particules naissent au centre de l\'écran. Chaque angle est tiré au hasard entre 0 et 2π — ce qui forme l\'explosion initiale dans toutes les directions.',
-        x: 55,
-        y: 8
+        x: 4,
+        y: 4
       },
-      play: Infinity,
+      // Cercle indicateur au centre du canvas — là où naissent les particules
+      target: { x: 50, y: 50 },
+      play: 90,
       onEnter(sim) {
         countBadge.style.display = 'none';
         sim.init();
@@ -94,13 +96,14 @@ window.onload = function () {
       annotation: {
         text: 'Chaque point rouge est une instance de la classe Particle. Elle connaît sa position (x, y) et sa vitesse (vx, vy). C\'est tout — le minimum pour simuler un mouvement.',
         x: 4,
-        y: 8
+        y: 4
       },
-      play: Infinity,
+      // Pas de target fixe : la particule blanche IS l'indicateur visuel
+      target: null,
+      play: 120,
       onEnter(sim) {
         countBadge.style.display = 'none';
         sim.init();
-        // Met en valeur la première particule
         sim.highlighted = sim.particles[0];
       }
     },
@@ -109,10 +112,11 @@ window.onload = function () {
       title: 'La boucle de jeu',
       annotation: {
         text: 'requestAnimationFrame rappelle update() ~60×/s. À chaque frame : on efface le canvas, on recalcule chaque position, on redessine. C\'est le moteur de toute animation canvas.',
-        x: 28,
-        y: 50
+        x: 60,
+        y: 4
       },
-      play: Infinity,
+      target: null,
+      play: 60,
       onEnter(sim) {
         countBadge.style.display = 'none';
         sim.init();
@@ -124,13 +128,14 @@ window.onload = function () {
       annotation: {
         text: 'À chaque clic, 100 nouvelles particules s\'ajoutent sans jamais en supprimer. Le compteur grimpe indéfiniment. Bug laissé volontairement — pour apprendre ensuite le cycle de vie.',
         x: 4,
-        y: 50
+        y: 4
       },
-      play: Infinity,
+      target: null,
+      play: 120,
       onEnter(sim) {
         countBadge.style.display = '';
         sim.init();
-        // Simule 3 clics pour montrer l'accumulation
+        // Simule 3 clics supplémentaires pour montrer l'accumulation
         const w = canvas.width, h = canvas.height;
         const origins = [
           { x: w * 0.28, y: h * 0.32 },
@@ -139,10 +144,12 @@ window.onload = function () {
         ];
         for (const o of origins) {
           for (let i = 0; i < 100; i++) {
-            const p = new Particle(o.x, o.y,
+            const p = new Particle(
+              o.x, o.y,
               Math.random() * 4 + 1,
               Math.random() * M_PI * 2,
-              0);
+              0
+            );
             p.friction = 0.99;
             sim.particles.push(p);
           }

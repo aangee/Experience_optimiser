@@ -12,9 +12,15 @@
  *   {
  *     title: string,
  *     annotation: { text: string, x: number, y: number }, // % du viewport
+ *     target:     { x: number, y: number } | null,        // cercle indicateur, % du canvas
  *     play: number | Infinity,  // 0 = figé, N = N frames puis pause, Infinity = libre
  *     onEnter(sim) {}           // appelé avant chaque step
  *   }
+ *
+ * Comportement :
+ *   - L'animation joue `play` frames puis se fige (canvas gardé tel quel).
+ *   - Si `target` est défini, un cercle indicateur est dessiné sur le canvas
+ *     à chaque frame (et sur la frame figée), pour indiquer "c'est ici".
  *
  * L'objet sim doit exposer :
  *   sim.update(ctx, width, height)  // dessine une frame
@@ -61,8 +67,8 @@ class LearnKit {
     this._updateUI();
 
     if (step.play === 0) {
-      // Step figé — une seule frame pour afficher l'état initial
-      this._sim.update(this._ctx, this._canvas.width, this._canvas.height);
+      // Step figé — une seule frame
+      this._drawFrame(step);
     } else {
       this._startLoop();
     }
@@ -77,11 +83,13 @@ class LearnKit {
     const tick = () => {
       if (!this._running) return;
 
-      this._sim.update(this._ctx, this._canvas.width, this._canvas.height);
+      this._drawFrame(step);
       this._frameCount++;
 
       if (step.play !== Infinity && this._frameCount >= step.play) {
         this._stopLoop();
+        // Dernière frame figée : redessine avec indicateur visible
+        this._drawFrame(step);
         return;
       }
 
@@ -96,6 +104,46 @@ class LearnKit {
     if (this._rafId !== null) {
       cancelAnimationFrame(this._rafId);
       this._rafId = null;
+    }
+  }
+
+  // ── Dessin d'une frame ──────────────────────────────────
+
+  /** Appelle sim.update puis superpose l'indicateur de cible si défini. */
+  _drawFrame(step) {
+    const ctx = this._ctx;
+    const w   = this._canvas.width;
+    const h   = this._canvas.height;
+
+    this._sim.update(ctx, w, h);
+
+    if (step.target) {
+      const tx = (step.target.x / 100) * w;
+      const ty = (step.target.y / 100) * h;
+
+      ctx.save();
+
+      // Halo extérieur
+      ctx.beginPath();
+      ctx.arc(tx, ty, 26, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(100, 180, 255, 0.55)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Cercle intérieur
+      ctx.beginPath();
+      ctx.arc(tx, ty, 14, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(100, 180, 255, 0.85)';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Point central
+      ctx.beginPath();
+      ctx.arc(tx, ty, 3.5, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(140, 200, 255, 0.95)';
+      ctx.fill();
+
+      ctx.restore();
     }
   }
 

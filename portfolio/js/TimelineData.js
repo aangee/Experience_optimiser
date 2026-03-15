@@ -138,7 +138,7 @@ const TIMELINE = [
   },
 
   {
-    date: { day: null, month: 'jan', year: 2023, approx: true },
+    date: { day: 23, month: 'jan', year: 2023, approx: false },
     title: 'Athena — premier moteur ECS',
     desc: 'Architecture Unity-like en JS vanilla : GameObjects, Components, Services canvas superposés, pattern Command pour les inputs, collisions bitmap. Le saut architectural le plus important du parcours.',
     demoId: 'athena',

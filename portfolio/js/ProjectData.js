@@ -28,7 +28,7 @@ const PROJECTS = [
     controls: [
       { key: 'Clic souris', desc: 'Explosion de particules' }
     ],
-    learnSrc: '../Paticule/00_Simple_Feu_Artifice/learn.html',
+    learnSrc: '../learn/feu-artifice/index.html',
     phase: 1
   },
 

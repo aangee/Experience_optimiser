@@ -38,18 +38,19 @@ const PROJECTS = [
     category: 'Particules',
     description: 'Les bases du mouvement — accélération, wrapping, rebond et friction. Les briques fondamentales de toute physique 2D.',
     iframeSrc: '../Paticule/01_Acceleration/index.html',
-    learnSrc:  '../learn/mouvement/index.html',
     tags: ['mouvement', 'physique', 'bases'],
     controls: [],
     versions: [
       {
         label: 'Accélération',
         src: '../Paticule/01_Acceleration/index.html',
+        learnSrc: '../learn/mouvement-acceleration/index.html',
         controls: []
       },
       {
         label: 'Wrapping',
         src: '../Paticule/04_Wrapping/index.html',
+        learnSrc: '../learn/mouvement-wrapping/index.html',
         controls: [
           { key: 'Z / Q / D', desc: 'Propulsion et rotation' }
         ]
@@ -57,6 +58,7 @@ const PROJECTS = [
       {
         label: 'Rebond',
         src: '../Paticule/07_Bounce/index.html',
+        learnSrc: '../learn/mouvement-rebond/index.html',
         controls: [
           { key: 'Clic souris', desc: 'Relancer l\'animation' }
         ]
@@ -64,6 +66,7 @@ const PROJECTS = [
       {
         label: 'Friction',
         src: '../Paticule/08_Friction/index.html',
+        learnSrc: '../learn/mouvement-friction/index.html',
         controls: []
       }
     ],

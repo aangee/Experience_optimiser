@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprendre — Wrapping</title>
+    <link rel="stylesheet" href="../engine/LearnKit.css">
+</head>
+<body>
+
+    <!-- ── Canvas (gauche) ─────────────────────────── -->
+    <div id="canvas-wrap">
+        <canvas id="canvas" width="800" height="600"></canvas>
+        <svg id="svg-overlay" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+
+    <!-- ── Panneau explicatif (droite) ─────────────── -->
+    <aside id="learn-panel">
+
+        <header id="step-header">
+            <div id="step-counter"></div>
+            <h2 id="step-title"></h2>
+        </header>
+
+        <div id="step-body">
+            <p id="step-text"></p>
+
+            <div id="step-code">
+                <pre></pre>
+            </div>
+        </div>
+
+        <nav id="step-nav">
+            <button id="btn-prev" class="nav-btn">← Préc.</button>
+            <div id="step-dots"></div>
+            <button id="btn-next" class="nav-btn">Suiv. →</button>
+        </nav>
+
+    </aside>
+
+    <!-- ── Scripts ─────────────────────────────────── -->
+    <script src="../../lib/MasterClass.js"></script>
+    <script src="../engine/LearnKit.js"></script>
+    <script src="steps.js"></script>
+    <script src="demo.js"></script>
+
+    <script>
+        window.onload = function () {
+            new LearnKit({
+                canvasId: 'canvas',
+                steps:    STEPS,
+                demoInit: initDemo,
+            });
+        };
+    </script>
+
+</body>
+</html>

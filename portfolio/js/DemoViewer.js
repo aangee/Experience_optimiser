@@ -37,6 +37,9 @@ class DemoViewer {
     // Contrôles tactiles (opérationnel seulement sur touch device)
     this.touch = new TouchControls();
 
+    // Overlay annotations mode Comprendre
+    this.learn = new LearnMode(document.getElementById('viewer-body'));
+
     // État courant
     this.mode    = 'jouer';
     this.project = null;
@@ -114,12 +117,26 @@ class DemoViewer {
 
     const isJouer = mode === 'jouer';
     this.modeToggle.dataset.mode = mode;
-    this.iframe.classList.toggle('hidden', !isJouer);
-    this.comprendreEl.classList.toggle('hidden', isJouer);
     this.controlsBar.classList.toggle('hidden', !isJouer);
-
-    // Cache le D-pad/joystick en mode Comprendre
     this.touch.setVisible(isJouer);
+
+    if (isJouer) {
+      this.learn.unmount();
+      this.comprendreEl.classList.add('hidden');
+      this.iframe.classList.remove('hidden');
+    } else {
+      const steps = this.project?.learn;
+      if (steps && steps.length > 0) {
+        // L'iframe reste visible — l'overlay se pose par-dessus
+        this.iframe.classList.remove('hidden');
+        this.comprendreEl.classList.add('hidden');
+        this.learn.mount(steps);
+      } else {
+        // Pas de steps définis pour cette démo : placeholder Phase 3
+        this.iframe.classList.add('hidden');
+        this.comprendreEl.classList.remove('hidden');
+      }
+    }
   }
 
   // ── Privé ────────────────────────────────────────────────

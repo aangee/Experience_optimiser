@@ -396,6 +396,119 @@ kbd {
   color: #fff;
 }
 
+/* ============================================================
+   LEARN MODE OVERLAY
+   ============================================================
+   Calque transparent par-dessus l'iframe en mode Comprendre.
+   Contient : SVG (ligne + cercle cible), bulle de texte, nav.
+   ============================================================ */
+
+.learn-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 30;
+}
+
+/* SVG pleine zone — la ligne pointillée + cercle cible */
+.learn-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* ── Bulle de texte ── */
+.learn-bubble {
+  position: absolute;
+  width: 230px;
+  background: rgba(13, 13, 13, 0.92);
+  border: 1px solid var(--accent-dim);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  pointer-events: auto;
+  transform: translateY(-50%);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.learn-bubble-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.learn-step-badge {
+  font-size: 0.6rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  border: 1px solid var(--accent-dim);
+  border-radius: 20px;
+  padding: 0.1rem 0.45rem;
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.learn-bubble-title {
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  margin: 0;
+}
+
+.learn-bubble-text {
+  color: var(--text-dim);
+  font-size: 0.76rem;
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* ── Barre de navigation centrée en bas de l'overlay ── */
+.learn-nav {
+  position: absolute;
+  bottom: 0.9rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  pointer-events: auto;
+  background: rgba(13, 13, 13, 0.88);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 0.3rem 1rem;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  white-space: nowrap;
+}
+
+.learn-btn {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 0.2rem 0.3rem;
+  border-radius: 4px;
+  transition: color 0.15s;
+  line-height: 1;
+}
+
+.learn-btn:hover {
+  color: var(--accent);
+}
+
+.learn-counter {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  min-width: 3rem;
+  text-align: center;
+}
+
 /* ── BOUTON SWAP ⇄ ── */
 .tc-btn--swap {
   position: absolute;

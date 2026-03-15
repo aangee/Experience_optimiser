@@ -28,32 +28,7 @@ const PROJECTS = [
     controls: [
       { key: 'Clic souris', desc: 'Explosion de particules' }
     ],
-    learn: [
-      {
-        title: 'La première étincelle',
-        text:  'Au démarrage, 100 particules naissent ici — au centre de l\'écran. Chaque angle de départ est tiré au hasard entre 0 et 2π pour former l\'explosion initiale.',
-        target: { x: 50, y: 50 },
-        bubble: { x: 58, y: 12 }
-      },
-      {
-        title: 'Particule = objet',
-        text:  'Chaque point rouge est une instance de Particle. Elle connaît sa position, sa vitesse et son angle de départ. C\'est tout — le minimum pour simuler un mouvement.',
-        target: { x: 48, y: 44 },
-        bubble: { x: 5, y: 15 }
-      },
-      {
-        title: 'La boucle de jeu',
-        text:  'requestAnimationFrame rappelle update() environ 60 fois par seconde. À chaque frame : on efface, on recalcule les positions, on redessine. C\'est le moteur de toute animation canvas.',
-        target: { x: 5, y: 7 },
-        bubble: { x: 32, y: 52 }
-      },
-      {
-        title: 'Premier bug conscient',
-        text:  'Au clic, 100 nouvelles particules s\'ajoutent au tableau — sans jamais en supprimer. Le compteur grimpe à l\'infini. C\'est le premier bug volontairement laissé, pour apprendre le cycle de vie.',
-        target: { x: 72, y: 72 },
-        bubble: { x: 5, y: 55 }
-      }
-    ],
+    learnSrc: '../Paticule/00_Simple_Feu_Artifice/learn.html',
     phase: 1
   },
 

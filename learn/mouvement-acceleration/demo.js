@@ -29,9 +29,13 @@ function initDemo(canvas, kit) {
     // 40 particules initiales
     for (let i = 0; i < 40; i++) spawnParticle();
 
-    // Spawn une nouvelle particule toutes les 800ms
+    // Spawn une nouvelle particule toutes les 800ms, s'arrête à 120
     const spawnInterval = setInterval(() => {
-        if (particles.length < 120) spawnParticle();
+        if (particles.length < 120) {
+            spawnParticle();
+        } else {
+            clearInterval(spawnInterval);
+        }
     }, 800);
 
     // Expose pour steps.js
@@ -58,14 +62,11 @@ function initDemo(canvas, kit) {
                     continue;
                 }
 
-                ctx.globalAlpha = p.alpha;
                 ctx.beginPath();
                 ctx.fillStyle = p.color;
                 ctx.arc(p.x, p.y, p.r, 0, TAU);
                 ctx.fill();
             }
-
-            ctx.globalAlpha = 1;
         }
         // Vecteurs sur couche SVG — mis à jour même quand gelé (flèches statiques)
         if (kit.showVectors)

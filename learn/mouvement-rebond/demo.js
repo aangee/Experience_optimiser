@@ -33,12 +33,16 @@ function initDemo(canvas, kit) {
         );
     }
 
-    // Clic → ajouter des balles
+    const MAX_BALLS = 60;
+
+    // Clic → ajouter des balles (plafonné à MAX_BALLS)
     canvas.addEventListener('click', e => {
+        if (balls.length >= MAX_BALLS) return;
         const rect = canvas.getBoundingClientRect();
         const sx   = W / rect.width;
         const sy   = H / rect.height;
-        for (let i = 0; i < 8; i++) {
+        const toAdd = Math.min(8, MAX_BALLS - balls.length);
+        for (let i = 0; i < toAdd; i++) {
             spawnBall(
                 (e.clientX - rect.left) * sx,
                 (e.clientY - rect.top)  * sy

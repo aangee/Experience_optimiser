@@ -18,7 +18,7 @@ function initDemo(canvas, kit) {
     let balls = [];
 
     function spawnAll() {
-        balls = [];
+        balls.length = 0;   // mutation en place — kit.demo.balls reste valide
         for (const g of GROUPS) {
             for (let i = 0; i < 4; i++) {
                 const angle = (Math.PI * 2 * i) / 4 + Math.random() * 0.5;

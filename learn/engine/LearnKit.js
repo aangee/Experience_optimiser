@@ -17,6 +17,14 @@ class LearnKit {
         // Une couche par responsabilité — un seul SVG, plusieurs <g>
         const NS = 'http://www.w3.org/2000/svg';
 
+        // Defs partagées (marker arrowhead) — injecté une seule fois dans le SVG racine
+        const defs = document.createElementNS(NS, 'defs');
+        defs.innerHTML = `
+            <marker id="ah" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                <polygon class="arrow-head" points="0 0, 8 3, 0 6"/>
+            </marker>`;
+        this.svgOverlay.appendChild(defs);
+
         this._annotLayer   = document.createElementNS(NS, 'g');
         this._annotLayer.id = 'annot';
 
@@ -129,11 +137,6 @@ class LearnKit {
             ? `<text class="arrow-label" x="${mx + 8}" y="${my}" text-anchor="start">${label}</text>`
             : '';
         this._annotLayer.innerHTML = `
-            <defs>
-                <marker id="ah" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-                    <polygon class="arrow-head" points="0 0, 8 3, 0 6"/>
-                </marker>
-            </defs>
             <line class="arrow-line"
                   x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"
                   marker-end="url(#ah)"/>

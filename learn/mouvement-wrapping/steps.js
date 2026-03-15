@@ -13,7 +13,6 @@ const STEPS = [
         code: null,
         freeze: false,
         onEnter(kit) { kit.highlightAllEdges(); },
-        onExit(kit)  { kit.clearAnnotation(); },
     },
 
     {
@@ -31,7 +30,6 @@ p.y += p.vy;
         highlight: 'p.x += p.vx;',
         freeze: true,
         onEnter(kit) { kit.showVectors = true; },
-        onExit(kit)  { kit.clearVectors(); },
     },
 
     {
@@ -58,7 +56,6 @@ if (p.x + p.r < 0)  p.x = W + p.r;`,
                 <text class="edge-label" x="${S+10}" y="${H/2+8}" text-anchor="start">bord gauche</text>
             `);
         },
-        onExit(kit) { kit.clearAnnotation(); },
     },
 
     {
@@ -85,7 +82,6 @@ if (p.y + p.r < 0)  p.y = H + p.r;`,
                 <text class="edge-label" x="${W/2}" y="${S+22}" text-anchor="middle">bord haut</text>
             `);
         },
-        onExit(kit) { kit.clearAnnotation(); },
     },
 
     {
@@ -104,7 +100,6 @@ if (p.y + p.r < 0)  p.y = H + p.r;`,
         highlight: 'function wrap(p)',
         freeze: false,
         onEnter(kit) { kit.highlightAllEdges(); },
-        onExit(kit)  { kit.clearAnnotation(); },
     },
 
 ];

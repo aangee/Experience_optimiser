@@ -27,10 +27,11 @@
 ## Analyse de Experience_optimiser
 
 ### Architecture
-- `_lib/MasterClass.js` : lib partagée avec `Vec2D`, `Particle`, `ParticleVec2D`, `SetupCanvas`, `Utils`
-- `_lib/MasterCss.css` : styles globaux canvas (fond sombre, titre, panneau info)
+- `lib/MasterClass.js` : lib partagée avec `Vec2D`, `Particle`, `ParticleVec2D`, `SetupCanvas`, `Utils`
+- `lib/MasterCss.css` : styles globaux canvas (fond sombre, titre, panneau info)
+- `lib/TouchAdapter.js` : gestion tactile partagée
 - Chaque sous-dossier = une démo autonome (HTML + JS)
-- **Réorg 2026-03-14** : `@_Global_Class/` + `@_Global_Css/` fusionnés en `_lib/` (19 HTML mis à jour)
+- **Réorg 2026-03-14** : `@_Global_Class/` + `@_Global_Css/` fusionnés en `_lib/`, puis renommé en `lib/` (2026-03-15) pour compatibilité Jekyll/GitHub Pages
 
 ### Contenu des démos
 - **Paticule/** (18 démos) : physique particules, tweening, easing, friction, ressorts, gravité
@@ -122,18 +123,21 @@ Fusionner `Experience_optimiser` + `angine_js_v01` en un **site portfolio modern
 
 ---
 
-## État du portfolio — session 2026-03-14 (soir)
+## État du portfolio — session 2026-03-15
 
-### Branche de dev active
-`claude/fix-dpad-touch-mobile-75QDf` — plusieurs commits, pas encore mergé dans `main`.
-GitHub Pages déploie depuis `main` → merger via PR pour que les changements soient visibles.
+### GitHub Pages
+- URL : `https://aangee.github.io/Experience_optimiser/`
+- Config : branche `main`, dossier `/ (root)` ✓
+- `index.html` racine redirige vers `portfolio/` via `<meta http-equiv="refresh">`
+- `.nojekyll` présent à la racine ✓
+- `lib/` (ex `_lib/`) servi correctement ✓
 
 ### Ce qui est implémenté (portfolio/*)
 - `index.html` : navigation par **deux onglets** (Portfolio / Timeline) dans le header
 - `js/app.js` : logique de switch onglets (toggle `.hidden`)
 - `js/ProjectData.js` : **15 entrées** (Particules, Fractales, Détection, Mini-jeux + Athena placeholder)
 - `js/Gallery.js` : grille de cards avec badge `🕹` sur les cartes qui ont des contrôles
-- `js/Timeline.js` + `js/TimelineData.js` : frise chronologique, mise à jour avec Ship v3 et nouveaux jalons
+- `js/Timeline.js` + `js/TimelineData.js` : frise chronologique
 - `js/DemoViewer.js` : viewer fullscreen, modes Jouer / Comprendre, sélecteur de versions
 - `js/TouchControls.js` : contrôles tactiles (D-pad / joystick / bouton tir)
 - `css/main.css`, `css/gallery.css`, `css/viewer.css` : styles complets
@@ -151,16 +155,28 @@ GitHub Pages déploie depuis `main` → merger via PR pour que les changements s
 - **Vaisseau** (Propulsion, Friction, v1, v2, v3) → `{ dpad: true, fire: true/false }`
 - **Système Solaire v2 et v3** → `{ dpad: true, fire: false }`
 
-### Ship v03 — MiniGame/06_Ship_v03/
-Créé lors de cette session, 5 bugs corrigés par rapport à v02 :
-1. `beginPath()` manquant avant `rect()` → path s'accumulait frame par frame
-2. `getImageData` appelé 2× par frame → réduit à 1 seul appel
-3. `new AudioSource()` à chaque tir → instance unique réutilisée (`this.shootSound`)
-4. 50 étoiles redessinées chaque frame → canvas offscreen statique + `drawImage()`
-5. Bug angle astéroïdes : conversion degrés/radians incorrecte supprimée
-6. Bug caméra : `isVueFollow = false` + worldCanvas remis à taille écran (évite le décalage astéroïdes/ship)
+### Module LearnKit — learn/
+Moteur pédagogique "Mode Comprendre" créé en 2026-03-15 :
+- `learn/engine/LearnKit.js` : classe `LearnKit` (steps, navigation, SVG annotations, freeze, code highlight)
+- `learn/engine/LearnKit.css` : layout deux colonnes (canvas gauche / panneau droite), responsive mobile
+- `learn/feu-artifice/` : première démo pédagogique (6 étapes, feu d'artifice)
+  - `index.html` + `demo.js` + `steps.js`
+  - Activé via `learnSrc: '../learn/feu-artifice/index.html'` dans ProjectData.js
+
+### Format d'un step LearnKit
+```js
+{
+  title:    string,
+  text:     string HTML,
+  code:     string | null,       // bloc de code affiché dans le panneau
+  highlight: string | null,      // fragment de ligne à surligner en jaune
+  freeze:   bool,                // geler l'animation pendant cette étape
+  target:   { x, y, label } | null,  // coordonnées canvas à pointer (SVG)
+  onEnter(kit) {},
+  onExit(kit)  {},
+}
+```
 
 ### Prochaines étapes
-- **Merger** `claude/fix-dpad-touch-mobile-75QDf` dans `main` via PR GitHub
-- **Nouveaux contenus** : aangee va fouiller ses machines locales pour ajouter de nouvelles expériences fractales / colonisation
-- **Phase 3** : mode "Comprendre" (bulles explicatives + code surligné)
+- Ajouter d'autres modules `learn/` (spring, easing, fractal-trees...)
+- **Nouveaux contenus** : aangee va fouiller ses machines locales pour ajouter de nouvelles expériences

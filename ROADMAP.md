@@ -72,22 +72,26 @@ portfolio-aangee/
 - [x] Page d'accueil avec grille de cartes groupées par catégorie
 - [x] Cartes avec preview iframe animée en miniature
 - [x] `ProjectData.js` : catalogue structuré de toutes les démos
-- [x] 5 démos actives (feu-artifice, spring, easing, fractal-trees, space-colonization)
-- [x] DemoViewer plein écran — modes Jouer / Comprendre (placeholder)
+- [x] 15 démos référencées dans ProjectData.js
+- [x] DemoViewer plein écran — modes Jouer / Comprendre
 - [x] Bandeau contrôles clavier par démo
-- [x] Support tactile (TouchAdapter)
-- [x] Section timeline placeholder en bas de page
+- [x] Support tactile (D-pad / joystick / tir)
+- [x] Timeline frise chronologique
+- [x] GitHub Pages déployé (`main` + `/ root`)
+- [x] `lib/` (ex `_lib/`) renommé pour compatibilité Jekyll
 
-### Phase 2 — Intégration des démos restantes ← en cours
-- [ ] Activer les 5 démos verrouillées (ship-truster, detection-math, solar-v1, ship-v02, bitmap-detection)
-- [ ] Vérifier les chemins `iframeSrc` et le comportement dans le viewer
-- [ ] Affiner les descriptions et contrôles dans `ProjectData.js` si besoin
+### Phase 2 — Intégration des démos restantes ✓
+- [x] 15 démos actives (toutes les catégories)
+- [x] Sélecteur de versions (Mouvement, Gravité, Tweening, Détection, Solaire, Vaisseau)
+- [x] Ship v03 créé et intégré
 
-### Phase 3 — Mode Comprendre
-- [ ] Système d'annotations : bulles positionnées sur canvas
-- [ ] Déclenchement au clic/interaction : afficher quelle fonction est appelée
-- [ ] Panneau latéral : extrait de code surligné correspondant
-- [ ] Implémenter sur 2-3 démos pilotes (spring, feu-artifice, ship)
+### Phase 3 — Mode Comprendre ← en cours
+- [x] Moteur LearnKit (`learn/engine/`) — steps, navigation, SVG annotations, freeze, code highlight
+- [x] Première démo pédagogique : `learn/feu-artifice/` (6 étapes)
+- [ ] `learn/spring/` — ressorts (bonne démo pour expliquer les vecteurs)
+- [ ] `learn/easing/` — courbes d'animation
+- [ ] `learn/fractal-trees/` — récursion
+- [ ] Ajouter `learnSrc` aux autres cartes dans ProjectData.js au fur et à mesure
 
 ### Phase 4 — Polish
 - [ ] Animations hover sur les cartes
@@ -127,4 +131,4 @@ portfolio-aangee/
 
 ## Prochaine étape
 
-Activer les démos Phase 2 dans `ProjectData.js` (passer `phase: 2` → `phase: 1`) et valider chaque démo dans le viewer.
+Créer les prochains modules `learn/` — `spring/` ou `easing/` sont de bons candidats (visuels, concis, faciles à expliquer en quelques étapes).

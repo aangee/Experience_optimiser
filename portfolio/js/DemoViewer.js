@@ -127,7 +127,11 @@ class DemoViewer {
       this.comprendreEl.classList.add('hidden');
       this.iframe.src = this._currentSrc;
       this.iframe.classList.remove('hidden');
+      // Restaure le sélecteur de versions en mode Jouer
+      if (this.project?.versions?.length) this.versionsEl.classList.remove('hidden');
     } else {
+      // Cache le sélecteur en mode Comprendre (les learnSrc sont uniques par projet)
+      this.versionsEl.classList.add('hidden');
       const learnSrc = this.project?.learnSrc;
       if (learnSrc) {
         // Charge le fichier learn.html dans l'iframe

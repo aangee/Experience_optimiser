@@ -1,13 +1,10 @@
 /**
  * learn.js — Scénario pédagogique : Feu d'artifice
  *
- * Reconstruit la simulation depuis zéro pour un contrôle
- * frame-by-frame via LearnKit.
- *
- * Chaque step :
- *   - joue quelques frames pour montrer l'animation
- *   - se fige → annotation + indicateur visuel (cercle) sur le canvas
- *   - clic ▶ → step suivant
+ * Flux par step :
+ *   1. clic ▶ → onEnter remet la sim dans le bon état
+ *   2. animation joue N frames (librement, pas d'indicateur)
+ *   3. canvas se fige → cercle-cible + trait SVG vers l'annotation
  */
 
 window.onload = function () {
@@ -27,7 +24,6 @@ window.onload = function () {
     particles:   [],
     highlighted: null,
 
-    /** Réinitialise avec 100 particules depuis le centre. */
     init() {
       this.particles   = [];
       this.highlighted = null;
@@ -44,7 +40,6 @@ window.onload = function () {
       }
     },
 
-    /** Dessine une frame. Appelé par LearnKit via _drawFrame(). */
     update(ctx, w, h) {
       ctx.clearRect(0, 0, w, h);
 
@@ -82,9 +77,9 @@ window.onload = function () {
         x: 4,
         y: 4
       },
-      // Cercle indicateur au centre du canvas — là où naissent les particules
+      // play:0 → figé sur la frame initiale, toutes les particules sont encore au centre
       target: { x: 50, y: 50 },
-      play: 90,
+      play: 0,
       onEnter(sim) {
         countBadge.style.display = 'none';
         sim.init();
@@ -94,11 +89,11 @@ window.onload = function () {
     {
       title: 'Particule = objet',
       annotation: {
-        text: 'Chaque point rouge est une instance de la classe Particle. Elle connaît sa position (x, y) et sa vitesse (vx, vy). C\'est tout — le minimum pour simuler un mouvement.',
+        text: 'Chaque point rouge est une instance de la classe Particle. Elle connaît sa position (x, y) et sa vitesse (vx, vy). La particule blanche est mise en valeur pour la montrer.',
         x: 4,
         y: 4
       },
-      // Pas de target fixe : la particule blanche IS l'indicateur visuel
+      // Pas de target statique : la particule blanche est elle-même l'indicateur visuel
       target: null,
       play: 120,
       onEnter(sim) {
@@ -116,7 +111,7 @@ window.onload = function () {
         y: 4
       },
       target: null,
-      play: 60,
+      play: 90,
       onEnter(sim) {
         countBadge.style.display = 'none';
         sim.init();
@@ -131,11 +126,10 @@ window.onload = function () {
         y: 4
       },
       target: null,
-      play: 120,
+      play: 90,
       onEnter(sim) {
         countBadge.style.display = '';
         sim.init();
-        // Simule 3 clics supplémentaires pour montrer l'accumulation
         const w = canvas.width, h = canvas.height;
         const origins = [
           { x: w * 0.28, y: h * 0.32 },

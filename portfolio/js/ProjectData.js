@@ -400,6 +400,39 @@ const PROJECTS = [
   },
 
   // ──────────────────────────────────────────────────────────
+  // INTERFACE / FRAMEWORK
+  // ──────────────────────────────────────────────────────────
+
+  {
+    id: 'canvas-menu',
+    name: 'Système de menus',
+    category: 'Interface',
+    description: 'Un framework UI entièrement dessiné sur canvas — panels, boutons, labels, toggles, zones de texte. Zéro DOM, zéro lib externe.',
+    iframeSrc: '../menu/index.html?mode=gui',
+    tags: ['UI', 'framework', 'architecture', 'canvas'],
+    controls: [
+      { key: 'Clic souris', desc: 'Interagit avec les éléments UI' }
+    ],
+    versions: [
+      {
+        label: 'GUI layers',
+        src: '../menu/index.html?mode=gui',
+        controls: [
+          { key: 'Clic souris', desc: 'Bouton "PLAY GAME" pour masquer le layer' }
+        ]
+      },
+      {
+        label: 'Menu navigation',
+        src: '../menu/index.html?mode=menu',
+        controls: [
+          { key: 'Clic souris', desc: 'Navigation HOME / SCORE / OPTION' }
+        ]
+      }
+    ],
+    phase: 1
+  },
+
+  // ──────────────────────────────────────────────────────────
   // À VENIR
   // ──────────────────────────────────────────────────────────
 

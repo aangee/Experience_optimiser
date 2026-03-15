@@ -41,9 +41,10 @@ class DemoViewer {
     this.learn = new LearnMode();
 
     // État courant
-    this.mode        = 'jouer';
-    this.project     = null;
-    this._currentSrc = '';
+    this.mode            = 'jouer';
+    this.project         = null;
+    this._currentVersion = null;   // version active (objet ou null si pas de versions)
+    this._currentSrc     = '';
 
     // ── Événements ──────────────────────────────────────────
     this.closeBtn.addEventListener('click', () => this.close());
@@ -83,6 +84,7 @@ class DemoViewer {
 
     // Détermine la version initiale
     const version = this._resolveVersion(project, versionLabel);
+    this._currentVersion = version;
     const src      = version?.src      ?? project.iframeSrc;
     const controls = version?.controls ?? project.controls ?? [];
     const touch    = version?.touch    ?? null;
@@ -128,9 +130,9 @@ class DemoViewer {
       this.iframe.src = this._currentSrc;
       this.iframe.classList.remove('hidden');
     } else {
-      const learnSrc = this.project?.learnSrc;
+      // learnSrc : version en priorité, sinon carte, sinon placeholder
+      const learnSrc = this._currentVersion?.learnSrc ?? this.project?.learnSrc;
       if (learnSrc) {
-        // Charge le fichier learn.html dans l'iframe
         this.iframe.src = learnSrc;
         this.iframe.classList.remove('hidden');
         this.comprendreEl.classList.add('hidden');
@@ -161,10 +163,24 @@ class DemoViewer {
 
   /** Bascule vers une version différente du même projet. */
   _switchVersion(version) {
-    this._currentSrc = version.src;
-    this.iframe.src  = version.src;
+    this._currentVersion = version;
+    this._currentSrc     = version.src;
     this._renderControls(version.controls || this.project.controls || []);
     this.touch.mount(this.iframe, version.touch || null);
+
+    if (this.mode === 'comprendre') {
+      const learnSrc = version.learnSrc ?? this.project?.learnSrc;
+      if (learnSrc) {
+        this.iframe.src = learnSrc;
+        this.iframe.classList.remove('hidden');
+        this.comprendreEl.classList.add('hidden');
+      } else {
+        this.iframe.classList.add('hidden');
+        this.comprendreEl.classList.remove('hidden');
+      }
+    } else {
+      this.iframe.src = version.src;
+    }
   }
 
   /**

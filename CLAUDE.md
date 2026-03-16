@@ -225,3 +225,154 @@ DemoViewer : en mode Comprendre, le sélecteur charge `version.learnSrc` (même 
 ### Prochaines étapes
 - Ajouter d'autres modules `learn/` (spring, easing, fractal-trees...)
 - **Nouveaux contenus** : aangee va fouiller ses machines locales pour ajouter de nouvelles expériences
+
+---
+
+## Projet menu/ — canvas-js-menu (session 2026-03-16)
+
+### Origine
+- Repo source : `github.com/aangee/canvas-js-menu`, branche `feat/add-gui/create-interface-inventory`
+- Intégré dans `Experience_optimiser/menu/` comme démo autonome du portfolio
+- Démo = système de menu/UI **entièrement dessiné sur canvas** (aucun DOM sauf le `<canvas>`)
+
+### Architecture générale
+
+```
+menu/
+  index.html              ← point d'entrée, charge les scripts dans l'ordre correct
+  main.js                 ← instancie AppMenu, lance la boucle animate()
+  style.css               ← fond dégradé, canvas centré 80vmin
+  js/touchAdapter.js      ← adaptateur touch LOCAL (passive:false + preventDefault)
+  js/amath/
+    Vec2D.js              ← vecteur 2D (x,y), opérations standard
+    Transform.js          ← conteneur {position: Vec2D, size: Vec2D}
+  js/ui/
+    elements/
+      UIElement.js        ← classe de base de tous les composants UI
+      extends/
+        primitive/
+          Canvas.js       ← crée un <canvas> dans le DOM
+          Rectangle.js    ← struct {x,y,w,h} simple
+          AText.js        ← config texte (font, alignement, colorFont)
+        label/Label.js    ← UIElement + texte centré
+        button/
+          RoundedButton.js  ← UIElement + Label interne
+          PianoKeyButton.js ← bouton forme "touche de piano" (non standard)
+        panel/
+          Panel.js        ← UIElement non-cliquable (fond décoratif)
+          StackPanel.js   ← Panel + calculeVerticalStack() / calculeHorizontal()
+        text/TextArea.js  ← UIElement + texte multi-lignes avec word-wrap
+        toggle/Toggle.js  ← UIElement + case à cocher
+    controller/
+      MasterHandler.js    ← orchestrateur central (singleton statique)
+      LabelHandler.js     ← factory Label / TextArea
+      PanelHandler.js     ← factory Panel / StackPanel
+      ButtonHandler.js    ← factory RoundedButton / Toggle / PianoKey
+  js/menuDemo/            ← démo menu de navigation (HOME / SCORE / OPTION)
+    MenuDemo.js           ← crée la navbar + les pages, gère open/close
+    controller/PageHandler.js ← switch entre pages (index 0/1/2 ou -1=tout masqué)
+    page/
+      Page.js             ← classe de base d'une page (panel + label titre + childs[])
+      extends/P_Home.js   ← page HOME avec StackPanel de labels et TextArea
+      extends/P_Score.js  ← page SCORES avec liste de labels
+      extends/P_Option.js ← page OPTIONS avec grille de Toggles (calculeHorizontal)
+  js/guiDemo/             ← démo GUI en couches (Layers)
+    GUIMaster.js          ← orchestrateur : instancie et délègue aux 3 layers
+    layers/
+      Layer.js            ← classe de base (name, transform, listUIElement[])
+      extends/
+        L_Home.js         ← écran d'accueil "PLAY GAME" → ouvre MenuDemo
+        L_GUI.js          ← panneau vert en haut à gauche (démo simple)
+        L_Inventory.js    ← deux panneaux côte à côte + animation slide
+```
+
+### Principe de détection des clics (bitmap hit-testing)
+
+**C'est le mécanisme le plus important à comprendre.**
+
+Deux canvas superposés :
+1. `myCanvas` — canvas visible, rendu couleurs normales
+2. `hitTestCanvas` — canvas caché (`display:none`), chaque UIElement y est dessiné avec sa propre couleur unique aléatoire (`colorHitArea`)
+
+Au clic :
+1. `MasterHandler.onMouseDown(event)` → lit les coordonnées
+2. `getColor(hitCtx, position)` → `getImageData(x, y, 1, 1)` → lit la couleur du pixel sous le curseur
+3. `isHovering(color)` → cherche dans `elements[]` l'UIElement dont `colorHitArea` correspond
+4. Si trouvé → `element.click()` → `options.callback(options.value, element)`
+
+**Pièges** :
+- `colorHitArea` est générée aléatoirement à la construction → deux éléments peuvent rarement avoir la même couleur (collision RGB 1/16M)
+- Le hitCanvas doit être redessiné chaque frame (`drawElements` appelle `drawHitArea` sur chaque élément actif)
+- Les panels (`instanceof Panel`) ne sont PAS dessinés sur le hitCanvas (non-cliquables)
+- Les labels des boutons ont `colorHitArea = 'rgba(0,0,0,0)'` → transparents sur le hitCanvas, c'est le bouton parent qui capte le clic
+
+### Touch sur mobile
+
+`menu/js/touchAdapter.js` (LOCAL, ne pas remplacer par `lib/TouchAdapter.js`) :
+- Écoute `touchstart` avec **`{ passive: false }`** → permet `e.preventDefault()`
+- `preventDefault()` bloque les mouse events natifs du navigateur (~300ms après le touch)
+- Sans ça : double déclenchement de `onMouseDown` → comportement aléatoire
+- `lib/TouchAdapter.js` utilise `{ passive: true }` → NE PAS l'utiliser ici
+
+### Flux de navigation (cycle PLAY GAME ↔ menu)
+
+```
+Démarrage
+  └─ AppMenu: mode='gui' (défaut)
+       └─ gui.switchLayer('home')  ← montre L_Home avec bouton PLAY GAME
+
+Clic PLAY GAME
+  └─ L_Home.clickBtnPlayGame(val)
+       ├─ val.setActive(false)     ← cache L_Home
+       └─ app.menu.setActive(true) ← ouvre MenuDemo (affiche page HOME)
+
+Dans MenuDemo
+  ├─ boutons HOME / SCORE / OPTION → PageHandler.switchPages(0/1/2)
+  └─ bouton ❌ CLOSE
+       └─ MenuDemo.clickBtnClose(value)
+            ├─ value.setActive(false)       ← cache MenuDemo
+            └─ app.gui.switchLayer('home')  ← revient à L_Home
+```
+
+`app` est une **variable globale** définie dans `main.js`. Les callbacks de boutons (qui perdent le scope `this`) peuvent y accéder directement.
+
+### Ordre de chargement des scripts (CRITIQUE)
+
+Les scripts utilisent `defer` — l'ordre dans `index.html` est l'ordre d'exécution :
+1. `touchAdapter.js` (sans defer — exécuté immédiatement)
+2. `Vec2D.js`, `Transform.js`
+3. Primitives (`Canvas.js`, `Rectangle.js`, `AText.js`)
+4. `UIElement.js` (base de tout)
+5. Composants (`TextArea`, `Label`, `Toggle`, `RoundedButton`, `PianoKeyButton`, `Panel`, `StackPanel`)
+6. Controllers (`MasterHandler`, `LabelHandler`, `PanelHandler`, `ButtonHandler`)
+7. Menu demo (`Page`, pages, `PageHandler`, `MenuDemo`)
+8. GUI demo (`Layer`, layers, `GUIMaster`)
+9. `AppMenu.js`, `main.js`
+
+### Comment ajouter un nouvel UIElement
+
+1. Créer `js/ui/elements/extends/<categorie>/MonElement.js` qui étend `UIElement`
+2. Implémenter `draw(ctx)` (visuel) et `drawHitArea(hitCtx)` (zone de détection)
+3. Implémenter `click()` et `setActive(bool)`
+4. Ajouter un cas dans `MasterHandler.createElement()` (`switch(true)` avec `instanceof`)
+5. Optionnel : créer une méthode factory dans le Handler correspondant
+6. Ajouter le `<script defer>` dans `index.html` **avant** les controllers
+
+### Bugs connus / pièges à éviter
+
+| Symptôme | Cause probable |
+|---|---|
+| App complètement blanche, erreur console | Un `Layer.start()` accède à `this.panel` (non existant dans `Layer`) → crash |
+| Clics ne répondent pas sur mobile | TouchAdapter partagé (`lib/`) utilisé au lieu du local → double events |
+| Clic déclenche le mauvais bouton | Collision de `colorHitArea` (1/16M chances) ou canvas non redessiné |
+| PLAY GAME ne fait rien après le clic | `clickBtnPlayGame` ne montre pas le menu (oubli `app.menu.setActive(true)`) |
+| CLOSE ne ramène pas à l'écran d'accueil | `clickBtnClose` ne rappelle pas `app.gui.switchLayer('home')` |
+| Label du bouton non visible | `Label.colorStats` = transparent → normal, c'est voulu (label sans fond) |
+| `el.label.setActive` plante | Bouton sans texte → `this.label` undefined → vérifier `if (this.label)` |
+
+### État au 2026-03-16
+- ✅ Intégration dans `Experience_optimiser/menu/` (structure, index.html, style.css)
+- ✅ Bug `this.panel` corrigé dans L_Home, L_GUI, L_Inventory
+- ✅ Cycle PLAY GAME → menu → CLOSE → L_Home opérationnel
+- ✅ Touch mobile corrigé (touchAdapter local)
+- ⬜ Non encore référencé dans `portfolio/js/ProjectData.js` (à faire)

@@ -84,7 +84,10 @@ class MenuDemo {
     clickBtnHome(value)  { PageHandler.switchPages(0); }
     clickBtnScore(value) { PageHandler.switchPages(1); }
     clickBtnOption(value){ PageHandler.switchPages(2); }
-    clickBtnClose(value) { value.setActive(false); }
+    clickBtnClose(value) {
+        value.setActive(false);
+        app.gui.switchLayer('home');
+    }
 
     setActive(bool) {
         if (bool)  PageHandler.switchPages(0);

@@ -13,10 +13,12 @@ class MasterHandler {
     /**@type {ButtonHandler} */ static BUTTON = {};
 
     static hitCtx;
+    static canvas;
     static currentElementHovering = {};
 
     static init(canvasEvent, canvasHit, size) {
         MasterHandler.hitCtx = canvasHit.context;
+        MasterHandler.canvas = canvasEvent.canvas;
         MasterHandler.addEventListeners(canvasEvent.canvas);
         MasterHandler.size   = size;
         MasterHandler.LABEL  = new LabelHandler();
@@ -48,6 +50,9 @@ class MasterHandler {
         for (const panel  of MasterHandler.panelArray)  MasterHandler.elements.push(panel);
         for (const button of MasterHandler.buttonArray) MasterHandler.elements.push(button);
         for (const label  of MasterHandler.labelArray)  MasterHandler.elements.push(label);
+        MasterHandler.panelArray  = [];
+        MasterHandler.buttonArray = [];
+        MasterHandler.labelArray  = [];
     }
 
     static drawElements(ctx) {
@@ -92,10 +97,10 @@ class MasterHandler {
         MasterHandler.resetHoveringStates();
         let tempElement = MasterHandler.isHovering(color);
         if (tempElement) {
-            tempElement.hover          = true;
-            app.cnv.canvas.style.cursor = "pointer";
+            tempElement.hover = true;
+            MasterHandler.canvas.style.cursor = "pointer";
         } else {
-            app.cnv.canvas.style.cursor = "auto";
+            MasterHandler.canvas.style.cursor = "auto";
         }
     }
     //#endregion
@@ -120,9 +125,8 @@ class MasterHandler {
 
     //#region Utility GET
     static getRandomColorHitArea() {
-        return "rgb(" + Math.floor(Math.random() * 255) + ","
-                      + Math.floor(Math.random() * 255) + ","
-                      + Math.floor(Math.random() * 255) + ")";
+        const r = () => Math.floor(Math.random() * 200) + 55;
+        return "rgb(" + r() + "," + r() + "," + r() + ")";
     }
 
     static getColor(ctx, position) {

@@ -11,7 +11,7 @@ class AppMenu {
 		this.cnvHit = this.initializeCanvas("hitTestCanvas", 'js-canvas');
 
 		// Canvas hit utilisé seulement pour la détection — caché en portfolio
-		this.cnvHit.canvas.style = "display:none";
+		this.cnvHit.canvas.style.display = "none";
 
 		MasterHandler.init(this.cnv, this.cnvHit, this.size);
 
@@ -33,7 +33,7 @@ class AppMenu {
 
 	drawScene() {
 		this.cnv.context.clearRect(0, 0, this.size, this.size);
-		this.gui.update();
+		if (this.mode !== 'menu') this.gui.update();
 		MasterHandler.drawElements(this.cnv.context);
 	}
 

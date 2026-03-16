@@ -2,11 +2,12 @@ class Toggle extends UIElement {
     constructor(param) {
         super(param);
 
-        param.params.optsColor = {
+        // Le fond du toggle doit être transparent — réassigner après super()
+        this.colorStats = {
             base:  'rgba(0,0,0,0)',
             hover: 'rgba(0,0,0,0)',
             click: 'rgba(0,0,0,0)'
-        }
+        };
         if (param.params.optsLabel.text) {
             this.label = MasterHandler.LABEL.createLabel(param);
             this.label.colorHitArea = 'rgba(0,0,0,0)';

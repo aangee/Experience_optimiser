@@ -1,22 +1,26 @@
 /**
  * TouchAdapter local — menu/  (mode curseur mobile)
  *
- * Sur mobile, un simple tap est imprécis sur les petits boutons.
- * Ce mode simule un curseur de souris :
- *   - touch + glisser → déplace un curseur visible à l'écran
- *   - relâcher        → clic à la position du curseur
+ * Sur mobile, touch + glisser déplace un curseur visible.
+ * Relâcher = clic à la position du curseur.
  *
- * MasterHandler reçoit de vrais MouseEvent avec les bonnes coordonnées,
- * rien d'autre n'a besoin d'être modifié.
+ * Le curseur est décalé du doigt vers le centre de l'écran :
+ *   doigt côté droit  → curseur à gauche
+ *   doigt côté gauche → curseur à droite
+ *   doigt en bas      → curseur en haut
+ *   doigt en haut     → curseur en bas
+ * → le curseur n'est jamais caché sous le doigt.
  *
- * passive:false + preventDefault sur tous les events touch
- * → empêche le scroll parasite ET les mouse events fantômes (~300ms)
- * que le navigateur génère après un touch.
+ * NOTE : preventDefault uniquement sur touchstart et touchmove.
+ * Mettre preventDefault sur touchend (passive:false) bloque les
+ * touches suivantes sur iOS — ne pas le faire.
  */
 (function () {
 
+    const CURSOR_SIZE = 28;  // diamètre du cercle en px
+    const OFFSET      = 44;  // décalage curseur ↔ doigt en px
+
     /* ── Curseur visuel ──────────────────────────────────────── */
-    const SIZE = 28;
     let cursorEl = null;
 
     function ensureCursor() {
@@ -24,8 +28,8 @@
         cursorEl = document.createElement('div');
         cursorEl.style.cssText = [
             'position:fixed',
-            'width:'  + SIZE + 'px',
-            'height:' + SIZE + 'px',
+            'width:'  + CURSOR_SIZE + 'px',
+            'height:' + CURSOR_SIZE + 'px',
             'border-radius:50%',
             'border:2px solid rgba(255,255,255,0.9)',
             'background:rgba(255,255,255,0.15)',
@@ -56,6 +60,17 @@
         }
     }
 
+    /* ── Calcul de la position décalée ───────────────────────── */
+    function offsetFrom(tx, ty) {
+        const dx = tx > window.innerWidth  / 2 ? -OFFSET : +OFFSET;
+        const dy = ty > window.innerHeight / 2 ? -OFFSET : +OFFSET;
+        return { x: tx + dx, y: ty + dy };
+    }
+
+    /* ── Position courante du curseur ────────────────────────── */
+    let cx = 0;
+    let cy = 0;
+
     /* ── Dispatch vers le canvas ─────────────────────────────── */
     function getCanvas() {
         return document.getElementById('myCanvas');
@@ -72,39 +87,38 @@
         }));
     }
 
-    /* ── Position courante du curseur ────────────────────────── */
-    let cx = 0;
-    let cy = 0;
-
     /* ── Listeners touch ─────────────────────────────────────── */
 
-    // touchstart : pose le curseur + initialise le hover
+    // touchstart : place le curseur (décalé), initialise le hover
     document.addEventListener('touchstart', function (e) {
         e.preventDefault();
-        const t = e.touches[0];
-        cx = t.clientX;
-        cy = t.clientY;
+        const t   = e.touches[0];
+        const pos = offsetFrom(t.clientX, t.clientY);
+        cx = pos.x;
+        cy = pos.y;
         moveCursor(cx, cy);
-        fire('mousemove', cx, cy);   // met à jour l'état hover dans MasterHandler
+        fire('mousemove', cx, cy);
     }, { passive: false });
 
-    // touchmove : fait glisser le curseur
+    // touchmove : fait glisser le curseur (décalé)
     document.addEventListener('touchmove', function (e) {
         e.preventDefault();
-        const t = e.touches[0];
-        cx = t.clientX;
-        cy = t.clientY;
+        const t   = e.touches[0];
+        const pos = offsetFrom(t.clientX, t.clientY);
+        cx = pos.x;
+        cy = pos.y;
         moveCursor(cx, cy);
-        fire('mousemove', cx, cy);   // feedback hover pendant le drag
+        fire('mousemove', cx, cy);
     }, { passive: false });
 
     // touchend : clic à la position du curseur
+    // passive:true + pas de preventDefault → évite de bloquer
+    // les touches suivantes sur iOS
     document.addEventListener('touchend', function (e) {
-        e.preventDefault();
-        flashCursor();               // flash cyan = clic pris en compte
+        flashCursor();
         fire('mousedown', cx, cy);
         fire('mouseup',   cx, cy);
-        setTimeout(hideCursor, 300); // curseur visible 300ms puis disparaît
-    }, { passive: false });
+        setTimeout(hideCursor, 300);
+    }, { passive: true });
 
 })();

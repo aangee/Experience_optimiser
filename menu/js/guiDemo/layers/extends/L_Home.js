@@ -3,11 +3,18 @@ class L_Home extends Layer {
 
     start() {
         super.start();
-        this.panel.transform.size = new Vec2D(900, 150);
+
+        let panel = MasterHandler.PANEL.createPanel({
+            transform: { position: this.position, size: new Vec2D(900, 150) },
+            params: {
+                optsBorder: { isActive: true, isRounded: true, radius: 9, lineWidth: 3 }
+            }
+        });
+        this.listUIElement.push(panel);
 
         let sizeBtn = new Vec2D(400, 56);
         this.btnPlayGame = MasterHandler.BUTTON.createRoundedButton({
-            transform: { position: this.panel.transform.position, size: sizeBtn },
+            transform: { position: this.position, size: sizeBtn },
             params: {
                 optsBorder: { isRounded: true, radius: 15, lineWidth: .5 },
                 optsLabel:  { text: 'PLAY GAME', colorFont: 'gold', offset: { x: 0, y: 0 }, font: { size: 27, police: 'monospace' } },
@@ -17,11 +24,13 @@ class L_Home extends Layer {
         });
         this.listUIElement.push(this.btnPlayGame);
     }
+
     init()          { super.init(); }
     update()        { super.update(); }
     setActive(bool) { super.setActive(bool); }
 
     clickBtnPlayGame(val) {
         val.setActive(false);
+        app.menu.setActive(true);
     }
 }

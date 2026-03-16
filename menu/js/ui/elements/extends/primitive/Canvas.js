@@ -22,8 +22,15 @@ class Canvas {
         this.canvas.width  = this.width;
         this.canvas.height = this.height;
 
+        // hitTestCanvas a besoin de willReadFrequently pour que getImageData
+        // retourne les pixels courants même quand le canvas est display:none
+        // (sans ça, Chrome peut retourner des pixels périmés depuis le GPU)
         /** @type {CanvasRenderingContext2D} Le context de notre canvas */
-        this.context = this.canvas.getContext("2d");
+        if (options.classAdd === "hitTestCanvas") {
+            this.context = this.canvas.getContext("2d", { willReadFrequently: true });
+        } else {
+            this.context = this.canvas.getContext("2d");
+        }
     }
 
     setStep(size) {

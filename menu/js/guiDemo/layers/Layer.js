@@ -8,13 +8,8 @@ class Layer {
     }
 
     start() {
-        this.panel = MasterHandler.PANEL.createPanel({
-            transform: { position: this.position, size: this.size },
-            params: {
-                optsBorder: { isActive: true, isRounded: true, radius: 9, lineWidth: 3 }
-            }
-        });
-        this.listUIElement.push(this.panel);
+        // Chaque layer concret crée ses propres panels dans son start()
+        // Ne pas créer de panel de base ici (causerait des doublons)
     }
     init()   {}
     update() {}

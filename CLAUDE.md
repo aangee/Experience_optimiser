@@ -363,6 +363,8 @@ Les scripts utilisent `defer` — l'ordre dans `index.html` est l'ordre d'exécu
 | Symptôme | Cause probable |
 |---|---|
 | App complètement blanche, erreur console | Un `Layer.start()` accède à `this.panel` (non existant dans `Layer`) → crash |
+| Certains boutons ne répondent pas aux clics | `Canvas.js` manque `willReadFrequently: true` sur hitTestCanvas → Chrome renvoie des pixels GPU périmés depuis un canvas `display:none` |
+| Panels en double à l'écran (visuellement) | `Layer.start()` crée un panel de base → chaque layer se retrouve avec 2 panels si son `start()` en crée un aussi. Garder `Layer.start()` vide. |
 | Clics ne répondent pas sur mobile | TouchAdapter partagé (`lib/`) utilisé au lieu du local → double events |
 | Clic déclenche le mauvais bouton | Collision de `colorHitArea` (1/16M chances) ou canvas non redessiné |
 | PLAY GAME ne fait rien après le clic | `clickBtnPlayGame` ne montre pas le menu (oubli `app.menu.setActive(true)`) |

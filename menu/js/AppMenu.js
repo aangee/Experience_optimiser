@@ -10,9 +10,8 @@ class AppMenu {
 		this.cnv    = this.initializeCanvas("myCanvas",      'js-canvas');
 		this.cnvHit = this.initializeCanvas("hitTestCanvas", 'js-canvas');
 
-		// Positionnement debug : canvas principal à gauche, hit canvas visible en petit à droite
-		this.cnv.canvas.style.cssText    = "margin-left:-25vmin";
-		this.cnvHit.canvas.style.cssText = "margin-left:45vmin;width:40vmin;height:40vmin;";
+		// Hit canvas caché — sert uniquement à la détection des clics par bitmap
+		this.cnvHit.canvas.style.display = "none";
 
 		MasterHandler.init(this.cnv, this.cnvHit, this.size);
 

@@ -377,4 +377,153 @@ Les scripts utilisent `defer` — l'ordre dans `index.html` est l'ordre d'exécu
 - ✅ Bug `this.panel` corrigé dans L_Home, L_GUI, L_Inventory
 - ✅ Cycle PLAY GAME → menu → CLOSE → L_Home opérationnel
 - ✅ Touch mobile corrigé (touchAdapter local)
-- ⬜ Non encore référencé dans `portfolio/js/ProjectData.js` (à faire)
+- ✅ Référencé dans `portfolio/js/ProjectData.js` (carte "Système de menus", catégorie Interface)
+- ✅ Mode debug supprimé (2026-03-18) — hit canvas caché, canvas principal centré normalement
+
+---
+
+## Comment fonctionne le Mode Comprendre
+
+### Vue d'ensemble
+
+Le bouton "Comprendre" dans le DemoViewer charge une page pédagogique séparée dans l'iframe à la place de la démo brute. Cette page est un **module LearnKit** autonome.
+
+### Logique de chargement (DemoViewer.js)
+
+```
+Clic "Comprendre"
+  └─ setMode('comprendre')
+       └─ learnSrc = version.learnSrc ?? project.learnSrc
+            ├─ Si learnSrc trouvé → iframe.src = learnSrc  (module LearnKit)
+            └─ Si pas de learnSrc → placeholder "Phase 3" (comportement normal)
+```
+
+**Version en priorité** : si la version sélectionnée a son propre `learnSrc`, il est utilisé. Sinon, fallback sur le `learnSrc` de la carte. Sinon, placeholder.
+
+### Pourquoi le placeholder s'affiche
+
+C'est **normal** pour les projets sans module LearnKit. Ce n'est pas un bug. La majorité des cartes affichent le placeholder — seuls feu-artifice et les versions de mouvement ont un vrai module pour l'instant.
+
+### Modules LearnKit existants
+
+| Fichier | Carte | Version |
+|---------|-------|---------|
+| `learn/feu-artifice/` | Feu d'artifice | (carte entière) |
+| `learn/mouvement-acceleration/` | Mouvement | Accélération |
+| `learn/mouvement-wrapping/` | Mouvement | Wrapping |
+| `learn/mouvement-rebond/` | Mouvement | Rebond |
+| `learn/mouvement-friction/` | Mouvement | Friction |
+
+### Ajouter un module LearnKit (checklist)
+
+1. Créer `learn/<nom>/index.html` (copier depuis `learn/feu-artifice/index.html`, changer le titre)
+2. Créer `learn/<nom>/demo.js` — exporte une fonction `initDemo(canvas, kit)` qui peuple `kit.demo`
+3. Créer `learn/<nom>/steps.js` — exporte `STEPS` (tableau d'étapes, voir format ci-dessous)
+4. Ajouter `learnSrc: '../learn/<nom>/index.html'` dans la **version** concernée de `ProjectData.js`
+5. Merger la branche sur `main` → GitHub Pages le sert
+
+> ⚠️ Rien n'est visible sur GitHub Pages avant le merge sur `main`.
+
+### Format d'une étape (steps.js)
+
+```js
+{
+  title:     string,               // titre affiché dans le panneau
+  text:      string HTML,          // explication
+  code:      string | null,        // bloc de code affiché
+  highlight: string | null,        // fragment de ligne à surligner en jaune
+  freeze:    bool,                 // geler l'animation pendant cette étape
+  target:    { x, y, label } | null, // coordonnées canvas à pointer (SVG)
+  onEnter(kit) {},                 // hook appelé à l'entrée de l'étape
+  onExit(kit)  {},                 // hook appelé à la sortie
+}
+```
+
+---
+
+## Importer un nouveau projet dans le portfolio
+
+### Procédure complète
+
+#### Étape 1 — Créer la branche
+
+```bash
+git checkout main
+git pull origin main
+git checkout -b claude/<nom-court>-<ID>
+```
+
+#### Étape 2 — Copier les fichiers du projet
+
+Créer un dossier à la racine du repo (ex: `mon-projet/`) et y copier les fichiers.
+
+**Points à vérifier :**
+- Les chemins internes fonctionnent depuis ce dossier (pas de chemins absolus)
+- Si le projet utilise `lib/MasterClass.js` → chemin relatif `../lib/MasterClass.js`
+- Si le projet a son propre système tactile → créer un `touchAdapter.js` local (voir `menu/js/touchAdapter.js`)
+- **Ne pas utiliser** `lib/TouchAdapter.js` pour un projet qui utilise `getImageData` → double events
+
+#### Étape 3 — Ajouter la carte dans ProjectData.js
+
+```js
+// portfolio/js/ProjectData.js
+{
+  id: 'mon-projet',
+  name: 'Nom affiché',
+  category: 'Catégorie',          // Particules | Fractales | Détection | Mini-jeu | Interface | Architecture
+  description: 'Description courte.',
+  iframeSrc: '../mon-projet/index.html',
+  tags: ['tag1', 'tag2'],
+  controls: [
+    { key: 'Clic souris', desc: 'Description du contrôle' }
+  ],
+  // Optionnel — si le projet a plusieurs versions :
+  versions: [
+    { label: 'v1', src: '../mon-projet/index.html?mode=v1', controls: [...] },
+    { label: 'v2', src: '../mon-projet/index.html?mode=v2', controls: [...] },
+  ],
+  // Optionnel — si un module LearnKit existe :
+  learnSrc: '../learn/mon-projet/index.html',
+  // Optionnel — si le projet est en cours :
+  wip: true,
+  phase: 1
+}
+```
+
+#### Étape 4 — Ajouter une entrée dans TimelineData.js (optionnel)
+
+```js
+// portfolio/js/TimelineData.js
+{
+  date: 'Juillet 2022',
+  title: 'Nom du projet',
+  description: 'Ce que ce projet représente dans la progression.',
+  tags: ['tag1'],
+  projectId: 'mon-projet'          // doit correspondre à l'id dans ProjectData.js
+}
+```
+
+#### Étape 5 — Merger
+
+```bash
+git add .
+git commit -m "feat: import <nom-projet> dans le portfolio"
+git push -u origin <branche>
+# Créer la PR sur GitHub → merger dans main
+```
+
+### Ce qui ne marche PAS sans merge
+
+- GitHub Pages sert uniquement `main` → toute modification est invisible tant qu'elle n'est pas mergée
+- Tester en local via `npx serve` ou Live Server VSCode (ouvrir depuis la racine du repo, pas depuis `portfolio/`)
+
+### Projets avec touch mobile
+
+Si le projet doit répondre aux touches sur mobile, deux cas :
+
+| Situation | Solution |
+|-----------|----------|
+| Projet simple (pas de hit canvas) | Ajouter `<script src="../lib/TouchAdapter.js"></script>` dans le HTML |
+| Projet avec hit canvas (getImageData) | Créer un `touchAdapter.js` local avec `{ passive: false }` + `preventDefault()` |
+
+**Pourquoi ?** `lib/TouchAdapter.js` utilise `{ passive: true }` → ne peut pas bloquer les événements souris natifs du navigateur → double déclenchement sur les projets qui lisent les pixels.

@@ -4,6 +4,18 @@
 
 ---
 
+## Accès multi-repo en session web
+
+Le proxy local n'autorise qu'un seul repo par session (celui depuis lequel la session est lancée).
+
+**Si j'ai besoin d'accéder à `nysa-atlas` depuis une session `Experience_optimiser`** (ou vice-versa) → demander le token GitHub à aangee. Il l'a sauvegardé et peut le fournir à la demande.
+
+```
+"Aangee, j'ai besoin du token GitHub pour accéder à nysa-atlas."
+```
+
+---
+
 ## Qui est aangee
 
 - Développeur autodidacte, apprend JS depuis plusieurs années

@@ -1,24 +1,26 @@
 /**
  * TouchAdapter local — menu/  (mode curseur mobile)
  *
- * Sur mobile, touch + glisser déplace un curseur visible.
- * Relâcher = clic à la position du curseur.
+ * Deux modes sélectionnables via le bouton flottant (visible sur touch) :
  *
- * Le curseur est décalé du doigt vers le centre de l'écran :
- *   doigt côté droit  → curseur à gauche
- *   doigt côté gauche → curseur à droite
- *   doigt en bas      → curseur en haut
- *   doigt en haut     → curseur en bas
- * → le curseur n'est jamais caché sous le doigt.
+ * ● Offset ON (défaut) : touch + glisser déplace un curseur visible,
+ *   décalé du doigt vers le centre de l'écran pour rester visible.
+ *   Relâcher = clic à la position du curseur.
+ *
+ * ● Direct : le clic est envoyé exactement à la position du doigt,
+ *   sans curseur ni décalage. Utile pour tester si l'offset
+ *   cause des ratés sur certains boutons.
  *
  * NOTE : preventDefault uniquement sur touchstart et touchmove.
- * Mettre preventDefault sur touchend (passive:false) bloque les
- * touches suivantes sur iOS — ne pas le faire.
+ * Le mettre sur touchend (passive:false) bloque les touches suivantes
+ * sur iOS — ne pas le faire.
  */
 (function () {
 
-    const CURSOR_SIZE = 28;  // diamètre du cercle en px
-    const OFFSET      = 44;  // décalage curseur ↔ doigt en px
+    const CURSOR_SIZE = 28;
+    const OFFSET      = 44;
+
+    let offsetEnabled = true;
 
     /* ── Curseur visuel ──────────────────────────────────────── */
     let cursorEl = null;
@@ -60,6 +62,47 @@
         }
     }
 
+    /* ── Toggle Offset ON / Direct ───────────────────────────── */
+    let toggleEl = null;
+
+    function ensureToggle() {
+        if (toggleEl) return;
+        toggleEl = document.createElement('button');
+        updateToggleLabel();
+        toggleEl.style.cssText = [
+            'position:fixed',
+            'bottom:10px',
+            'right:10px',
+            'z-index:10000',
+            'padding:6px 10px',
+            'background:rgba(0,0,0,0.75)',
+            'color:white',
+            'border:1px solid rgba(255,255,255,0.35)',
+            'border-radius:6px',
+            'font-size:12px',
+            'font-family:monospace',
+            'cursor:pointer',
+            'user-select:none',
+        ].join(';');
+
+        // touchstart sur le bouton : toggle + stopper la propagation
+        // (évite que le document listener intercepte ce touch)
+        toggleEl.addEventListener('touchstart', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            offsetEnabled = !offsetEnabled;
+            updateToggleLabel();
+            hideCursor();
+        }, { passive: false });
+
+        document.body.appendChild(toggleEl);
+    }
+
+    function updateToggleLabel() {
+        if (!toggleEl) return;
+        toggleEl.textContent = offsetEnabled ? '⊕ Offset ON' : '⊙ Direct';
+    }
+
     /* ── Calcul de la position décalée ───────────────────────── */
     function offsetFrom(tx, ty) {
         const dx = tx > window.innerWidth  / 2 ? -OFFSET : +OFFSET;
@@ -89,33 +132,39 @@
 
     /* ── Listeners touch ─────────────────────────────────────── */
 
-    // touchstart : place le curseur (décalé), initialise le hover
     document.addEventListener('touchstart', function (e) {
         e.preventDefault();
-        const t   = e.touches[0];
-        const pos = offsetFrom(t.clientX, t.clientY);
-        cx = pos.x;
-        cy = pos.y;
-        moveCursor(cx, cy);
+        ensureToggle();
+        const t = e.touches[0];
+        if (offsetEnabled) {
+            const pos = offsetFrom(t.clientX, t.clientY);
+            cx = pos.x;
+            cy = pos.y;
+            moveCursor(cx, cy);
+        } else {
+            cx = t.clientX;
+            cy = t.clientY;
+        }
         fire('mousemove', cx, cy);
     }, { passive: false });
 
-    // touchmove : fait glisser le curseur (décalé)
     document.addEventListener('touchmove', function (e) {
         e.preventDefault();
-        const t   = e.touches[0];
-        const pos = offsetFrom(t.clientX, t.clientY);
-        cx = pos.x;
-        cy = pos.y;
-        moveCursor(cx, cy);
+        const t = e.touches[0];
+        if (offsetEnabled) {
+            const pos = offsetFrom(t.clientX, t.clientY);
+            cx = pos.x;
+            cy = pos.y;
+            moveCursor(cx, cy);
+        } else {
+            cx = t.clientX;
+            cy = t.clientY;
+        }
         fire('mousemove', cx, cy);
     }, { passive: false });
 
-    // touchend : clic à la position du curseur
-    // passive:true + pas de preventDefault → évite de bloquer
-    // les touches suivantes sur iOS
     document.addEventListener('touchend', function (e) {
-        flashCursor();
+        if (offsetEnabled) flashCursor();
         fire('mousedown', cx, cy);
         fire('mouseup',   cx, cy);
         setTimeout(hideCursor, 300);

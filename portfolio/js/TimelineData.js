@@ -138,14 +138,6 @@ const TIMELINE = [
   },
 
   {
-    date: { day: null, month: 'jul', year: 2022, approx: false },
-    title: 'Framework UI canvas',
-    desc: 'Construire une interface graphique sans le DOM : panels, boutons arrondis, labels, toggles, zones de texte — tout dessiné sur canvas. Détection de clic par couleur unique sur un canvas invisible.',
-    demoId: 'canvas-menu',
-    tags: ['UI', 'framework', 'architecture']
-  },
-
-  {
     date: { day: 23, month: 'jan', year: 2023, approx: false },
     title: 'Athena — premier moteur ECS',
     desc: 'Architecture Unity-like en JS vanilla : GameObjects, Components, Services canvas superposés, pattern Command pour les inputs, collisions bitmap. Le saut architectural le plus important du parcours.',

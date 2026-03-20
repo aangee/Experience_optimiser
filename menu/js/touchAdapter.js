@@ -163,12 +163,14 @@
     function fire(name, x, y) {
         const canvas = getCanvas();
         if (!canvas) return;
-        canvas.dispatchEvent(new MouseEvent(name, {
+        const evt = new MouseEvent(name, {
             bubbles:    true,
             cancelable: true,
             clientX: x,
             clientY: y,
-        }));
+        });
+        evt._touchRadius = 12;
+        canvas.dispatchEvent(evt);
     }
 
     /* ── Listeners touch ─────────────────────────────────────── */

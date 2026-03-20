@@ -20,6 +20,13 @@ canvas {
 	height    : 80vmin;
 }
 
+@media (pointer: coarse) {
+	canvas {
+		width : 95vmin;
+		height: 95vmin;
+	}
+}
+
 a {
 	color: white;
 }

@@ -88,6 +88,10 @@ class MasterHandler {
         let position    = MasterHandler.getMousePosition(event);
         let color       = MasterHandler.getColor(MasterHandler.hitCtx, position);
         let tempElement = MasterHandler.isHovering(color);
+        if (!tempElement && event._touchRadius > 0) {
+            color       = MasterHandler.getColorInRadius(MasterHandler.hitCtx, position, event._touchRadius);
+            tempElement = MasterHandler.isHovering(color);
+        }
         if (tempElement) tempElement.click();
     }
 
@@ -132,6 +136,19 @@ class MasterHandler {
     static getColor(ctx, position) {
         let data = ctx.getImageData(position[0], position[1], 1, 1);
         return "rgb(" + data.data[0] + "," + data.data[1] + "," + data.data[2] + ")";
+    }
+
+    static getColorInRadius(ctx, position, radius) {
+        const x    = Math.max(0, position[0] - radius);
+        const y    = Math.max(0, position[1] - radius);
+        const size = radius * 2 + 1;
+        const data = ctx.getImageData(x, y, size, size).data;
+        for (let i = 0; i < data.length; i += 4) {
+            if (data[i + 3] > 0) {
+                return "rgb(" + data[i] + "," + data[i + 1] + "," + data[i + 2] + ")";
+            }
+        }
+        return "rgb(0,0,0)";
     }
 
     static getMousePosition(event) {

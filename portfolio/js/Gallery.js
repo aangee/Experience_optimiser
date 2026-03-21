@@ -59,41 +59,33 @@ class Gallery {
       locked.forEach(p => this.container.appendChild(this._createCard(p, true)));
     });
 
-    // Démarre le chargement intelligent des iframes après injection du DOM
-    this._initLazyLoad();
+    // Démarre le chargement hover-to-activate après injection du DOM
+    this._initHoverLoad();
   }
 
   /**
-   * Intersection Observer : charge l'iframe quand elle approche du viewport,
-   * la décharge quand elle s'en éloigne.
-   * Résultat : seulement ~4-5 canvases actifs en même temps.
+   * Hover-to-activate : charge l'iframe uniquement quand la souris entre
+   * dans la carte. Sur mobile (pointer: coarse), aucune iframe n'est chargée
+   * dans les cartes — les démos s'ouvrent directement en fullscreen au clic.
    *
-   * rootMargin: "400px 0px"
-   *   → l'iframe se charge 400px AVANT d'être visible (scroll fluide)
-   *   → elle se décharge 400px APRÈS être sortie du viewport
-   *   Avec des cartes de ~260px de hauteur, ça couvre environ 1-2 cartes
-   *   au-dessus et 1-2 en dessous de ce qui est visible.
+   * Résultat : 0 canvas actif au chargement de la page, 1 seul en mémoire
+   * à la fois pendant la navigation, zéro risque de crash mémoire.
    */
-  _initLazyLoad() {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        const iframe = entry.target;
-        if (entry.isIntersecting) {
-          // La carte approche → on branche la source pour démarrer le canvas
-          if (iframe.dataset.src && iframe.src !== iframe.dataset.src) {
-            iframe.src = iframe.dataset.src;
-          }
-        } else {
-          // La carte est loin → on coupe le canvas pour libérer les ressources
-          iframe.removeAttribute('src');
+  _initHoverLoad() {
+    // Sur mobile (écran tactile) : pas d'iframe dans les cartes, rien à faire
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+
+    this.container.querySelectorAll('.card:not(.card--locked)').forEach(card => {
+      const iframe = card.querySelector('iframe[data-src]');
+      if (!iframe) return;
+
+      card.addEventListener('mouseenter', () => {
+        // Charge seulement si pas encore fait (data-loaded = flag one-shot)
+        if (!iframe.dataset.loaded) {
+          iframe.src = iframe.dataset.src;
+          iframe.dataset.loaded = '1';
         }
       });
-    // haut: ~1 carte | bas: ~2 cartes (on scrolle plus souvent vers le bas)
-    }, { rootMargin: '280px 0px 560px 0px' });
-
-    // On observe toutes les iframes qui ont un data-src (les démos actives)
-    this.container.querySelectorAll('iframe[data-src]').forEach(iframe => {
-      observer.observe(iframe);
     });
   }
 

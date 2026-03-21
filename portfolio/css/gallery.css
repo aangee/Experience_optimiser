@@ -149,6 +149,14 @@
   color: var(--text-dim);
 }
 
+/* ===== MOBILE : pas d'iframes dans les cartes ===== */
+/* Sur écran tactile, les canvases s'ouvrent en fullscreen au clic */
+@media (pointer: coarse) {
+  .card-preview iframe {
+    display: none;
+  }
+}
+
 /* ===== EN-TÊTES DE CATÉGORIE ===== */
 /* grid-column: 1 / -1 → s'étend sur toute la largeur de la grille */
 .section-header {

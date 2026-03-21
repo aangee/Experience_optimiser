@@ -1,12 +1,12 @@
 class Tree {
 
-    constructor() {
+    constructor(style = 'default') {
         this.leaves = [];
         this.branches = [];
 
-        //Feullies
-        for (let i = 0; i < 300; i++) {
-            this.leaves.push(new Leaf());
+        const count = style === 'crown' ? 120 : 300;
+        for (let i = 0; i < count; i++) {
+            this.leaves.push(new Leaf(style));
         }
         let pos = new Vec2D(sizeCanvas.w / 2, sizeCanvas.h);
         let dir = new Vec2D(0, -1);
@@ -17,7 +17,7 @@ class Tree {
         while (!found) {
             for (let i = 0; i < this.leaves.length; i++) {
                 let leaf = this.leaves[i];
-                let d = root.pos.distTo(leaf.pos);
+                let d = current.pos.distTo(leaf.pos);
 
                 if (d < max_dist) {
                     found = true;

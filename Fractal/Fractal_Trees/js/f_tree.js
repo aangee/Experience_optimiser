@@ -17,6 +17,19 @@ function f_Tree() {
 
     let interationMax = 8;
 
+    window._modeParams = [
+        { label: 'Niveaux',     get: () => interationMax,                                  set: v => { interationMax = +v; },                     min: 3,   max: 12,  step: 1    },
+        { label: 'Ratio tronc', get: () => trunkRatio,                                     set: v => { trunkRatio    = +v; },                     min: 0.1, max: 0.9, step: 0.05 },
+        { label: 'Angle A (°)', get: () => Math.round(branchAngleA * 180 / Math.PI),       set: v => { branchAngleA  = +v * Math.PI / 180; },     min: -90, max: 90,  step: 1    },
+        { label: 'Angle B (°)', get: () => Math.round(branchAngleB * 180 / Math.PI),       set: v => { branchAngleB  = +v * Math.PI / 180; },     min: -90, max: 90,  step: 1    }
+    ];
+
+    window._modeRandomize = () => {
+        branchAngleA = randomRange(-Math.PI / 2, Math.PI / 2);
+        branchAngleB = randomRange(-Math.PI / 2, Math.PI / 2);
+        trunkRatio   = randomRange(0.25, 0.75);
+    };
+
     /* tree(p0, p1, 3);
     drawCircle(); */
 
@@ -25,8 +38,8 @@ function f_Tree() {
         setup.ctx.clearRect(0, 0, setup.width, setup.height);
 
         tree(p0, p1, interationMax);
-        drawCircle();
-        requestAnimationFrame(draw);
+        // drawCircle(); // debug — conservé pour le mode Comprendre
+        window._rafId = requestAnimationFrame(draw);
     }
     draw();
     function tree(p0, p1, limit) {
@@ -102,7 +115,7 @@ function f_Tree() {
     }
 
 
-    document.body.addEventListener("click", (event) => {
+    setup.canvas.addEventListener("click", (event) => {
         debugListPoint = [];
         setup.ctx.clearRect(0, 0, setup.width, setup.height);
 

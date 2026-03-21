@@ -27,24 +27,34 @@ class App {
         //START Space Colonization
         sizeCanvas = { w: this.canvas.width, h: this.canvas.height };
 
-        tree = new Tree();
-        for (let g = 0; g < 10; g++) {
+        this.animated  = options.animated || false;
+        this._style    = options.style    || 'default';
+        this._frame    = 0;
+        this._interval = 4; // grow() tous les 4 frames (~15 steps/sec à 60fps)
 
-            tree.grow();
+        tree = new Tree(this._style);
+        if (!this.animated) {
+            for (let g = 0; g < 200; g++) {
+                tree.grow();
+            }
+            tree.show(this.ctx);
         }
-        tree.show(this.ctx);
     }
 
-    init() {
+    init() {}
 
-
+    restart() {
+        tree = new Tree(this._style);
+        this._frame = 0;
+        this.canvas.clear();
     }
 
     update() {
-        //On efface notre canvas
-        /*  this.canvas.clear();
- 
-         tree.show(this.ctx);
-         tree.grow(); */
+        if (!this.animated) return;
+        this._frame++;
+        if (this._frame % this._interval !== 0) return;
+        this.canvas.clear();
+        tree.grow();
+        tree.show(this.ctx);
     }
 }

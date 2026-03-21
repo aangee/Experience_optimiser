@@ -4,6 +4,8 @@ body {
   padding: 0;
   box-sizing: border-box;
   background-color: rgb(38, 38, 38);
+  color: #ddd;
+  font-family: sans-serif;
 }
 
 canvas {
@@ -12,4 +14,88 @@ canvas {
   top: 0px;
   left: 0px;
   z-index: -1;
+}
+
+/* ===== OVERLAY UI ===== */
+#js-selector,
+#params-panel {
+  position: fixed;
+  left: 16px;
+  z-index: 10;
+}
+
+#js-selector {
+  top: 16px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+#js-selector button {
+  background: rgba(0,0,0,0.6);
+  color: #ccc;
+  border: 1px solid #555;
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+#js-selector button:hover {
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+}
+
+/* ===== PANNEAU PARAMÈTRES ===== */
+#params-panel {
+  top: 56px;
+  background: rgba(0,0,0,0.65);
+  border: 1px solid #444;
+  border-radius: 6px;
+  padding: 10px 14px;
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.param-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.param-row label {
+  font-size: 0.75rem;
+  color: #aaa;
+  width: 90px;
+  flex-shrink: 0;
+}
+
+.param-row input[type=range] {
+  flex: 1;
+  accent-color: #7aa2f7;
+}
+
+.param-value {
+  font-size: 0.75rem;
+  color: #7aa2f7;
+  width: 40px;
+  text-align: right;
+}
+
+.param-restart {
+  margin-top: 4px;
+  background: rgba(122,162,247,0.15);
+  color: #7aa2f7;
+  border: 1px solid #7aa2f7;
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+.param-restart:hover {
+  background: rgba(122,162,247,0.3);
 }

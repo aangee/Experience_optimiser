@@ -208,8 +208,23 @@ const PROJECTS = [
     description: 'Un arbre qui pousse vers des points de lumière — algorithme de colonisation de l\'espace.',
     iframeSrc: '../Fractal/Space_Colonization/index.html',
     tags: ['fractal', 'algorithme', 'génératif'],
-    controls: [
-      { key: 'Déplacer souris', desc: 'Guide la croissance de l\'arbre' }
+    controls: [],
+    versions: [
+      {
+        label: 'Statique',
+        src: '../Fractal/Space_Colonization/index.html',
+        controls: []
+      },
+      {
+        label: 'Animée',
+        src: '../Fractal/Space_Colonization/index.html?mode=anim',
+        controls: []
+      },
+      {
+        label: 'Couronne',
+        src: '../Fractal/Space_Colonization/index.html?mode=anim&style=crown',
+        controls: []
+      }
     ],
     phase: 1
   },

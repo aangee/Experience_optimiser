@@ -2,3 +2,5 @@
 *.log
 # ignore le dossier vscode
 .vscode
+# ignore les fichiers internes Claude Code
+.claude/

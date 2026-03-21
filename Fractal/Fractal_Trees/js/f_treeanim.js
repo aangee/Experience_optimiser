@@ -19,6 +19,12 @@ function f_Tree_Anim() {
 	let tB = 0;
 	let tBS = 0.01437;
 
+	window._modeParams = [
+		{ label: 'Ratio tronc', get: () => trunkRatio, set: v => { trunkRatio = +v; }, min: 0.1, max: 0.9, step: 0.05 },
+		{ label: 'Vitesse A',   get: () => tAS,        set: v => { tAS        = +v; }, min: 0.001, max: 0.05, step: 0.001 },
+		{ label: 'Vitesse B',   get: () => tBS,        set: v => { tBS        = +v; }, min: 0.001, max: 0.05, step: 0.001 }
+	];
+
 
 
 	function draw() {
@@ -27,7 +33,7 @@ function f_Tree_Anim() {
 		branchAngleB = Math.cos(tB += tBS) * Math.PI / 2;
 
 		treeAnimation(p0, p1, 8);
-		requestAnimationFrame(draw);
+		window._rafId = requestAnimationFrame(draw);
 	}
 	draw();
 

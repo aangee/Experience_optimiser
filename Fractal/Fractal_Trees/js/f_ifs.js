@@ -117,6 +117,11 @@ function f_Ifs() {
 
     let x = Math.random();
     let y = Math.random();
+    let pointsPerFrame = 100;
+
+    window._modeParams = [
+        { label: 'Points/frame', get: () => pointsPerFrame, set: v => { pointsPerFrame = +v; }, min: 10, max: 500, step: 10 }
+    ];
 
     setup.ctx.translate(setup.width / 2, setup.height + 50);
     iterate();
@@ -126,7 +131,7 @@ function f_Ifs() {
 
     function iterate() {
         setup.ctx.clearRect(0, 0, setup.width, setup.height);
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < pointsPerFrame; i++) {
             let rule = getRule(),
                 x1 = x * rule.a + y * rule.b + rule.tx,
                 y1 = x * rule.c + y * rule.d + rule.ty;
@@ -134,7 +139,7 @@ function f_Ifs() {
             y = y1;
             plot(x, y, rule.color);
         }
-        requestAnimationFrame(iterate);
+        window._rafId = requestAnimationFrame(iterate);
     }
 
     function getRule() {

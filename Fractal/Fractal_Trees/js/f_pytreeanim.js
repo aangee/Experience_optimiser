@@ -4,15 +4,22 @@ function f_PyTree_Anim() {
 	let setup = new SetupCanvas();
 	let branchAngleA = 0;
 	let t = 0;
+	let depth = 7;
+	let speed = 0.01;
+
+	window._modeParams = [
+		{ label: 'Profondeur', get: () => depth, set: v => { depth = +v; }, min: 2, max: 9, step: 1 },
+		{ label: 'Vitesse',    get: () => speed, set: v => { speed = +v; }, min: 0.001, max: 0.05, step: 0.001 }
+	];
 
 	draw();
 
 	function draw() {
 		setup.ctx.clearRect(0, 0, setup.width, setup.height);
-		branchAngleA = -Math.PI / 4 - Math.sin(t += 0.01) * Math.PI / 4;
+		branchAngleA = -Math.PI / 4 - Math.sin(t += speed) * Math.PI / 4;
 		setup.ctx.fillStyle = 'brown';
-		tree(setup.width * .5, setup.height * .8, 40, 0, 2);
-		requestAnimationFrame(draw);
+		tree(setup.width * .5, setup.height * .8, 40, 0, depth);
+		window._rafId = requestAnimationFrame(draw);
 	}
 
 	function tree(x, y, size, angle, limit) {

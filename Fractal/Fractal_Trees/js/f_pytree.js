@@ -3,7 +3,14 @@ function f_PyTree() {
 	let setup = new SetupCanvas();
 
 	let branchAngleA = randomRange(0, -Math.PI / 2);
+	let depth = 9;
+	let initSize = 80;
 
+	window._modeParams = [
+		{ label: 'Angle (°)',    get: () => Math.round(branchAngleA * 180 / Math.PI), set: v => { branchAngleA = +v * Math.PI / 180; }, min: -90, max: 0, step: 1 },
+		{ label: 'Profondeur',   get: () => depth,    set: v => { depth    = +v; }, min: 3, max: 12, step: 1 },
+		{ label: 'Taille init.', get: () => initSize, set: v => { initSize = +v; }, min: 20, max: 150, step: 5 }
+	];
 
 	setup.canvas.addEventListener("click", (event) => {
 
@@ -13,8 +20,8 @@ function f_PyTree() {
 
 	function draw() {
 		setup.ctx.clearRect(0, 0, setup.width, setup.height);
-		tree(setup.width / 2 - 75, setup.height, 80, 0, 9);
-		requestAnimationFrame(draw);
+		tree(setup.width / 2 - 75, setup.height, initSize, 0, depth);
+		window._rafId = requestAnimationFrame(draw);
 	}
 	draw();
 

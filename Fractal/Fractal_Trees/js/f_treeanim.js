@@ -18,11 +18,13 @@ function f_Tree_Anim() {
 	let tAS = 0.01;
 	let tB = 0;
 	let tBS = 0.01437;
+	let baseHue = 15;
 
 	window._modeParams = [
 		{ label: 'Ratio tronc', get: () => trunkRatio, set: v => { trunkRatio = +v; }, min: 0.1, max: 0.9, step: 0.05 },
 		{ label: 'Vitesse A',   get: () => tAS,        set: v => { tAS        = +v; }, min: 0.001, max: 0.05, step: 0.001 },
-		{ label: 'Vitesse B',   get: () => tBS,        set: v => { tBS        = +v; }, min: 0.001, max: 0.05, step: 0.001 }
+		{ label: 'Vitesse B',   get: () => tBS,        set: v => { tBS        = +v; }, min: 0.001, max: 0.05, step: 0.001 },
+		{ label: 'Teinte (°)',  get: () => baseHue,    set: v => { baseHue    = +v; }, min: 0, max: 360, step: 5 }
 	];
 
 
@@ -55,6 +57,12 @@ function f_Tree_Anim() {
 				x: pA.x + Math.cos(angle + branchAngleB) * branchLength,
 				y: pA.y + Math.sin(angle + branchAngleB) * branchLength,
 			};
+
+		const ratio = limit / 8;
+		const hue = baseHue + (1 - ratio) * 100;
+		const lightness = 30 + (1 - ratio) * 25;
+		setup.ctx.strokeStyle = `hsl(${hue}, 70%, ${lightness}%)`;
+		setup.ctx.lineWidth = 1 + ratio * 3;
 
 		setup.ctx.beginPath();
 		setup.ctx.moveTo(p0.x, p0.y);

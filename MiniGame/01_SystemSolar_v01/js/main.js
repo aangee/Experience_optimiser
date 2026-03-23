@@ -17,8 +17,8 @@ let player;// Notre fake player
 let debug;// Notre panel de debug
 
 let move = {
-    x: 0, // Pour une map scale de 1 a 2 utilisiser cette pos (x:430,y:560) 
-    y: 0  // Pour une map scale de 3 utilisiser cette pos (x:1360,y:1430) 
+    x: 0, // Pour une map scale de 1 a 2 utilisiser cette pos (x:430,y:560)
+    y: 0  // Pour une map scale de 3 utilisiser cette pos (x:1360,y:1430)
 }
 
 //TEST World v1
@@ -114,7 +114,7 @@ function initDebug() {
     DBG_Canvas.width = width;
     DBG_Canvas.height = height;
 
-    debug = DebugInfo.create(DBG_Ctx, 10, 10, 180, 125, true);
+    debug = DebugInfo.create(DBG_Ctx, 10, 10, 180, 85, true);
 
 
     //debug.drawPanel_G();
@@ -138,12 +138,7 @@ function updateDebug() {
             { label: ' ', txt: '' },
             { label: 'Map info ', txt: '' },
             { label: 'Position: ', txt: move.x.toFixed(2) + ' dx|dy ' + move.y.toFixed(2) },
-            { label: 'Scale: ', txt: scaleXY.toFixed(2) },
-            { label: 'Info input ', txt: '' },
-            { label: 'Toggle show panel info: ', txt: '²' },
-            { label: 'Zoom x10: ', txt: '+ -' },
-            { label: 'Zoom x1: ', txt: '/ *' },
-            { label: 'Move: ', txt: 'Z Q S D' }
+            { label: 'Scale: ', txt: scaleXY.toFixed(2) }
         ]);
 
         debug.drawPanel_G();
@@ -164,19 +159,19 @@ function addEvents() {
         /*console.log(event.keyCode);*/
         //console.log(event.key);
         switch (event.key) {
-            case 'z': // up
+            case 'z': case 'ArrowUp': // up
                 move.y -= 10;
                 break;
-            case 's': // down
+            case 's': case 'ArrowDown': // down
                 move.y += 10;
                 break;
-            case 'q': // left
+            case 'q': case 'ArrowLeft': // left
                 move.x -= 10;
                 break;
-            case 'd': // right 
+            case 'd': case 'ArrowRight': // right
                 move.x += 10;
                 break;
-            case 'Escape': // Escape ou echap
+            case 'Escape':
                 break;
 
             // Zoom map
@@ -193,8 +188,7 @@ function addEvents() {
                 scaleXY -= .01;
                 break;
 
-
-            case '²': // Pause game
+            case 'p': case '²': // Toggle panel debug
                 debug.isShowDebug = !debug.isShowDebug;
                 break;
 
@@ -212,8 +206,7 @@ function addEvents() {
                 break;
             case 'd': // right
                 break;
-            case 'Escape': // Escape ou echap
-
+            case 'Escape':
                 break;
 
             default:

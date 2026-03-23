@@ -34,24 +34,26 @@ window.onload = function () {
     document.body.addEventListener('keydown', function (event) {
         /*console.log(event.keyCode);*/
         console.log(event.key);
+        if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(event.key)) event.preventDefault();
         switch (event.key) {
-            case 'z': // up
+            case 'z': case 'ArrowUp': // thrust avant
                 ship.thrusting = true;
                 break;
-            case 's': // down
+            case 's': case 'ArrowDown': // thrust arrière
                 ship.thrustingBack = true;
                 break;
-            case 'q': // left
+            case 'q': case 'ArrowLeft': // rotation gauche
                 ship.turningLeft = true;
                 break;
-            case 'd': // right 
+            case 'd': case 'ArrowRight': // rotation droite
                 ship.turningRight = true;
                 break;
-            case 'Escape': // Escape ou echap
-                
-
+            case ' ': // tir
+                ship.isShooting = true;
                 break;
-            case '²': // Escape ou echap
+            case 'Escape':
+                break;
+            case 'p': case '²': // pause
                 isAppPause = !isAppPause;
                 if (isAppPause) {
                     cancelAnimationFrame(animationID);
@@ -68,19 +70,22 @@ window.onload = function () {
         /* console.log(event.keyCode);
         console.log(event.key); */
         switch (event.key) {
-            case 'z': // up
+            case 'z': case 'ArrowUp':
                 ship.thrusting = false;
                 break;
-            case 's': // down
+            case 's': case 'ArrowDown':
                 ship.thrustingBack = false;
                 break;
-            case 'q': // left
+            case 'q': case 'ArrowLeft':
                 ship.turningLeft = false;
                 break;
-            case 'd': // right
+            case 'd': case 'ArrowRight':
                 ship.turningRight = false;
                 break;
-            case 'Escape': // Escape ou echap
+            case ' ':
+                ship.isShooting = false;
+                break;
+            case 'Escape':
                 DebugInfo.isShowDebug = !DebugInfo.isShowDebug;
                 break;
 

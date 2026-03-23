@@ -111,7 +111,7 @@ function initDebug() {
     DBG_Canvas.width = width;
     DBG_Canvas.height = height;
 
-    debug = DebugInfo.create(DBG_Ctx, 10, 10, 180, 135, true);
+    debug = DebugInfo.create(DBG_Ctx, 10, 10, 180, 100, true);
 
 
     //debug.drawPanel_G();
@@ -135,12 +135,7 @@ function updateDebug() {
 
             { label: 'Map info ', txt: '' },
             { label: 'Position: ', txt: move.x.toFixed(2) + ' x|y ' + move.y.toFixed(2) },
-            { label: 'Scale: ', txt: scaleXY.toFixed(2) },
-            { label: 'Info input ', txt: '' },
-            { label: 'Toggle show panel info: ', txt: '²' },
-            { label: 'Zoom x10: ', txt: '+ -' },
-            { label: 'Zoom x1: ', txt: '/ *' },
-            { label: 'Move: ', txt: 'Z Q S D' }
+            { label: 'Scale: ', txt: scaleXY.toFixed(2) }
         ]);
 
         debug.drawPanel_G();
@@ -159,23 +154,19 @@ function addEvents() {
         /*console.log(event.keyCode);*/
         console.log(event.key);
         switch (event.key) {
-            case 'z': // up
-                /* game.ship.thrusting = true; */
+            case 'z': case 'ArrowUp': // up
                 move.y -= 10;
                 break;
-            case 's': // down
-                /* game.ship.thrustingBack = true; */
+            case 's': case 'ArrowDown': // down
                 move.y += 10;
                 break;
-            case 'q': // left
-                /* game.ship.turningLeft = true; */
+            case 'q': case 'ArrowLeft': // left
                 move.x -= 10;
                 break;
-            case 'd': // right 
-                /* game.ship.turningRight = true; */
+            case 'd': case 'ArrowRight': // right
                 move.x += 10;
                 break;
-            case 'Escape': // Escape ou echap
+            case 'Escape':
                 break;
 
             // Zoom map
@@ -192,8 +183,7 @@ function addEvents() {
                 scaleXY -= .01;
                 break;
 
-
-            case '²': // Pause game
+            case 'p': case '²': // Toggle panel debug
                 debug.isShowDebug = !debug.isShowDebug;
                 break;
 

@@ -143,24 +143,26 @@ function addEvents() {
     document.body.addEventListener('keydown', function (event) {
         /*console.log(event.keyCode);*/
         console.log(event.key);
+        if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(event.key)) event.preventDefault();
         switch (event.key) {
-            case 'z': // up
+            case 'z': case 'ArrowUp': // thrust avant
                 game.ship.thrusting = true;
                 break;
-            case 's': // down
+            case 's': case 'ArrowDown': // thrust arrière
                 game.ship.thrustingBack = true;
                 break;
-            case 'q': // left
+            case 'q': case 'ArrowLeft': // rotation gauche
                 game.ship.turningLeft = true;
                 break;
-            case 'd': // right 
+            case 'd': case 'ArrowRight': // rotation droite
                 game.ship.turningRight = true;
                 break;
-            case 'Escape': // Escape ou echap
-
-
+            case ' ': // tir
+                game.ship.isShooting = true;
                 break;
-            case '²': // Pause game
+            case 'Escape':
+                break;
+            case 'p': case '²': // pause
                 game.isAppPause = !game.isAppPause;
                 if (game.isAppPause) {
                     cancelAnimationFrame(game.animationID);
@@ -177,19 +179,22 @@ function addEvents() {
         /* console.log(event.keyCode);
         console.log(event.key); */
         switch (event.key) {
-            case 'z': // up
+            case 'z': case 'ArrowUp':
                 game.ship.thrusting = false;
                 break;
-            case 's': // down
+            case 's': case 'ArrowDown':
                 game.ship.thrustingBack = false;
                 break;
-            case 'q': // left
+            case 'q': case 'ArrowLeft':
                 game.ship.turningLeft = false;
                 break;
-            case 'd': // right
+            case 'd': case 'ArrowRight':
                 game.ship.turningRight = false;
                 break;
-            case 'Escape': // Escape ou echap
+            case ' ':
+                game.ship.isShooting = false;
+                break;
+            case 'Escape':
                 DebugInfo.isShowDebug = !DebugInfo.isShowDebug;
                 game.isVueFollow = !game.isVueFollow;
                 break;

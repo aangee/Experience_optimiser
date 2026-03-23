@@ -19,17 +19,18 @@ window.onload = function () {
     document.body.addEventListener('keydown', function (event) {
         /* console.log(event.keyCode);
         console.log(event.key); */
+        if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(event.key)) event.preventDefault();
         switch (event.key) {
-            case 'z': // up
+            case 'z': case 'ArrowUp': // thrust avant
                 thrusting = true;
                 break;
-            case 's': // down
+            case 's': case 'ArrowDown': // thrust arrière
                 thrustingBack = true;
                 break;
-            case 'q': // left
+            case 'q': case 'ArrowLeft': // rotation gauche
                 turningLeft = true;
                 break;
-            case 'd': // right
+            case 'd': case 'ArrowRight': // rotation droite
                 turningRight = true;
                 break;
 
@@ -42,16 +43,16 @@ window.onload = function () {
         /* console.log(event.keyCode);
         console.log(event.key); */
         switch (event.key) {
-            case 'z': // up
+            case 'z': case 'ArrowUp':
                 thrusting = false;
                 break;
-            case 's': // down
+            case 's': case 'ArrowDown':
                 thrustingBack = false;
                 break;
-            case 'q': // left
+            case 'q': case 'ArrowLeft':
                 turningLeft = false;
                 break;
-            case 'd': // right
+            case 'd': case 'ArrowRight':
                 turningRight = false;
                 break;
 

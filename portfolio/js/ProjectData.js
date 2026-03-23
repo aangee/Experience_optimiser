@@ -77,8 +77,8 @@ const PROJECTS = [
     id: 'gravite',
     name: 'Gravité',
     category: 'Particules',
-    description: 'La gravité simulée — chute libre puis attraction orbitale entre corps célestes.',
-    iframeSrc: '../Paticule/03_Gravity_Orbital/index.html',
+    description: 'La gravité simulée — chute libre, orbites et systèmes multi-corps.',
+    iframeSrc: '../Paticule/10_Optimisation/multigravity_opti.html',
     tags: ['gravité', 'physique', 'orbite'],
     controls: [],
     versions: [
@@ -91,6 +91,21 @@ const PROJECTS = [
         label: 'Orbitale',
         src: '../Paticule/03_Gravity_Orbital/index.html',
         controls: []
+      },
+      {
+        label: 'Orbite libre',
+        src: '../Paticule/10_Optimisation/orbit_opti.html',
+        controls: []
+      },
+      {
+        label: 'Multi-soleils',
+        src: '../Paticule/10_Optimisation/multigravity_opti.html',
+        controls: [
+          { key: 'Glisser soleil / émetteur', desc: 'Déplacer avec la souris' },
+          { key: 'Molette sur soleil', desc: 'Ajuster la masse d\'attraction' },
+          { key: 'Molette sur émetteur', desc: 'Orienter la direction de tir' },
+          { key: 'Shift + molette sur émetteur', desc: 'Ajuster la vitesse des particules' }
+        ]
       }
     ],
     phase: 1
@@ -123,26 +138,49 @@ const PROJECTS = [
     id: 'spring',
     name: 'Ressort',
     category: 'Particules',
-    description: 'Force de rappel élastique — une particule reliée à ta souris par un ressort virtuel.',
-    iframeSrc: '../Paticule/09_Spring/index.html',
+    description: 'Force de rappel élastique — d\'une particule attachée à la souris jusqu\'aux systèmes multi-corps.',
+    iframeSrc: '../Paticule/10_Optimisation/spring2_opti.html',
     tags: ['physique', 'ressort', 'interaction'],
     controls: [
-      { key: 'Déplacer souris', desc: 'Étire le ressort' },
-      { key: 'Clic souris',     desc: 'Accroche / lâche la particule' }
+      { key: 'Clic souris', desc: 'Téléporte la particule principale' }
+    ],
+    versions: [
+      {
+        label: 'Base',
+        src: '../Paticule/09_Spring/index.html',
+        controls: [
+          { key: 'Déplacer souris', desc: 'Étire le ressort' },
+          { key: 'Clic souris',     desc: 'Accroche / lâche la particule' }
+        ]
+      },
+      {
+        label: 'Souris',
+        src: '../Paticule/10_Optimisation/spring1_opti.html',
+        controls: [
+          { key: 'Déplacer souris', desc: 'Déplace le point d\'ancrage' }
+        ]
+      },
+      {
+        label: 'Triangle',
+        src: '../Paticule/10_Optimisation/spring2_opti.html',
+        controls: [
+          { key: 'Clic souris', desc: 'Téléporte la particule principale' }
+        ]
+      }
     ],
     phase: 1
   },
 
   {
-    id: 'optimisation',
-    name: 'Optimisation',
-    category: 'Particules',
-    description: 'Des centaines de particules gérées efficacement — ressorts, gravité, interactions massives sans perdre en fluidité.',
-    iframeSrc: '../Paticule/10_Optimisation/index.html',
-    tags: ['optimisation', 'performance', 'ressort'],
+    id: 'canon',
+    name: 'Jeu du canon',
+    category: 'Mini-jeu',
+    description: 'Vise une cible avec un canon — physique balistique, force oscillante et collision.',
+    iframeSrc: '../Paticule/10_Optimisation/cannon_opti.html',
+    tags: ['jeu', 'physique', 'canon'],
     controls: [
-      { key: 'Clic souris',   desc: 'Interagit avec les particules' },
-      { key: 'Glisser souris', desc: 'Déplace / attire les particules' }
+      { key: 'Déplacer souris', desc: 'Vise le canon' },
+      { key: 'Espace',          desc: 'Tirer' }
     ],
     phase: 1
   },
@@ -237,7 +275,9 @@ const PROJECTS = [
     iframeSrc: '../Fractal/Fractal_Trees/index.html',
     tags: ['fractal', 'récursion', 'génératif'],
     controls: [
-      { key: 'Déplacer souris', desc: 'Modifie l\'angle des branches' }
+      { key: 'Boutons mode',  desc: 'Sélectionne l\'algorithme' },
+      { key: 'Sliders',       desc: 'Ajuste les paramètres (puis ↺ Relancer)' },
+      { key: 'Clic canvas',   desc: 'Aléatoire (modes f_Tree et f_PyTree)' }
     ],
     phase: 1
   },
@@ -310,15 +350,20 @@ const PROJECTS = [
     iframeSrc: '../MiniGame/03_SystemSolar_v03/index.html',
     tags: ['gravité', 'orbite', 'simulation'],
     controls: [
-      { key: 'Z / Q / D',       desc: 'Déplace le vaisseau' },
-      { key: 'Déplacer souris', desc: 'Vise' }
+      { key: 'Flèches / Z Q S D', desc: 'Déplace la caméra' },
+      { key: '+ - / * (pavé num)', desc: 'Zoom' },
+      { key: 'P',                  desc: 'Panneau debug' }
     ],
     versions: [
       {
         label: 'v1',
         src: '../MiniGame/01_SystemSolar_v01/index.html',
         controls: [
-          { key: 'Déplacer souris', desc: 'Perturbe le système solaire' }
+          { key: 'Flèches / Z Q S D', desc: 'Déplace la caméra' },
+          { key: '+ - (pavé num)',     desc: 'Zoom rapide (×0.1)' },
+          { key: '/ * (pavé num)',     desc: 'Zoom fin (×0.01)' },
+          { key: 'P',                  desc: 'Panneau debug' },
+          { key: 'Échap',              desc: 'Raccourcis clavier' }
         ],
         touch: null
       },
@@ -326,8 +371,10 @@ const PROJECTS = [
         label: 'v2',
         src: '../MiniGame/02_SystemSolar_v02/index.html',
         controls: [
-          { key: 'Z / S / Q / D', desc: 'Déplace le vaisseau' },
-          { key: 'Déplacer souris', desc: 'Vise' }
+          { key: 'Flèches / Z Q S D', desc: 'Déplace la caméra' },
+          { key: '+ - (pavé num)',     desc: 'Zoom rapide (×0.1)' },
+          { key: '/ * (pavé num)',     desc: 'Zoom fin (×0.01)' },
+          { key: 'P',                  desc: 'Panneau debug' }
         ],
         touch: { dpad: true, fire: false }
       },
@@ -335,8 +382,10 @@ const PROJECTS = [
         label: 'v3',
         src: '../MiniGame/03_SystemSolar_v03/index.html',
         controls: [
-          { key: 'Z / Q / D',       desc: 'Déplace le vaisseau' },
-          { key: 'Déplacer souris', desc: 'Vise' }
+          { key: 'Flèches / Z Q S D', desc: 'Déplace la caméra' },
+          { key: '+ - (pavé num)',     desc: 'Zoom rapide (×0.1)' },
+          { key: '/ * (pavé num)',     desc: 'Zoom fin (×0.01)' },
+          { key: 'P',                  desc: 'Panneau debug' }
         ],
         touch: { dpad: true, fire: false }
       }
@@ -353,19 +402,20 @@ const PROJECTS = [
     iframeSrc: '../MiniGame/06_Ship_v03/index.html',
     tags: ['jeu', 'physique', 'progression'],
     controls: [
-      { key: 'Z / S',       desc: 'Propulsion avant / arrière' },
-      { key: 'Q / D',       desc: 'Rotation gauche / droite' },
-      { key: 'Clic souris', desc: 'Tire' },
-      { key: '²',           desc: 'Pause' }
+      { key: 'Flèche haut / bas',    desc: 'Propulsion avant / arrière' },
+      { key: 'Flèche gauche / droite', desc: 'Rotation' },
+      { key: 'Espace / Clic souris', desc: 'Tire' },
+      { key: 'P',                    desc: 'Pause' },
+      { key: 'Échap',                desc: 'Panneau debug' }
     ],
     versions: [
       {
         label: 'Propulsion',
         src: '../Paticule/14_1_Ship_Truster/index.html',
         controls: [
-          { key: 'Z',      desc: 'Propulsion avant' },
-          { key: 'S',      desc: 'Propulsion arrière' },
-          { key: 'Q / D',  desc: 'Rotation gauche / droite' }
+          { key: 'Flèche haut / bas',      desc: 'Propulsion avant / arrière' },
+          { key: 'Flèche gauche / droite', desc: 'Rotation' },
+          { key: 'Échap',                   desc: 'Afficher / masquer les contrôles' }
         ],
         touch: { dpad: true, fire: false }
       },
@@ -373,8 +423,9 @@ const PROJECTS = [
         label: 'Friction',
         src: '../Paticule/14_2_Ship_Friction/index.html',
         controls: [
-          { key: 'Z / S',  desc: 'Propulsion avant / arrière' },
-          { key: 'Q / D',  desc: 'Rotation gauche / droite' }
+          { key: 'Flèche haut / bas',      desc: 'Propulsion avant / arrière' },
+          { key: 'Flèche gauche / droite', desc: 'Rotation' },
+          { key: 'Échap',                   desc: 'Afficher / masquer les contrôles' }
         ],
         touch: { dpad: true, fire: false }
       },
@@ -382,9 +433,10 @@ const PROJECTS = [
         label: 'v1',
         src: '../MiniGame/04_Ship_v01/index.html',
         controls: [
-          { key: 'Z / S',       desc: 'Propulsion avant / arrière' },
-          { key: 'Q / D',       desc: 'Rotation gauche / droite' },
-          { key: 'Clic souris', desc: 'Tire' }
+          { key: 'Flèche haut / bas',     desc: 'Propulsion avant / arrière' },
+          { key: 'Flèche gauche / droite', desc: 'Rotation' },
+          { key: 'Espace / Clic souris',  desc: 'Tire' },
+          { key: 'Échap',                  desc: 'Panneau debug' }
         ],
         touch: { dpad: true, fire: true }
       },
@@ -392,10 +444,11 @@ const PROJECTS = [
         label: 'v2',
         src: '../MiniGame/05_Ship_v02/index.html',
         controls: [
-          { key: 'Z / S',       desc: 'Propulsion avant / arrière' },
-          { key: 'Q / D',       desc: 'Rotation gauche / droite' },
-          { key: 'Clic souris', desc: 'Tire' },
-          { key: '²',           desc: 'Pause' }
+          { key: 'Flèche haut / bas',     desc: 'Propulsion avant / arrière' },
+          { key: 'Flèche gauche / droite', desc: 'Rotation' },
+          { key: 'Espace / Clic souris',  desc: 'Tire' },
+          { key: 'P',                      desc: 'Pause' },
+          { key: 'Échap',                  desc: 'Debug + caméra follow' }
         ],
         touch: { dpad: true, fire: true }
       },
@@ -403,10 +456,11 @@ const PROJECTS = [
         label: 'v3',
         src: '../MiniGame/06_Ship_v03/index.html',
         controls: [
-          { key: 'Z / S',       desc: 'Propulsion avant / arrière' },
-          { key: 'Q / D',       desc: 'Rotation gauche / droite' },
-          { key: 'Clic souris', desc: 'Tire' },
-          { key: '²',           desc: 'Pause' }
+          { key: 'Flèche haut / bas',     desc: 'Propulsion avant / arrière' },
+          { key: 'Flèche gauche / droite', desc: 'Rotation' },
+          { key: 'Espace / Clic souris',  desc: 'Tire' },
+          { key: 'P',                      desc: 'Pause' },
+          { key: 'Échap',                  desc: 'Debug + caméra follow' }
         ],
         touch: { dpad: true, fire: true }
       }

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>AnginE</title>
+
+</head>
+<body>
+    <div id="debug">
+        <p id="console">On test juste d</p>
+    </div>
+
+    <canvas id="js-canvas-hit"></canvas>
+    <canvas id="js-canvas-map"></canvas>
+    <canvas id="js-canvas-broadcast"></canvas>
+    <canvas id="js-canvas-camera"></canvas>
+
+    <!--=================== DATA ========================-->
+    <script src="./src/data/DataSolarSystem.js"></script>
+
+    <!--=================== ANGINE ========================-->
+    <script src="./src/angine/amath/Vec2D.js"></script>
+    <script src="./src/angine/amath/Transform.js"></script>
+
+    <!-- #region SERVICE's-->
+    
+    <script src="./src/angine/services/canvas/CnvService.js"></script>
+    <script src="./src/angine/services/canvas/MapService.js"></script>
+    <script src="./src/angine/services/canvas/HitService.js"></script>
+    <script src="./src/angine/services/canvas/CameraService.js"></script>
+    <script src="./src/angine/services/canvas/BroadcastService.js"></script>
+    <script src="./src/angine/services/Service.js"></script>
+    <script src="./src/angine/services/ResourcesLoader.js"></script>
+    <!-- #endregion -->
+
+    <!-- #region COMPONENT's -->
+    <script src="./src/angine/components/Component.js"></script>
+    <!--Collider's-->
+    <script src="./src/angine/components/collider/Collider.js"></script>
+    <!--Render's-->
+    <script src="./src/angine/components/renderer/Renderer.js"></script>
+    <script src="./src/angine/components/gameObject/GameObject.js"></script>
+    <!-- #endregion -->
+    <!--=================== GAME ========================-->
+
+    <!--#region FACTORY's-->
+    <script src="./src/spaceGame/factory/Factory.js"></script>
+    <script src="./src/spaceGame/factory/PlayerFactory.js"></script>
+    <script src="./src/spaceGame/factory/ShipFactory.js"></script>
+    <script src="./src/spaceGame/factory/SolarSystemFactory.js"></script>
+    <!-- #endregion -->
+
+    <!-- #region MANAGER's -->
+    <script src="./src/spaceGame/managers/FactoryManager.js"></script>
+    <script src="./src/spaceGame/managers/GameManager.js"></script>
+    <script src="./src/spaceGame/managers/MasterManager.js"></script>
+    <!-- #endregion -->
+
+    <!-- #region COMMAND's HANDLER's-->
+    <script src="./src/spaceGame/commands/keyCommand.js"></script>
+    <script src="./src/spaceGame/handler/KeyCommandHandler.js"></script>
+    <script src="./src/spaceGame/handler/AppKeyCommandHandler.js"></script>
+    <script src="./src/spaceGame/handler/PilotKeyCommandHandler.js"></script>
+    <!-- #endregion -->
+
+    <!-- #region COMPONENT's -->
+    <!--Collider's-->
+    <script src="./src/spaceGame/components/colliders/BitmapCollider.js"></script>
+    <!--Render's-->
+    <script src="./src/spaceGame/components/renderers/PlanetRender.js"></script>
+    <script src="./src/spaceGame/components/renderers/ShipRenderer.js"></script>
+    <script src="./src/spaceGame/components/renderers/PlayerRenderer.js"></script>
+    <script src="./src/spaceGame/components/renderers/SolarSystemRenderer.js"></script>
+    <!-- #endregion -->
+
+    <!-- #region GAMEOBJECT's-->
+    <script src="./src/spaceGame/gameObjects/Planet.js"></script>
+    <script src="./src/spaceGame/gameObjects/Ship.js"></script>
+    <script src="./src/spaceGame/gameObjects/Player.js"></script>
+    <script src="./src/spaceGame/gameObjects/SolarSystem.js"></script>
+    <!-- #endregion -->
+
+    <!-- #region MODEL's-->
+    <script src="./src/spaceGame/models/NavBall.js"></script>
+    <!-- #endregion -->
+    
+    <!-- #region BLOCK's -->
+    <script src="./src/spaceGame/blocks/Engin.js"></script>
+    <script src="./src/spaceGame/blocks/Thuster.js"></script>
+    <!-- #endregion -->
+    
+
+    <script src="./src/spaceGame/Athena.js"></script>
+    <script src="./main.js"></script>
+</body>
+</html>

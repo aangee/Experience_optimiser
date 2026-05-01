@@ -6,6 +6,8 @@
 
 ## Accès multi-repo en session web
 
+> ⚠️ Cette section ne s'applique pas en CLI (Claude Code) — accès direct aux fichiers du filesystem.
+
 Le proxy local n'autorise qu'un seul repo par session (celui depuis lequel la session est lancée).
 
 **Si j'ai besoin d'accéder à `nysa-atlas` depuis une session `Experience_optimiser`** (ou vice-versa) → demander le token GitHub à aangee. Il l'a sauvegardé et peut le fournir à la demande.
@@ -20,7 +22,7 @@ Le proxy local n'autorise qu'un seul repo par session (celui depuis lequel la se
 
 - Développeur autodidacte, apprend JS depuis plusieurs années
 - Pense en **systèmes** : infrastructure partagée, réutilisabilité, architecture propre
-- Deux machines : **DESKTOP-TROOPER** (PC principal, Windows 10, `I:\All_Projets\`) et **Pokéball** (portable HP, Windows 11, `F:\PROJECTS\`)
+- Deux machines : **DESKTOP-TROOPER** (PC principal, Windows 10, `L:\CORE\labs\`) et **Pokéball** (portable HP, Windows 11, `F:\PROJECTS\`)
 - A un fils de 10 ans (utilise Blender et Scratch/visual scripting)
 - Gère sa mémoire de session via **nysa-atlas** (repo GitHub privé, hub de contexte Nysa ↔ aangee)
 
@@ -124,7 +126,7 @@ Fusionner `Experience_optimiser` + `angine_js_v01` en un **site portfolio modern
   - `portfolio/index.html` + `css/` (main, gallery, viewer) + `js/` (app, Gallery, DemoViewer, ProjectData)
   - 3 démos référencées dans ProjectData.js
   - GitHub Pages : activer depuis Settings → Pages → dossier `/portfolio`
-- **Phase 2** : DemoViewer + modes Jouer/Comprendre — à faire
+- **Phase 2** : DemoViewer + modes Jouer/Comprendre — à revoir
 
 ### Workflow Git (Claude Code)
 - Chaque session crée une branche `claude/...`

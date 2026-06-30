@@ -22,8 +22,9 @@ Le proxy local n'autorise qu'un seul repo par session (celui depuis lequel la se
 
 - Développeur autodidacte, apprend JS depuis plusieurs années
 - Pense en **systèmes** : infrastructure partagée, réutilisabilité, architecture propre
-- Deux machines : **DESKTOP-TROOPER** (PC principal, Windows 10, `L:\CORE\labs\`) et **Pokéball** (portable HP, Windows 11, `F:\PROJECTS\`)
-- A un fils de 10 ans (utilise Blender et Scratch/visual scripting)
+- PC principal : **aaee-katana** (MSI Katana 15, Windows 11, `L:\CORE\labs\`)
+- Pokéball : disque USB externe (Toshiba ~1 To) — pas une machine
+- A un fils (utilise Blender et Scratch/visual scripting)
 - Gère sa mémoire de session via **nysa-atlas** (repo GitHub privé, hub de contexte Nysa ↔ aangee)
 
 ## Projets connus
